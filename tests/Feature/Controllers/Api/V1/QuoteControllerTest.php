@@ -99,6 +99,31 @@ class QuoteControllerTest extends TestCase
         $response->assertJsonValidationErrors($this->fillable);
     }
 
+    public function test_update_policy()
+    {
+        $user = User::factory()->create();
+        $quote = Quote::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $user_malicious = User::factory()->create();
+        // just the owner $user can delete his quote
+        $response = $this->actingAs($user_malicious)->put("$this->url/$quote->id", [
+            'title' => 'new title not allowed',
+            'content' => 'new content not allowed'
+        ]);
+
+        $response->assertStatus(403);
+        $this->assertDatabaseHas($this->table, [
+            'title' => $quote->title,
+            'content' => $quote->content
+        ]);
+        $this->assertDatabaseMissing($this->table, [
+            'title' => 'new title not allowed',
+            'content' => 'new content not allowed'
+        ]);
+    }
+
     public function test_update()
     {
         $user = User::factory()->create();
@@ -118,6 +143,23 @@ class QuoteControllerTest extends TestCase
             ->assertStatus(200);
         $this->assertDatabaseMissing($this->table, ['id' => $quote->id, 'title' => $quote->title]);
         $this->assertDatabaseHas($this->table, ['id' => $quote->id, 'title' => 'new title']);
+    }
+
+    public function test_destroy_policy()
+    {
+        $user = User::factory()->create();
+        $quote = Quote::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $user_malicious = User::factory()->create();
+        $response = $this->actingAs($user_malicious)->delete("$this->url/$quote->id");
+
+        $response->assertStatus(403);
+        $this->assertDatabaseHas($this->table, [
+            'title' => $quote->title,
+            'content' => $quote->content
+        ]);
     }
 
     public function test_delete()

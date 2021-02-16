@@ -17,12 +17,20 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('v1/quotes', App\Http\Controllers\Api\V1\QuoteController::class)
     ->middleware('auth:sanctum');
 
+Route::get(
+    'v1/users/{user_id}/quotes',
+    [
+        App\Http\Controllers\Api\V1\UserController::class,
+        'index_quotes'
+    ]
+);
+
 Route::post('login',  [
     App\Http\Controllers\Api\AuthController::class,
     'login'
-    ]);
+]);
 
 Route::post('register',  [
     App\Http\Controllers\Api\AuthController::class,
     'register'
-    ]);
+]);

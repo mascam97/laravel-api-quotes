@@ -36,13 +36,19 @@ class QuoteController extends Controller
 
     public function update(QuoteRequest $request, Quote $quote)
     {
-        $quote->update($request->all());
+        // user can update a quote if he is the owner
+        $this->authorize('pass', $quote);
 
+        $quote->update($request->all());
+        
         return response()->json(new QuoteResource($quote));
     }
-
+    
     public function destroy(Quote $quote)
     {
+        // user can delete a quote if he is the owner
+        $this->authorize('pass', $quote);
+
         $quote->delete();
 
         return response()->json(null, 204);
