@@ -12,6 +12,7 @@ class QuoteControllerTest extends TestCase
     use RefreshDatabase, WithFaker;
     private $url = "/api/v1/quotes";
     private $fillable = ['title', 'content'];
+    private $columns_collection = ['id', 'title', 'excerpt', 'updated_ago'];
     private $columns = ['id', 'title', 'content', 'created_at', 'updated_at'];
     private $table = 'quotes';
 
@@ -23,7 +24,7 @@ class QuoteControllerTest extends TestCase
 
         $response->assertJsonStructure([
             'data' => [
-                '*' => $this->columns
+                '*' => $this->columns_collection
             ]
         ])->assertStatus(200);
     }
