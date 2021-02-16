@@ -27,13 +27,11 @@ class QuoteControllerTest extends TestCase
         $response = $this->actingAs($user, 'sanctum')->json('GET', $this->url);
 
         $response->assertJsonStructure([
-            'data' => [
-                '*' => $this->columns_collection
-            ]
+            'data' => ['*' => $this->columns_collection]
         ])->assertStatus(200);
     }
 
-    public function test_validate_store()
+    public function test_store_validate()
     {
         $user = User::factory()->create();
 
@@ -61,7 +59,7 @@ class QuoteControllerTest extends TestCase
         $this->assertDatabaseHas($this->table, $data);
     }
 
-    public function test_404_show()
+    public function test_show_404()
     {
         $user = User::factory()->create();
 
@@ -84,7 +82,7 @@ class QuoteControllerTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function test_validate_update()
+    public function test_update_validate()
     {
         $user = User::factory()->create();
         $quote = Quote::factory()->create([

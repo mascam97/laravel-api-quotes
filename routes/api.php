@@ -14,23 +14,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('v1/quotes', App\Http\Controllers\Api\V1\QuoteController::class)
-    ->middleware('auth:sanctum');
-
-Route::get(
-    'v1/users/{user_id}/quotes',
-    [
-        App\Http\Controllers\Api\V1\UserController::class,
-        'index_quotes'
-    ]
-);
+Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
+    Route::apiResource('quotes', App\Http\Controllers\Api\V1\QuoteController::class);
+    
+    Route::get(
+        'users/{user_id}/quotes',
+        [
+            App\Http\Controllers\Api\V1\UserController::class,
+            'index_quotes'
+        ]
+    )->name('user.quotes');
+});
 
 Route::post('login',  [
     App\Http\Controllers\Api\AuthController::class,
     'login'
-]);
+])->name('login');
 
 Route::post('register',  [
     App\Http\Controllers\Api\AuthController::class,
     'register'
-]);
+])->name('register');

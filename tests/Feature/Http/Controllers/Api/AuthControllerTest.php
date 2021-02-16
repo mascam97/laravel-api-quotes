@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Controllers\Api;
+namespace Tests\Feature\Http\Controllers\Api;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,7 +15,7 @@ class AuthControllerTest extends TestCase
     private $columns = ['id', 'name', 'email', 'password', 'created_at', 'updated_at'];
     private $table = 'users';
 
-    public function test_validate_login()
+    public function test_login_validate()
     {
         $response = $this->json('POST', 'api/login', [
             'email' => 'user@mail.com',
@@ -55,7 +55,7 @@ class AuthControllerTest extends TestCase
             ->assertSee('Unauthorized');
     }
 
-    public function test_validate_register()
+    public function test_register_validate()
     {
         $response = $this->json('POST', 'api/register', [
             'name' => 'new user',
