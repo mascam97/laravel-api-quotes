@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers\Api\V1;
 
 use App\Models\Quote;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -18,9 +19,10 @@ class QuoteControllerTest extends TestCase
 
     public function test_index()
     {
+        $user = User::factory()->create();
         Quote::factory(10)->create();
 
-        $response = $this->json('GET', $this->url);
+        $response = $this->actingAs($user, 'sanctum')->json('GET', $this->url);
 
         $response->assertJsonStructure([
             'data' => [
@@ -31,7 +33,9 @@ class QuoteControllerTest extends TestCase
 
     public function test_validate_store()
     {
-        $response = $this->json('POST', $this->url, [
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user, 'sanctum')->json('POST', $this->url, [
             'title' => '',
             'content' => ''
         ]);
@@ -40,12 +44,13 @@ class QuoteControllerTest extends TestCase
 
     public function test_store()
     {
+        $user = User::factory()->create();
         $data = [
             'title' => $this->faker->sentence,
             'content' => $this->faker->text(500)
         ];
 
-        $response = $this->json('POST', $this->url, $data);
+        $response = $this->actingAs($user, 'sanctum')->json('POST', $this->url, $data);
 
         $response->assertJsonMissingValidationErrors($this->fillable)
             ->assertJsonStructure($this->columns)
@@ -56,16 +61,19 @@ class QuoteControllerTest extends TestCase
 
     public function test_404_show()
     {
-        $response = $this->json('GET', "$this->url/100000");
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user, 'sanctum')->json('GET', "$this->url/100000");
 
         $response->assertStatus(404);
     }
 
     public function test_show()
     {
+        $user = User::factory()->create();
         $quote = Quote::factory()->create();
 
-        $response = $this->json('GET', "$this->url/$quote->id");
+        $response = $this->actingAs($user, 'sanctum')->json('GET', "$this->url/$quote->id");
 
         $response->assertJsonStructure($this->columns)
             ->assertJson(['id' => $quote->id, 'content' => $quote->content])
@@ -74,9 +82,10 @@ class QuoteControllerTest extends TestCase
 
     public function test_validate_update()
     {
+        $user = User::factory()->create();
         $quote = Quote::factory()->create();
 
-        $response = $this->json('PUT', "$this->url/$quote->id", [
+        $response = $this->actingAs($user, 'sanctum')->json('PUT', "$this->url/$quote->id", [
             'title' => '',
             'content' => ''
         ]);
@@ -86,13 +95,14 @@ class QuoteControllerTest extends TestCase
 
     public function test_update()
     {
+        $user = User::factory()->create();
         $quote = Quote::factory()->create();
         $new_data = [
             'title' => 'new title',
             'content' => 'new content'
         ];
 
-        $response = $this->json('PUT', "$this->url/$quote->id", $new_data);
+        $response = $this->actingAs($user, 'sanctum')->json('PUT', "$this->url/$quote->id", $new_data);
 
         $response->assertJsonMissingValidationErrors($this->fillable)
             ->assertJsonStructure($this->columns)
@@ -104,9 +114,10 @@ class QuoteControllerTest extends TestCase
 
     public function test_delete()
     {
+        $user = User::factory()->create();
         $quote = Quote::factory()->create();
 
-        $response = $this->json('DELETE', "$this->url/$quote->id");
+        $response = $this->actingAs($user, 'sanctum')->json('DELETE', "$this->url/$quote->id");
 
         $response->assertSee(null)->assertStatus(204);
         $this->assertDatabaseMissing($this->table, ['id' => $quote->id]);

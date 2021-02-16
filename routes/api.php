@@ -14,4 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('v1/quotes', App\Http\Controllers\Api\V1\QuoteController::class);
+Route::apiResource('v1/quotes', App\Http\Controllers\Api\V1\QuoteController::class)
+    ->middleware('auth:sanctum');
+
+Route::post('login',  [
+    App\Http\Controllers\Api\AuthController::class,
+    'login'
+    ]);
+
+Route::post('register',  [
+    App\Http\Controllers\Api\AuthController::class,
+    'register'
+    ]);
