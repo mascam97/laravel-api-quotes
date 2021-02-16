@@ -25,7 +25,7 @@ class QuoteController extends Controller
 
     public function store(QuoteRequest $request)
     {
-        $quote = $this->quote->create($request->all());
+        $quote = $request->user()->quotes()->create($request->all());
         return response()->json(new QuoteResource($quote), 201);
     }
 

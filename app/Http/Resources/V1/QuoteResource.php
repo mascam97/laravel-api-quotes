@@ -18,6 +18,10 @@ class QuoteResource extends JsonResource
             'id' => (int) $this->id,
             'title' => (string) $this->title,
             'content' => (string) $this->content,
+            'author' => (array) [
+                'name' => (int) $this->user->name,
+                'email' => (int) $this->user->email
+            ],
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at
         ];

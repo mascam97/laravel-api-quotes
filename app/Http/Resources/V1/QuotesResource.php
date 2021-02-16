@@ -18,6 +18,7 @@ class QuotesResource extends JsonResource
             'id' => (int) $this->id,
             'title' => (string) $this->title,
             'excerpt' => (string) $this->excerpt,
+            'author_name' => (string) $this->user->name,
             'updated_ago' => (string) $this->updated_at->diffForHumans()
         ];
     }

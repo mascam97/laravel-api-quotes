@@ -19,4 +19,9 @@ class Quote extends Model
     {
         return Str::limit($this->content, 75);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -13,15 +13,17 @@ class QuoteControllerTest extends TestCase
     use RefreshDatabase, WithFaker;
     private $url = "/api/v1/quotes";
     private $fillable = ['title', 'content'];
-    private $columns_collection = ['id', 'title', 'excerpt', 'updated_ago'];
-    private $columns = ['id', 'title', 'content', 'created_at', 'updated_at'];
+    private $columns_collection = ['id', 'title', 'excerpt', 'author_name', 'updated_ago'];
+    private $columns = ['id', 'title', 'content', 'author', 'created_at', 'updated_at'];
     private $table = 'quotes';
 
     public function test_index()
     {
         $user = User::factory()->create();
-        Quote::factory(10)->create();
 
+        $quote = Quote::factory()->create([
+            'user_id' => $user->id
+        ]);
         $response = $this->actingAs($user, 'sanctum')->json('GET', $this->url);
 
         $response->assertJsonStructure([
@@ -71,7 +73,9 @@ class QuoteControllerTest extends TestCase
     public function test_show()
     {
         $user = User::factory()->create();
-        $quote = Quote::factory()->create();
+        $quote = Quote::factory()->create([
+            'user_id' => $user->id
+        ]);
 
         $response = $this->actingAs($user, 'sanctum')->json('GET', "$this->url/$quote->id");
 
@@ -83,7 +87,9 @@ class QuoteControllerTest extends TestCase
     public function test_validate_update()
     {
         $user = User::factory()->create();
-        $quote = Quote::factory()->create();
+        $quote = Quote::factory()->create([
+            'user_id' => $user->id
+        ]);
 
         $response = $this->actingAs($user, 'sanctum')->json('PUT', "$this->url/$quote->id", [
             'title' => '',
@@ -96,7 +102,9 @@ class QuoteControllerTest extends TestCase
     public function test_update()
     {
         $user = User::factory()->create();
-        $quote = Quote::factory()->create();
+        $quote = Quote::factory()->create([
+            'user_id' => $user->id
+        ]);
         $new_data = [
             'title' => 'new title',
             'content' => 'new content'
@@ -115,7 +123,9 @@ class QuoteControllerTest extends TestCase
     public function test_delete()
     {
         $user = User::factory()->create();
-        $quote = Quote::factory()->create();
+        $quote = Quote::factory()->create([
+            'user_id' => $user->id
+        ]);
 
         $response = $this->actingAs($user, 'sanctum')->json('DELETE', "$this->url/$quote->id");
 
