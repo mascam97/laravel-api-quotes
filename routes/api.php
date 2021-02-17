@@ -26,10 +26,10 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     )->name('user.quotes');
 });
 
-Route::post('login',  [
+Route::post('api-token-auth',  [
     App\Http\Controllers\Api\AuthController::class,
-    'login'
-])->name('login');
+    'api_token_auth'
+])->name('api-token-auth');
 
 Route::post('register',  [
     App\Http\Controllers\Api\AuthController::class,

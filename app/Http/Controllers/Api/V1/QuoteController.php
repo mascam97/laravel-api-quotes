@@ -50,7 +50,8 @@ class QuoteController extends Controller
         $this->authorize('pass', $quote);
 
         $quote->delete();
-
-        return response()->json(null, 204);
+        return response()->json([
+            'message' => 'Quote deleted successfully'
+        ]);
     }
 }

@@ -17,11 +17,24 @@ class QuoteControllerTest extends TestCase
     private $columns = ['id', 'title', 'content', 'author', 'created_at', 'updated_at'];
     private $table = 'quotes';
 
+    public function test_guest_unauthorized()
+    {
+        $quote = Quote::factory()->create([
+            'user_id' => User::factory()->create()
+        ]);
+
+        $this->json("GET", "$this->url")->assertStatus(401);                // index
+        $this->json("GET", "$this->url/$quote->id")->assertStatus(401);     // show
+        $this->json("POST", "$this->url", [])->assertStatus(401);           // store
+        $this->json("PUT", "$this->url/$quote->id", [])->assertStatus(401); // update
+        $this->json("DELETE", "$this->url/$quote->id")->assertStatus(401);  // destroy
+    }
+
     public function test_index()
     {
         $user = User::factory()->create();
 
-        $quote = Quote::factory()->create([
+        Quote::factory()->create([
             'user_id' => $user->id
         ]);
         $response = $this->actingAs($user, 'sanctum')->json('GET', $this->url);
@@ -55,6 +68,7 @@ class QuoteControllerTest extends TestCase
         $response->assertJsonMissingValidationErrors($this->fillable)
             ->assertJsonStructure($this->columns)
             ->assertJson($data)
+            ->assertSee([$user->name, $user->email])
             ->assertStatus(201);
         $this->assertDatabaseHas($this->table, $data);
     }
@@ -160,6 +174,15 @@ class QuoteControllerTest extends TestCase
         ]);
     }
 
+    public function test_delete_404()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user, 'sanctum')->json('DELETE', "$this->url/1");
+
+        $response->assertSee(null)->assertStatus(404);
+    }
+
     public function test_delete()
     {
         $user = User::factory()->create();
@@ -169,7 +192,7 @@ class QuoteControllerTest extends TestCase
 
         $response = $this->actingAs($user, 'sanctum')->json('DELETE', "$this->url/$quote->id");
 
-        $response->assertSee(null)->assertStatus(204);
+        $response->assertSee('Quote deleted successfully')->assertStatus(200);
         $this->assertDatabaseMissing($this->table, ['id' => $quote->id]);
     }
 }
