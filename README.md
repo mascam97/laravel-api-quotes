@@ -1,62 +1,118 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Laravel8 API Quotes
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+_Community to share quotes._
 
-## About Laravel
+### Project goal by martin-stepwolf :goal_net:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Personal project to apply my knowledge about API REST and learn about [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Achievements :star2:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Learned better practices about APIs (versioning and url names).
+- Created Authentication functions (register and login).
+- Implemented Authentication by API tokens with Laravel Sanctum.
+- Implemented [Authorization - Policies](https://laravel.com/docs/8.x/authorization).
+- Implemented [API resources](https://laravel.com/docs/8.x/eloquent-resources) to transform data.
+- Worked with **Test-Driven Development** with PHPUnit.
+- Tested with [Postman](https://www.postman.com/) and created a documentation [link](https://documenter.getpostman.com/view/14344048/TWDUrJfS).
 
-## Learning Laravel
+## Getting Started :rocket:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Prerequisites :clipboard:
 
-## Laravel Sponsors
+The programs you need are:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+-   [Docker](https://www.docker.com/get-started).
+-   [Docker compose](https://docs.docker.com/compose/install/).
 
-### Premium Partners
+### Installing 🔧
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
+First duplicate the file .env.example as .env.
+
+```
+cp .env.example .env
+```
+
+Note: You could change some values, anyway docker-compose create the database according to the defined values.
+
+Then create the next alias to run commands in the container.
+
+```
+alias sail='bash vendor/bin/sail'
+```
+
+Create the images (laravel app and mysql) and run the services:
+
+```
+sail up
+```
+
+With Laravel Sail you can run commands as docker-compose (docker-compose up -d = sail up -d) and php(e.g php artisan migrate = sail artisan migrate). To run Composer, Artisan, and Node / NPM commands just add sail at the beginning (e.g sail npm install). More information [here](https://laravel.com/docs/8.x/sail).
+
+Then install the dependencies.
+
+```
+sail composer install
+```
+
+Then generate the application key.
+
+```
+sail artisan key:generate
+```
+
+Finally generate the database with fake data:
+
+```
+sail artisan migrate --seed
+```
+
+Note: You could refresh the database any time with migrate:refresh.
+
+And now you have all the environment in the port 80 (http://localhost/).
+
+## Running the tests
+
+To test the Routes, Controllers, Security and the functionality in general run:
+
+```
+sail artisan test
+```
+
+## Deployment 📦
+
+For production environment you need extra configurations for security as:
+
+Set in the file .env the next configuration.
+
+```
+APP_ENV=production
+```
+
+## Built With 🛠️
+
+-   [Laravel 8](https://laravel.com/docs/8.x/releases/) - PHP framework.
+-   [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum) - Authentication system.
+-   [Laravel Sail](https://laravel.com/docs/8.x/sail) - Docker development environment.
+
+## Authors
+
+-   Martín Campos - [martin-stepwolf](https://github.com/martin-stepwolf)
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+You're free to contribute to this project by submitting [issues](https://github.com/martin-stepwolf/laravel8-api-quotes/issues) and/or [pull requests](https://github.com/martin-stepwolf/laravel8-api-quotes/pulls).
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the [MIT License](https://choosealicense.com/licenses/mit/).
+
+## References :books:
+
+- [Postman Course](https://platzi.com/clases/postman/)
+- [Test Driven Development with Laravel Course](https://platzi.com/clases/laravel-tdd/)
+- [Testing with PHP and Laravel Basic Course](https://platzi.com/clases/laravel-testing/)
+- [API REST with Laravel Course](https://platzi.com/clases/laravel-api/)
+- [API REST Course](https://platzi.com/clases/api-rest/)
