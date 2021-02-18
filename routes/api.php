@@ -16,14 +16,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::apiResource('quotes', App\Http\Controllers\Api\V1\QuoteController::class);
-    
+
+    Route::apiResource('users', App\Http\Controllers\Api\V1\UserController::class)
+        ->only(['index', 'show']);
+
     Route::get(
-        'users/{user_id}/quotes',
+        'users/{user}/quotes',
         [
             App\Http\Controllers\Api\V1\UserController::class,
             'index_quotes'
         ]
-    )->name('user.quotes');
+    )->name('users.quotes.index');
 });
 
 Route::post('api-token-auth',  [
