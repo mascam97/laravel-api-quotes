@@ -42,7 +42,7 @@ Then install the PHP dependencies:
 ```
  docker run --rm --interactive --tty \
  --volume $PWD:/app \
- composer require laravel/sail --dev
+ composer install
 ```
 
 Then create the next alias to run commands in the container with Laravel Sail.
