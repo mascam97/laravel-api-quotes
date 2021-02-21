@@ -31,7 +31,11 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::prefix('v2')->group(function () {
         Route::apiResource('quotes', App\Http\Controllers\Api\V2\QuoteController::class);
-
+        Route::post('quotes/{quote}/rate', [
+            App\Http\Controllers\Api\V2\QuoteController::class,
+            'rate'
+        ]);
+        
         Route::apiResource('users', App\Http\Controllers\Api\V2\UserController::class)
             ->only(['index', 'show']);
 

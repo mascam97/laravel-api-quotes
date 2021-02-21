@@ -30,10 +30,6 @@ trait CanRate
 
     public function rate(Model $model, float $score): bool
     {
-        if ($this->hasRated($model)) {
-            return false;
-        }
-
         $this->ratings($model)->attach($model->getKey(), [
             'score' => $score,
             'rateable_type' => get_class($model)

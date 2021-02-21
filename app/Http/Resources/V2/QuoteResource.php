@@ -22,6 +22,10 @@ class QuoteResource extends JsonResource
                 'name' => (string) $this->user->name,
                 'email' => (string) $this->user->email
             ],
+            'rating' => (array) [
+                'average' => (float) $this->averageRating(\App\Models\User::class),
+                'qualifiers' => (int) $this->qualifiers(\App\Models\User::class)->count(),
+            ],
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at
         ];

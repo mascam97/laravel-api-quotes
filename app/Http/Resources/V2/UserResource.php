@@ -19,6 +19,7 @@ class UserResource extends JsonResource
             'name' => (string) $this->name,
             'email' => (string) $this->email,
             'quotes_count' => (int) $this->quotes_count,
+            'ratings_count' => (int) $this->ratings(\App\Models\Quote::class)->count(),
             'created_ago' => (string) $this->created_at->diffForHumans(),
         ];
     }

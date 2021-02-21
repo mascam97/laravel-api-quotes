@@ -12,7 +12,7 @@ class UserControllerTest extends TestCase
     use RefreshDatabase;
     private $url = "/api/v2/users";
     private $columns_collection = ['id', 'title', 'excerpt', 'created_ago', 'updated_ago'];
-    private $columns = ['id', 'name', 'email', 'quotes_count', 'created_ago'];
+    private $columns = ['id', 'name', 'email', 'quotes_count', 'ratings_count', 'created_ago'];
     private $table = 'users';
 
     public function test_guest_unauthorized()
