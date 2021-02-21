@@ -15,5 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         \App\Models\User::factory(10)->create();
         \App\Models\Quote::factory(120)->create();
+     
+        $this->call(RatingUserQuoteSeeder::class);
     }
 }
