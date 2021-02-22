@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -27,6 +28,7 @@ class AuthController extends Controller
             ]);
         }
 
+        Log::channel('daily')->error('User failed to login.', ['email' => $request->email]);
         return response()->json([
             'message' => 'Unauthorized'
         ], 401);
@@ -37,6 +39,7 @@ class AuthController extends Controller
         $user = User::create(
             $request->except('password') + ['password' => Hash::make($request->password)]
         );
+        Log::channel('daily')->info('New user was created.', ['email' => $user->email]);
         return response()->json([
             'message' => 'User created successfully'
         ]);

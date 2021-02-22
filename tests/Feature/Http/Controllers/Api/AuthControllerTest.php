@@ -95,8 +95,8 @@ class AuthControllerTest extends TestCase
             ]
         );
 
-        $response->assertStatus(500)
-            ->assertSee('Integrity constraint violation');
+        $response->assertStatus(422)
+            ->assertSee('The email has already been taken.');
     }
 
     public function test_register()
