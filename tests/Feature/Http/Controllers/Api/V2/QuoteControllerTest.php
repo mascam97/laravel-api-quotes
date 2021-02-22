@@ -220,19 +220,29 @@ class QuoteControllerTest extends TestCase
         );
         $response->assertJsonValidationErrors('score');
 
-        $response_bigger_number = $this->actingAs($user, 'sanctum')->json(
-            'POST',
-            "$this->url/$quote->id/rate",
-            ['score' => 100]
-        );
-        $response_bigger_number->assertJsonValidationErrors('score');
-
         $response_not_a_number = $this->actingAs($user, 'sanctum')->json(
             'POST',
             "$this->url/$quote->id/rate",
             ['score' => 'great quote']
         );
         $response_not_a_number->assertJsonValidationErrors('score');
+    }
+
+    public function test_rate_validate_range()
+    {
+        // Validate the range of score defined in config/rating.php
+        $user = User::factory()->create();
+        $quote = Quote::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $response = $this->actingAs($user, 'sanctum')->json(
+            'POST',
+            "$this->url/$quote->id/rate",
+            ['score' => '10']
+        );
+        $response->assertJsonValidationErrors('score')
+            ->assertSee("The score must be between 1 and 5.");
     }
 
     public function test_rate()

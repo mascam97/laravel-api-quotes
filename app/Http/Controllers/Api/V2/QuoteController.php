@@ -61,7 +61,7 @@ class QuoteController extends Controller
         // The user can rate from 0 to 5
         // 0 means no rating
         $validated = $request->validate([
-            'score' => 'required|regex:/^[0-5]$/i'
+            'score' => 'required|integer'
         ]);
 
         // If the user send 0 in score, the rate is deleted

@@ -16,6 +16,7 @@ Personal project to apply my knowledge about API REST and learn more about Larav
 - Implemented a 2nd version where users can rate quotes (**Polymorphic relationships**).
 - Worked with **Test-Driven Development** with PHPUnit.
 - Tested with [Postman](https://www.postman.com/) and created a documentation [link](https://documenter.getpostman.com/view/14344048/TWDUrJfS).
+- Implemented custom errors in exceptions.
 
 ## Getting Started :rocket:
 
