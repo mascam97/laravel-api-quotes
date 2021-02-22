@@ -15,6 +15,7 @@ Personal project to apply my knowledge about API REST and learn about [Laravel S
 - Implemented [API resources](https://laravel.com/docs/8.x/eloquent-resources) to transform data.
 - Worked with **Test-Driven Development** with PHPUnit.
 - Tested with [Postman](https://www.postman.com/) and created a documentation [link](https://documenter.getpostman.com/view/14344048/TWDUrJfS).
+- Create a custom artisan command to sent an email and tested it in local ([mailhog](http://localhost:8025)).
 
 ## Getting Started :rocket:
 
@@ -74,6 +75,16 @@ sail artisan migrate --seed
 Note: You could refresh the database any time with migrate:refresh.
 
 And now you have all the environment in the port 80 (http://localhost/).
+
+## Running Artisan Commands
+
+There is a custom command to sent an email as example to the users.
+
+```
+sail artisan send:newsletter
+```
+
+In docker-compose there is a container about MailHog, this container shows the email sent in your local in the port 8025 by default.
 
 ## Running the tests
 
