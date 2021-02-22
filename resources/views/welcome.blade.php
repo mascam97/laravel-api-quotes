@@ -27,7 +27,7 @@
                 <h1>{{ env('APP_NAME') }}</h1>
                 </div>
                 <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
-                    Users: <b>{{ $users_count }}</b>|Quotes: <b>{{ $quotes_count }}</b>
+                    Users: <b>{{ $users_count }}</b>|Quotes: <b>{{ $quotes_count }}</b>|Ratings: <b>{{ $ratings_count }}</b>
                 </div>
                 <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                     <div class="grid grid-cols-1 md:grid-cols-2">

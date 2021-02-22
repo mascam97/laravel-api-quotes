@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome',[
         'users_count' => count(\App\Models\User::all()),
-        'quotes_count' => count(\App\Models\Quote::all())
+        'quotes_count' => count(\App\Models\Quote::all()),
+        'ratings_count' => count(\App\Models\Rating::all())
     ]);
 })->name('welcome');
