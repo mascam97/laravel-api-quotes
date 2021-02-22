@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers\Api\V1;
+namespace Tests\Feature\Http\Controllers\Api\V2;
 
 use App\Models\Quote;
 use App\Models\User;
@@ -10,9 +10,13 @@ use Tests\TestCase;
 class UserControllerTest extends TestCase
 {
     use RefreshDatabase;
-    private $url = "/api/v1/users";
-    private $columns_collection = ['id', 'title', 'excerpt', 'created_ago', 'updated_ago'];
-    private $columns = ['id', 'name', 'email', 'quotes_count', 'created_ago'];
+    private $url = "/api/v2/users";
+    private $columns_collection = [
+        'id', 'title', 'excerpt',
+        'rating' => ['average', 'qualifiers'],
+        'created_ago', 'updated_ago'
+    ];
+    private $columns = ['id', 'name', 'email', 'quotes_count', 'ratings_count', 'created_ago'];
     private $table = 'users';
 
     public function test_guest_unauthorized()

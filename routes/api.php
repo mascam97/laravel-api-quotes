@@ -14,19 +14,39 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
-    Route::apiResource('quotes', App\Http\Controllers\Api\V1\QuoteController::class);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::prefix('v1')->group(function () {
+        Route::apiResource('quotes', App\Http\Controllers\Api\V1\QuoteController::class);
 
-    Route::apiResource('users', App\Http\Controllers\Api\V1\UserController::class)
-        ->only(['index', 'show']);
+        Route::apiResource('users', App\Http\Controllers\Api\V1\UserController::class)
+            ->only(['index', 'show']);
 
-    Route::get(
-        'users/{user}/quotes',
-        [
-            App\Http\Controllers\Api\V1\UserController::class,
-            'index_quotes'
-        ]
-    )->name('users.quotes.index');
+        Route::get(
+            'users/{user}/quotes',
+            [
+                App\Http\Controllers\Api\V1\UserController::class,
+                'index_quotes'
+            ]
+        )->name('users.quotes.index');
+    });
+    Route::prefix('v2')->group(function () {
+        Route::apiResource('quotes', App\Http\Controllers\Api\V2\QuoteController::class);
+        Route::post('quotes/{quote}/rate', [
+            App\Http\Controllers\Api\V2\QuoteController::class,
+            'rate'
+        ]);
+        
+        Route::apiResource('users', App\Http\Controllers\Api\V2\UserController::class)
+            ->only(['index', 'show']);
+
+        Route::get(
+            'users/{user}/quotes',
+            [
+                App\Http\Controllers\Api\V2\UserController::class,
+                'index_quotes'
+            ]
+        )->name('users.quotes.index');
+    });
 });
 
 Route::post('api-token-auth',  [

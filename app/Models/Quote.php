@@ -3,13 +3,14 @@
 namespace App\Models;
 
 
+use App\Utils\CanBeRated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class Quote extends Model
 {
-    use HasFactory;
+    use HasFactory, CanBeRated;
 
     protected $fillable = [
         'title', 'content'
