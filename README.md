@@ -1,10 +1,10 @@
 # Laravel8 API Quotes
 
-_Community to share quotes._
+_Community to share and rate quotes._
 
 ### Project goal by martin-stepwolf :goal_net:
 
-Personal project to apply my knowledge about API REST and learn about [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum).
+Personal project to apply my knowledge about API REST and learn more about Laravel and [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum).
 
 ### Achievements :star2:
 
@@ -13,6 +13,7 @@ Personal project to apply my knowledge about API REST and learn about [Laravel S
 - Implemented Authentication by API tokens with Laravel Sanctum.
 - Implemented [Authorization - Policies](https://laravel.com/docs/8.x/authorization).
 - Implemented [API resources](https://laravel.com/docs/8.x/eloquent-resources) to transform data.
+- Implemented a 2nd version where users can rate quotes (**Polymorphic relationships**).
 - Worked with **Test-Driven Development** with PHPUnit.
 - Tested with [Postman](https://www.postman.com/) and created a documentation [link](https://documenter.getpostman.com/view/14344048/TWDUrJfS).
 
@@ -42,7 +43,7 @@ Then install the PHP dependencies:
 ```
  docker run --rm --interactive --tty \
  --volume $PWD:/app \
- composer require laravel/sail --dev
+ composer install
 ```
 
 Then create the next alias to run commands in the container with Laravel Sail.
@@ -113,6 +114,7 @@ This project is licensed under the [MIT License](https://choosealicense.com/lice
 
 ## References :books:
 
+- [Laravel Advanced Course](https://platzi.com/clases/laravel-avanzado/)
 - [Postman Course](https://platzi.com/clases/postman/)
 - [Test Driven Development with Laravel Course](https://platzi.com/clases/laravel-tdd/)
 - [Testing with PHP and Laravel Basic Course](https://platzi.com/clases/laravel-testing/)

@@ -16,6 +16,6 @@ trait CanBeRated
 
     public function averageRating(string $model = null): float
     {
-        return $this->qualifiers($model)->avg('score') ?: 0.0;
+        return round($this->qualifiers($model)->avg('score'), 1) ?: 0.0;
     }
 }

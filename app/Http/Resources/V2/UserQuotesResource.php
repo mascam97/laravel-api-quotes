@@ -18,6 +18,10 @@ class UserQuotesResource extends JsonResource
             'id' => (int) $this->id,
             'title' => (string) $this->title,
             'excerpt' => (string) $this->excerpt,
+            'rating' => (array) [
+                'average' => (float) $this->averageRating(\App\Models\User::class),
+                'qualifiers' => (int) $this->qualifiers(\App\Models\User::class)->count(),
+            ],
             'created_ago' => (string) $this->updated_at->diffForHumans(),
             'updated_ago' => (string) $this->updated_at->diffForHumans()
         ];

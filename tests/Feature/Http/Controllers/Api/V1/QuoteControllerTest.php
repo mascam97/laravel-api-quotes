@@ -14,7 +14,11 @@ class QuoteControllerTest extends TestCase
     private $url = "/api/v1/quotes";
     private $fillable = ['title', 'content'];
     private $columns_collection = ['id', 'title', 'excerpt', 'author_name', 'updated_ago'];
-    private $columns = ['id', 'title', 'content', 'author', 'created_at', 'updated_at'];
+    private $columns = [
+        'id', 'title', 'content',
+        'author' => ['name', 'email'],
+        'created_at', 'updated_at'
+    ];
     private $table = 'quotes';
 
     public function test_guest_unauthorized()

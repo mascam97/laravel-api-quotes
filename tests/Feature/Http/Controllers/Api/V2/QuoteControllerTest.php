@@ -13,8 +13,17 @@ class QuoteControllerTest extends TestCase
     use RefreshDatabase, WithFaker;
     private $url = "/api/v2/quotes";
     private $fillable = ['title', 'content'];
-    private $columns_collection = ['id', 'title', 'excerpt', 'author_name', 'rating', 'updated_ago'];
-    private $columns = ['id', 'title', 'content', 'author', 'rating', 'created_at', 'updated_at'];
+    private $columns_collection = [
+        'id', 'title', 'excerpt', 'author_name',
+        'rating' => ['average', 'qualifiers'],
+        'updated_ago'
+    ];
+    private $columns = [
+        'id', 'title', 'content',
+        'author' => ['name', 'email'],
+        'rating' => ['score_by_user', 'average', 'qualifiers'],
+        'created_at', 'updated_at'
+    ];
     private $table = 'quotes';
 
     public function test_guest_unauthorized()
@@ -204,13 +213,13 @@ class QuoteControllerTest extends TestCase
         ]);
 
         $response = $this->actingAs($user, 'sanctum')->json(
-            
+
             'POST',
             "$this->url/$quote->id/rate",
             ['score' => '']
         );
         $response->assertJsonValidationErrors('score');
-        
+
         $response_bigger_number = $this->actingAs($user, 'sanctum')->json(
             'POST',
             "$this->url/$quote->id/rate",
@@ -246,7 +255,7 @@ class QuoteControllerTest extends TestCase
             "rateable_id" => $quote->id,
             "qualifier_type" => "App\Models\User",
             'qualifier_id' => $user->id,
-            ]);
+        ]);
     }
 
     public function test_rate_updated()
@@ -270,14 +279,14 @@ class QuoteControllerTest extends TestCase
             "rateable_id" => $quote->id,
             "qualifier_type" => "App\Models\User",
             'qualifier_id' => $user->id,
-            ]);
+        ]);
         $this->assertDatabaseMissing('ratings', [
             'score' => 5,
             "rateable_type" => "App\Models\Quote",
             "rateable_id" => $quote->id,
             "qualifier_type" => "App\Models\User",
             'qualifier_id' => $user->id,
-            ]);
+        ]);
     }
 
     public function test_unrate()
@@ -302,6 +311,6 @@ class QuoteControllerTest extends TestCase
             "rateable_id" => $quote->id,
             "qualifier_type" => "App\Models\User",
             'qualifier_id' => $user->id,
-            ]);
+        ]);
     }
 }

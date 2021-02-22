@@ -64,7 +64,7 @@ class UserControllerTest extends TestCase
         Quote::factory()->create([
             'user_id' => $user->id
         ]);
-        $response = $this->actingAs($user, 'sanctum')->json('GET', "api/v1/users/$user->id/quotes");
+        $response = $this->actingAs($user, 'sanctum')->json('GET', "$this->url/$user->id/quotes");
 
         $response->assertJsonStructure([
             'data' => ['*' => $this->columns_collection]

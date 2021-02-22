@@ -14,6 +14,13 @@ class QuoteResource extends JsonResource
      */
     public function toArray($request)
     {
+        // to get the rate by the logged user
+        $user = $this->qualifiers(\App\Models\User::class)
+        ->where(
+            'qualifier_id',
+            $request->user()->id
+        )->get();
+
         return [
             'id' => (int) $this->id,
             'title' => (string) $this->title,
@@ -23,6 +30,9 @@ class QuoteResource extends JsonResource
                 'email' => (string) $this->user->email
             ],
             'rating' => (array) [
+                // get the score given the logged user
+                // If the user has not rated, the score is 0
+                'score_by_user' => $user[0]->pivot->score ?? 0,
                 'average' => (float) $this->averageRating(\App\Models\User::class),
                 'qualifiers' => (int) $this->qualifiers(\App\Models\User::class)->count(),
             ],
