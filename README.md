@@ -15,7 +15,8 @@ Personal project to apply my knowledge about API REST and learn about [Laravel S
 - Implemented [API resources](https://laravel.com/docs/8.x/eloquent-resources) to transform data.
 - Worked with **Test-Driven Development** with PHPUnit.
 - Tested with [Postman](https://www.postman.com/) and created a documentation [link](https://documenter.getpostman.com/view/14344048/TWDUrJfS).
-- Create a custom artisan command to sent an email and tested it in local ([mailhog](http://localhost:8025)).
+- Create a custom [artisan command](https://laravel.com/docs/8.x/artisan) to sent an email and tested it in local ([mailhog](http://localhost:8025)).
+- Implemented [Task Scheduling](https://laravel.com/docs/8.x/scheduling) to refresh the database each month and sent an email to users weekly.
 
 ## Getting Started :rocket:
 

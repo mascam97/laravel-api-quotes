@@ -13,7 +13,9 @@ class SendNewsletterCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'send:newsletter {emails?*}';
+    protected $signature = 'send:newsletter
+    {emails?*} : Email address to send directly
+    {--s|schedule} : If the command is executed directly';
 
     /**
      * The console command description.
@@ -41,20 +43,25 @@ class SendNewsletterCommand extends Command
     {
         $emails = $this->argument("emails");
         $builder = User::query();
+        $schedule = $this->option('schedule');
 
         if ($emails)
             $builder->whereIn("email", $emails);
 
         $count = $builder->count();
         if ($count) {
-            $this->output->progressStart($count);
-            // TODO: whereNotNull("email_verified_at") should work
-            $builder->each(function (User $user) {
-                $user->notify(new NewsletterNotification());
-                $this->output->progressAdvance();
-            });
-            $this->output->progressFinish();
+            if ($this->confirm("Are you sure to send an email to $count users?") || $schedule) {
+                $this->output->progressStart($count);
+                // TODO: whereNotNull("email_verified_at") should work
+                $builder->each(function (User $user) {
+                    $user->notify(new NewsletterNotification());
+                    $this->output->progressAdvance();
+                });
+                $this->output->progressFinish();
+                $this->info(" $count emails were sent.");
+                return;
+            }
         }
-        $this->info(" $count emails were sent.");
+        $this->info(" 0 emails were sent.");
     }
 }
