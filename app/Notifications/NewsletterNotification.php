@@ -40,14 +40,15 @@ class NewsletterNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        $user_count = \App\Models\User::All()->count();
-        $quote_count = \App\Models\Quote::All()->count();
-
         return (new MailMessage)
-            ->greeting("NewsLetter - Community Updates")
-            ->line("Hi $notifiable->name, we are so excited to anounce we are $user_count users and there are $quote_count quotes")
-            ->action('Visit our official website', env('APP_URL', 'http://localhost'))
-            ->line('Thank you for using our application!');
+            ->greeting(trans('mail.greeting.newsletter'))
+            ->line(trans('mail.notification.newsletter', [
+                'user' => $notifiable->name,
+                'user_count' => \App\Models\User::All()->count(),
+                'quote_count' => \App\Models\Quote::All()->count(),
+            ]))
+            ->action(trans('mail.link.website'), env('APP_URL', 'http://localhost'))
+            ->line(trans('mail.gratitude'));
     }
 
     /**

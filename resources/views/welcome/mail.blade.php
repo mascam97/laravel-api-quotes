@@ -1,1 +1,1 @@
-<h1>Welcome to {{ env('APP_NAME')}}</h1>
+<h1>{{ __('mail.greeting.welcome', ['app_name' => env('APP_NAME') ]) }}</h1>
