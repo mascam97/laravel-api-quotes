@@ -25,13 +25,13 @@ class AuthController extends Controller
                     ]
                 ],
                 'token' => $request->user()->createToken($request->device_name)->plainTextToken,
-                'message' => 'Success'
+                'message' => trans("message.success")
             ]);
         }
 
         Log::channel('daily')->error('User failed to login.', ['email' => $request->email]);
         return response()->json([
-            'message' => 'Unauthorized'
+            'message' => trans("auth.unauthorized")
         ], 401);
     }
 
@@ -45,7 +45,7 @@ class AuthController extends Controller
         dispatch(new SendWelcomeEmail($user->email));
 
         return response()->json([
-            'message' => 'User created successfully'
+            'message' => trans("message.created", ["attribute" => "user"])
         ]);
     }
 }

@@ -27,7 +27,10 @@ class QuoteController extends Controller
     public function store(QuoteRequest $request)
     {
         $quote = $request->user()->quotes()->create($request->all());
-        return response()->json(new QuoteResource($quote), 201);
+        return response()->json([
+            'data' => new QuoteResource($quote),
+            'message' => trans("message.created", ['attribute' => 'quote'])
+        ], 201);
     }
 
     public function show(Quote $quote)
@@ -42,7 +45,10 @@ class QuoteController extends Controller
 
         $quote->update($request->all());
 
-        return response()->json(new QuoteResource($quote));
+        return response()->json([
+            'data' => new QuoteResource($quote),
+            'message' => trans("message.updated", ['attribute' => 'quote'])
+        ]);
     }
 
     public function destroy(Quote $quote)
@@ -52,7 +58,7 @@ class QuoteController extends Controller
 
         $quote->delete();
         return response()->json([
-            'message' => 'Quote deleted successfully'
+            'message' => trans("message.deleted", ['attribute' => 'quote'])
         ]);
     }
 
@@ -69,8 +75,11 @@ class QuoteController extends Controller
             $request->user()->unrate($quote);
             return response()->json([
                 'data' => new QuoteResource($quote),
-                'message' => "The quote $quote->id was unrated"
-                ]);
+                'message' => trans("message.rating.unrated", [
+                    'attribute' => 'quote',
+                    'id' => $quote->id,
+                ])
+            ]);
         }
 
         if ($request->score !== 0) {
@@ -80,8 +89,12 @@ class QuoteController extends Controller
             $request->user()->rate($quote, $request->score);
             return response()->json([
                 'data' => new QuoteResource($quote),
-                'message' => "The quote $quote->id was rated with $request->score as score"
-                ]);
+                'message' => trans("message.rating.rated", [
+                    'attribute' => 'quote',
+                    'id' => $quote->id,
+                    'score' => $request->score
+                ])
+            ]);
         }
     }
 }
