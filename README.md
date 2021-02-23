@@ -21,6 +21,7 @@ Personal project to apply my knowledge about API REST and learn more about Larav
 - Implemented [Task Scheduling](https://laravel.com/docs/8.x/scheduling) to refresh the database each month and sent an email to users weekly.
 - Implemented a [Listener and an Event](https://laravel.com/docs/8.x/events) to send an email to the user when one of his quotes were rated and an [Observer](https://laravel.com/docs/8.x/eloquent#observers) in Quotes.
 - Implemented [Queue and Jobs](https://laravel.com/docs/8.x/queues) with the container Redis.
+- Used language resource to have the system in spanish (messages and emails).
 
 ## Getting Started :rocket:
 
