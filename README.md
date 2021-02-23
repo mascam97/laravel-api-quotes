@@ -17,6 +17,10 @@ Personal project to apply my knowledge about API REST and learn more about Larav
 - Worked with **Test-Driven Development** with PHPUnit.
 - Tested with [Postman](https://www.postman.com/) and created a documentation [link](https://documenter.getpostman.com/view/14344048/TWDUrJfS).
 - Implemented custom errors in exceptions and logs about information of the policy and authentication.
+- Create a custom [Artisan command](https://laravel.com/docs/8.x/artisan) to sent an email and tested it in local ([mailhog](http://localhost:8025)).
+- Implemented [Task Scheduling](https://laravel.com/docs/8.x/scheduling) to refresh the database each month and sent an email to users weekly.
+- Implemented a [Listener and an Event](https://laravel.com/docs/8.x/events) to send an email to the user when one of his quotes were rated and an [Observer](https://laravel.com/docs/8.x/eloquent#observers) in Quotes.
+- Implemented [Queue and Jobs](https://laravel.com/docs/8.x/queues) with the container Redis.
 
 ## Getting Started :rocket:
 
@@ -76,6 +80,36 @@ sail artisan migrate --seed
 Note: You could refresh the database any time with migrate:refresh.
 
 And now you have all the environment in the port 80 (http://localhost/).
+
+## Running Artisan Commands
+
+There is a custom command to sent an email as example to the users.
+
+```
+sail artisan send:newsletter
+```
+
+In docker-compose there is a container about MailHog, this container shows the email sent in your local in the port 8025 by default.
+
+## Running Tasks Scheduled
+
+There are two task, one to refresh the database (monthly) and other to send an email to users (weekly) about how many users and quotes there are. Run it with:
+
+```
+sail artisan schedule:run
+```
+
+You could use `schedule:list` to look more information and its next schedule. 
+
+## Running Queues
+
+There is a Job (send a welcome email) created when a new user is registered  and there is an event to send an email when a quote is rated, both are stored in queue, to run them run:
+
+```
+sail artisan queue:listen
+```
+
+Note: Remember in production the better command is `queue:work`, [explanation](https://laravel-news.com/queuelisten).
 
 ## Running the tests
 

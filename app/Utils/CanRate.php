@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use App\Events\ModelRated;
 use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\InvalidScore;
 
@@ -40,6 +41,10 @@ trait CanRate
             'score' => $score,
             'rateable_type' => get_class($model)
         ]);
+
+        // if the user is not the creator of the quote
+        if ($model->user_id !== $this->id)
+            event(new ModelRated($this, $model, $score));
 
         return true;
     }
