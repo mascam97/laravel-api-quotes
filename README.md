@@ -16,8 +16,9 @@ Personal project to apply my knowledge about API REST and learn more about Larav
 - Implemented a 2nd version where users can rate quotes (**Polymorphic relationships**).
 - Worked with **Test-Driven Development** with PHPUnit.
 - Tested with [Postman](https://www.postman.com/) and created a documentation [link](https://documenter.getpostman.com/view/14344048/TWDUrJfS).
-- Create a custom [artisan command](https://laravel.com/docs/8.x/artisan) to sent an email and tested it in local ([mailhog](http://localhost:8025)).
+- Create a custom [Artisan command](https://laravel.com/docs/8.x/artisan) to sent an email and tested it in local ([mailhog](http://localhost:8025)).
 - Implemented [Task Scheduling](https://laravel.com/docs/8.x/scheduling) to refresh the database each month and sent an email to users weekly.
+- Implemented a [Listener and an Event](https://laravel.com/docs/8.x/events) to send an email to the user when one of his quotes were rated and an [Observer](https://laravel.com/docs/8.x/eloquent#observers) in Quotes.
 
 ## Getting Started :rocket:
 
@@ -87,6 +88,16 @@ sail artisan send:newsletter
 ```
 
 In docker-compose there is a container about MailHog, this container shows the email sent in your local in the port 8025 by default.
+
+## Running Tasks Scheduled
+
+There are two task, one to refresh the database (monthly) and other to send an email to users (weekly) about how many users and quotes there are. Run it with:
+
+```
+sail artisan schedule:run
+```
+
+You could use `schedule:list` to look more information and its next schedule. 
 
 ## Running the tests
 
