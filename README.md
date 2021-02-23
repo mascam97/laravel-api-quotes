@@ -19,6 +19,7 @@ Personal project to apply my knowledge about API REST and learn more about Larav
 - Create a custom [Artisan command](https://laravel.com/docs/8.x/artisan) to sent an email and tested it in local ([mailhog](http://localhost:8025)).
 - Implemented [Task Scheduling](https://laravel.com/docs/8.x/scheduling) to refresh the database each month and sent an email to users weekly.
 - Implemented a [Listener and an Event](https://laravel.com/docs/8.x/events) to send an email to the user when one of his quotes were rated and an [Observer](https://laravel.com/docs/8.x/eloquent#observers) in Quotes.
+- Implemented [Queue and Jobs](https://laravel.com/docs/8.x/queues) with the container Redis.
 
 ## Getting Started :rocket:
 
@@ -98,6 +99,16 @@ sail artisan schedule:run
 ```
 
 You could use `schedule:list` to look more information and its next schedule. 
+
+## Running Queues
+
+There is a Job created when a new user is registered, this Job send a welcome email. To run the pending jobs run:
+
+```
+sail artisan queue:listen
+```
+
+Note: Remember in production the proper command is `queue:work`, [explanation](https://laravel-news.com/queuelisten).
 
 ## Running the tests
 

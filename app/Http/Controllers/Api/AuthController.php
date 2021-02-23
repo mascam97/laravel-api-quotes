@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Jobs\SendWelcomeEmail;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UserRequest;
@@ -37,6 +38,9 @@ class AuthController extends Controller
         $user = User::create(
             $request->except('password') + ['password' => Hash::make($request->password)]
         );
+
+        dispatch(new SendWelcomeEmail($user->email));
+
         return response()->json([
             'message' => 'User created successfully'
         ]);

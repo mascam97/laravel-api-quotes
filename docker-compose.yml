@@ -20,7 +20,7 @@ services:
         depends_on:
             - mysql
             # - pgsql
-            # - redis
+            - redis
             # - selenium
     # selenium:
     #     image: 'selenium/standalone-chrome'
@@ -59,22 +59,22 @@ services:
 #            - sail
 #        healthcheck:
 #          test: ["CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}"]
-    # redis:
-    #     image: 'redis:alpine'
-    #     ports:
-    #         - '${FORWARD_REDIS_PORT:-6379}:6379'
-    #     volumes:
-    #         - 'sailredis:/data'
-    #     networks:
-    #         - sail
-    #     healthcheck:
-    #       test: ["CMD", "redis-cli", "ping"]
-    # memcached:
-    #     image: 'memcached:alpine'
-    #     ports:
-    #         - '11211:11211'
-    #     networks:
-    #         - sail
+    redis:
+        image: 'redis:alpine'
+        ports:
+            - '${FORWARD_REDIS_PORT:-6379}:6379'
+        volumes:
+            - 'sailredis:/data'
+        networks:
+            - sail
+        healthcheck:
+          test: ["CMD", "redis-cli", "ping"]
+    memcached:
+        image: 'memcached:alpine'
+        ports:
+            - '11211:11211'
+        networks:
+            - sail
     mailhog:
         image: 'mailhog/mailhog:latest'
         ports:
@@ -90,5 +90,5 @@ volumes:
         driver: local
 #    sailpostgresql:
 #        driver: local
-    # sailredis:
-    #     driver: local
+    sailredis:
+        driver: local
