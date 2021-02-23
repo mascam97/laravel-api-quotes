@@ -29,14 +29,14 @@ class SendEmailModelRatedNotification
     public function handle(ModelRated $event)
     {
         $rateable = $event->getRateable();
-        // dd($event->getQualifier()->name);
         if ($rateable instanceof Quote) {
             $notification = new ModelRatedNotification(
                 $event->getQualifier()->name,
                 $rateable->title,
                 $event->getScore()
             );
-            $event->getQualifier()->notify($notification);
+            $user = \App\Models\User::find($rateable->user_id);
+            $user->notify($notification);
         }
     }
 }

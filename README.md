@@ -102,13 +102,13 @@ You could use `schedule:list` to look more information and its next schedule.
 
 ## Running Queues
 
-There is a Job created when a new user is registered, this Job send a welcome email. To run the pending jobs run:
+There is a Job (send a welcome email) created when a new user is registered  and there is an event to send an email when a quote is rated, both are stored in queue, to run them run:
 
 ```
 sail artisan queue:listen
 ```
 
-Note: Remember in production the proper command is `queue:work`, [explanation](https://laravel-news.com/queuelisten).
+Note: Remember in production the better command is `queue:work`, [explanation](https://laravel-news.com/queuelisten).
 
 ## Running the tests
 
