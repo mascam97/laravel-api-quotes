@@ -1,0 +1,1 @@
+<h1>Welcome to {{ env('APP_NAME')}}</h1>
