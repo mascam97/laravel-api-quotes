@@ -50,10 +50,14 @@ class ModelRatedNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->greeting("Quote rated")
-            ->line("$this->qualifierName has rated your quote  $this->rateableName with $this->score starts.")
-            ->action('Lin to your quote', url('/'))
-            ->line('Thank you for using our application!');
+            ->greeting(trans('mail.greeting.quote_rated'))
+            ->line(trans('mail.notification.quote_rated', [
+                'qualifier' => $this->qualifierName,
+                'quote' => $this->rateableName,
+                'score' => $this->score
+            ]))
+            ->action(trans('mail.link.website'), env('APP_URL', 'http://localhost'))
+            ->line(trans('mail.gratitude'));
     }
 
     /**

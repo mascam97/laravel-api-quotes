@@ -26,7 +26,10 @@ class QuoteController extends Controller
     public function store(QuoteRequest $request)
     {
         $quote = $request->user()->quotes()->create($request->all());
-        return response()->json(new QuoteResource($quote), 201);
+        return response()->json([
+            'data' => new QuoteResource($quote),
+            'message' => trans("message.created", ['attribute' => 'quote'])
+        ], 201);
     }
 
     public function show(Quote $quote)
@@ -40,10 +43,13 @@ class QuoteController extends Controller
         $this->authorize('pass', $quote);
 
         $quote->update($request->all());
-        
-        return response()->json(new QuoteResource($quote));
+
+        return response()->json([
+            'data' => new QuoteResource($quote),
+            'message' => trans("message.updated", ['attribute' => 'quote'])
+        ]);
     }
-    
+
     public function destroy(Quote $quote)
     {
         // user can delete a quote if he is the owner
@@ -51,7 +57,7 @@ class QuoteController extends Controller
 
         $quote->delete();
         return response()->json([
-            'message' => 'Quote deleted successfully'
+            'message' => trans("message.deleted", ['attribute' => 'quote'])
         ]);
     }
 }

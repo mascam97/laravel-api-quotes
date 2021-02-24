@@ -70,8 +70,9 @@ class QuoteControllerTest extends TestCase
         $response = $this->actingAs($user, 'sanctum')->json('POST', $this->url, $data);
 
         $response->assertJsonMissingValidationErrors($this->fillable)
-            ->assertJsonStructure($this->columns)
-            ->assertJson($data)
+            ->assertSee('The quote was created successfully')
+            ->assertJsonStructure(['data' => $this->columns])
+            ->assertJson(['data' => $data])
             ->assertSee([$user->name, $user->email])
             ->assertStatus(201);
         $this->assertDatabaseHas($this->table, $data);
@@ -154,8 +155,9 @@ class QuoteControllerTest extends TestCase
         $response = $this->actingAs($user, 'sanctum')->json('PUT', "$this->url/$quote->id", $new_data);
 
         $response->assertJsonMissingValidationErrors($this->fillable)
-            ->assertJsonStructure($this->columns)
-            ->assertJson($new_data)
+            ->assertSee('The quote was updated successfully')
+            ->assertJsonStructure(['data' => $this->columns])
+            ->assertJson(['data' => $new_data])
             ->assertStatus(200);
         $this->assertDatabaseMissing($this->table, ['id' => $quote->id, 'title' => $quote->title]);
         $this->assertDatabaseHas($this->table, ['id' => $quote->id, 'title' => 'new title']);
@@ -196,7 +198,7 @@ class QuoteControllerTest extends TestCase
 
         $response = $this->actingAs($user, 'sanctum')->json('DELETE', "$this->url/$quote->id");
 
-        $response->assertSee('Quote deleted successfully')->assertStatus(200);
+        $response->assertSee('The quote was deleted successfully')->assertStatus(200);
         $this->assertDatabaseMissing($this->table, ['id' => $quote->id]);
     }
 }

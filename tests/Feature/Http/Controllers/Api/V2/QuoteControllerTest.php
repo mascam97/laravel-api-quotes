@@ -75,8 +75,9 @@ class QuoteControllerTest extends TestCase
         $response = $this->actingAs($user, 'sanctum')->json('POST', $this->url, $data);
 
         $response->assertJsonMissingValidationErrors($this->fillable)
-            ->assertJsonStructure($this->columns)
-            ->assertJson($data)
+            ->assertSee('The quote was created successfully')
+            ->assertJsonStructure(['data' => $this->columns])
+            ->assertJson(['data' => $data])
             ->assertSee([$user->name, $user->email])
             ->assertStatus(201);
         $this->assertDatabaseHas($this->table, $data);
@@ -159,8 +160,9 @@ class QuoteControllerTest extends TestCase
         $response = $this->actingAs($user, 'sanctum')->json('PUT', "$this->url/$quote->id", $new_data);
 
         $response->assertJsonMissingValidationErrors($this->fillable)
-            ->assertJsonStructure($this->columns)
-            ->assertJson($new_data)
+            ->assertSee('The quote was updated successfully')
+            ->assertJsonStructure(['data' => $this->columns])
+            ->assertJson(['data' => $new_data])
             ->assertStatus(200);
         $this->assertDatabaseMissing($this->table, ['id' => $quote->id, 'title' => $quote->title]);
         $this->assertDatabaseHas($this->table, ['id' => $quote->id, 'title' => 'new title']);
@@ -201,7 +203,7 @@ class QuoteControllerTest extends TestCase
 
         $response = $this->actingAs($user, 'sanctum')->json('DELETE', "$this->url/$quote->id");
 
-        $response->assertSee('Quote deleted successfully')->assertStatus(200);
+        $response->assertSee('The quote was deleted successfully')->assertStatus(200);
         $this->assertDatabaseMissing($this->table, ['id' => $quote->id]);
     }
 
@@ -220,19 +222,29 @@ class QuoteControllerTest extends TestCase
         );
         $response->assertJsonValidationErrors('score');
 
-        $response_bigger_number = $this->actingAs($user, 'sanctum')->json(
-            'POST',
-            "$this->url/$quote->id/rate",
-            ['score' => 100]
-        );
-        $response_bigger_number->assertJsonValidationErrors('score');
-
         $response_not_a_number = $this->actingAs($user, 'sanctum')->json(
             'POST',
             "$this->url/$quote->id/rate",
             ['score' => 'great quote']
         );
         $response_not_a_number->assertJsonValidationErrors('score');
+    }
+
+    public function test_rate_validate_range()
+    {
+        // Validate the range of score defined in config/rating.php
+        $user = User::factory()->create();
+        $quote = Quote::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $response = $this->actingAs($user, 'sanctum')->json(
+            'POST',
+            "$this->url/$quote->id/rate",
+            ['score' => '10']
+        );
+        $response->assertJsonValidationErrors('score')
+            ->assertSee("The score must be between 1 and 5.");
     }
 
     public function test_rate()
@@ -248,7 +260,7 @@ class QuoteControllerTest extends TestCase
             ['score' => 5]
         );
 
-        $response->assertSee("The quote $quote->id was rated")->assertStatus(200);
+        $response->assertSee("The quote $quote->id was rated with 5 successfully")->assertStatus(200);
         $this->assertDatabaseHas('ratings', [
             'score' => 5,
             "rateable_type" => "App\Models\Quote",
@@ -272,7 +284,7 @@ class QuoteControllerTest extends TestCase
             ['score' => 1]
         );
 
-        $response->assertSee("The quote $quote->id was rated")->assertStatus(200);
+        $response->assertSee("The quote $quote->id was rated with 1 successfully")->assertStatus(200);
         $this->assertDatabaseHas('ratings', [
             'score' => 1,
             "rateable_type" => "App\Models\Quote",
@@ -304,7 +316,7 @@ class QuoteControllerTest extends TestCase
             ['score' => 0]
         );
 
-        $response->assertSee("The quote $quote->id was unrated")->assertStatus(200);
+        $response->assertSee("The quote $quote->id was unrated successfully")->assertStatus(200);
         $this->assertDatabaseMissing('ratings', [
             'score' => 5,
             "rateable_type" => "App\Models\Quote",

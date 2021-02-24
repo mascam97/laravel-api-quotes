@@ -49,7 +49,10 @@ class AuthControllerTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-            ->assertSee(['Success', 'user_logged', $user->id, $user->name, $user->email]);
+            ->assertSee([
+                'Action was executed successfully',
+                'user_logged', $user->id, $user->email
+            ]);
 
         $response_error = $this->json('POST', $this->url_login, [
             'email' => $user->email,
@@ -58,7 +61,7 @@ class AuthControllerTest extends TestCase
         ]);
 
         $response_error->assertStatus(401)
-            ->assertSee('Unauthorized');
+            ->assertSee('The action was unauthorized');
     }
 
     public function test_register_validate()
@@ -95,8 +98,8 @@ class AuthControllerTest extends TestCase
             ]
         );
 
-        $response->assertStatus(500)
-            ->assertSee('Integrity constraint violation');
+        $response->assertStatus(422)
+            ->assertSee('The email has already been taken.');
     }
 
     public function test_register()
@@ -112,7 +115,7 @@ class AuthControllerTest extends TestCase
             $data + ['password' => 'userpassword']
         );
         $response->assertStatus(200)
-            ->assertSee('User created successfully');
+            ->assertSee('The user was created successfully');
         $this->assertDatabaseHas($this->table, $data);
     }
 

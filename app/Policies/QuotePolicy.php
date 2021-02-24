@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Quote;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Log;
 
 class QuotePolicy
 {
@@ -22,6 +23,10 @@ class QuotePolicy
 
     public function pass(User $user, Quote $quote)
     {
-        return $user->id == $quote->user_id;
+        if ($user->id == $quote->user_id)
+            return true;
+        else
+            Log::channel('daily')->warning("User $user->id tried to delete or update the quote $quote->id");
+        return false;
     }
 }
