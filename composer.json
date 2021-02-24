@@ -1,12 +1,22 @@
 {
-    "name": "laravel/laravel",
+    "name": "martin-stepwolf/laravel8-api-quotes",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Community to share and rate quotes.",
     "keywords": [
-        "framework",
-        "laravel"
+        "laravel8",
+        "api-rest",
+        "ratings",
+        "test-driven-development",
+        "laravel-sail",
+        "laravel-sanctum"
     ],
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Martín Campos",
+            "homepage": "https://www.martin-stepwolf.com",
+        }
+    ],
     "require": {
         "php": "^7.3|^8.0",
         "fideloper/proxy": "^4.4",

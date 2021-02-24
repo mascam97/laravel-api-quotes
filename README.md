@@ -1,4 +1,4 @@
-# Laravel8 API Quotes
+# Laravel8 API Quotes ![Status](https://img.shields.io/badge/status-in_rafactoring-yellowgreen) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green)
 
 _Community to share and rate quotes._
 
@@ -8,24 +8,23 @@ Personal project to apply my knowledge about API REST and learn more about Larav
 
 ### Achievements :star2:
 
-- Learned better practices about APIs (versioning and url names).
-- Created Authentication functions (register and login).
-- Implemented Authentication by API tokens with Laravel Sanctum.
-- Implemented [Authorization - Policies](https://laravel.com/docs/8.x/authorization).
+- Learned better practices about APIs (versioning, url names and Authentication by API tokens).
+- Implemented Authentication functions (register and login) and [Authorization - Policies](https://laravel.com/docs/8.x/authorization).
 - Implemented [API resources](https://laravel.com/docs/8.x/eloquent-resources) to transform data.
 - Implemented a 2nd version where users can rate quotes (**Polymorphic relationships**).
-- Worked with **Test-Driven Development** with PHPUnit.
-- Tested with [Postman](https://www.postman.com/) and created a documentation [link](https://documenter.getpostman.com/view/14344048/TWDUrJfS).
-- Implemented custom errors in exceptions and logs about information of the policy and authentication.
+- Tested with PHPUnit (**Test-Driven Development**) and [Postman](https://www.postman.com/) and created a documentation [link](https://documenter.getpostman.com/view/14344048/TWDUrJfS).
+- Implemented custom errors and logs about information of the policy, authentication and an [Observer](https://laravel.com/docs/8.x/eloquent#observers) in Quotes.
 - Create a custom [Artisan command](https://laravel.com/docs/8.x/artisan) to sent an email and tested it in local ([mailhog](http://localhost:8025)).
 - Implemented [Task Scheduling](https://laravel.com/docs/8.x/scheduling) to refresh the database each month and sent an email to users weekly.
-- Implemented a [Listener and an Event](https://laravel.com/docs/8.x/events) to send an email to the user when one of his quotes were rated and an [Observer](https://laravel.com/docs/8.x/eloquent#observers) in Quotes.
+- Implemented a [Listener and an Event](https://laravel.com/docs/8.x/events) to send an email to the user when one of his quotes were rated.
 - Implemented [Queue and Jobs](https://laravel.com/docs/8.x/queues) with the container Redis.
-- Used language resource to have the system in spanish (messages and emails).
+- Implemented support for spanish language (messages and emails).
+
+---
 
 ## Getting Started :rocket:
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+These instructions will get you a copy of the project up and running on your local machine.
 
 ### Prerequisites :clipboard:
 
@@ -58,7 +57,9 @@ Then create the next alias to run commands in the container with Laravel Sail.
 alias sail='bash vendor/bin/sail'
 ```
 
-Create the images (laravel app and mysql) and run the services:
+Note: Setting this alias as permanent is recommended.  
+
+Create the images and run the services (laravel app, mysql, redis and mailhog):
 
 ```
 sail up
@@ -78,11 +79,27 @@ Finally generate the database with fake data:
 sail artisan migrate --seed
 ```
 
-Note: You could refresh the database any time with migrate:refresh.
+Note: You could refresh the database any time with `migrate:refresh`.
 
 And now you have all the environment in the port 80 (http://localhost/).
 
-## Running Artisan Commands
+---
+
+## Testing
+
+### Backend testing
+
+There are some unit testing in Models and Traits and some feature testings in controllers, all these test guarantee functionalities like table relationship, validations, authentication, authorization, actions as create, read, update and delete, etc. 
+
+```
+sail artisan test
+```
+
+---
+
+## Advanced features
+
+### Running Artisan Commands
 
 There is a custom command to sent an email as example to the users.
 
@@ -92,7 +109,7 @@ sail artisan send:newsletter
 
 In docker-compose there is a container about MailHog, this container shows the email sent in your local in the port 8025 by default.
 
-## Running Tasks Scheduled
+### Running Tasks Scheduled
 
 There are two task, one to refresh the database (monthly) and other to send an email to users (weekly) about how many users and quotes there are. Run it with:
 
@@ -102,7 +119,7 @@ sail artisan schedule:run
 
 You could use `schedule:list` to look more information and its next schedule. 
 
-## Running Queues
+### Running Queues
 
 There is a Job (send a welcome email) created when a new user is registered  and there is an event to send an email when a quote is rated, both are stored in queue, to run them run:
 
@@ -112,43 +129,27 @@ sail artisan queue:listen
 
 Note: Remember in production the better command is `queue:work`, [explanation](https://laravel-news.com/queuelisten).
 
-## Running the tests
+---
 
-To test the Routes, Controllers, Security and the functionality in general run:
-
-```
-sail artisan test
-```
-
-## Deployment 📦
-
-For production environment you need extra configurations for security as:
-
-Set in the file .env the next configuration.
-
-```
-APP_ENV=production
-```
-
-## Built With 🛠️
+### Built With 🛠️
 
 -   [Laravel 8](https://laravel.com/docs/8.x/releases/) - PHP framework.
 -   [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum) - Authentication system.
 -   [Laravel Sail](https://laravel.com/docs/8.x/sail) - Docker development environment.
 
-## Authors
+### Authors
 
 -   Martín Campos - [martin-stepwolf](https://github.com/martin-stepwolf)
 
-## Contributing
+### Contributing
 
 You're free to contribute to this project by submitting [issues](https://github.com/martin-stepwolf/laravel8-api-quotes/issues) and/or [pull requests](https://github.com/martin-stepwolf/laravel8-api-quotes/pulls).
 
-## License
+### License
 
 This project is licensed under the [MIT License](https://choosealicense.com/licenses/mit/).
 
-## References :books:
+### References :books:
 
 - [Laravel Advanced Course](https://platzi.com/clases/laravel-avanzado/)
 - [Postman Course](https://platzi.com/clases/postman/)
