@@ -2,9 +2,15 @@
 
 namespace App\Utils;
 
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+
 trait CanBeRated
 {
-    public function qualifiers(string $model = null)
+    /**
+     * @param string|null $model
+     * @return MorphToMany
+     */
+    public function qualifiers(string $model = null): MorphToMany
     {
         $modelClass = $model ? (new $model)->getMorphClass() : $this->getMorphClass();
 
@@ -14,6 +20,10 @@ trait CanBeRated
             ->wherePivot('rateable_type', $this->getMorphClass());
     }
 
+    /**
+     * @param string|null $model
+     * @return float
+     */
     public function averageRating(string $model = null): float
     {
         return round($this->qualifiers($model)->avg('score'), 1) ?: 0.0;

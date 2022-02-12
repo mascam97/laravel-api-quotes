@@ -6,8 +6,10 @@ use Exception;
 
 class InvalidScore extends Exception
 {
+    private $min;
+    private $max;
 
-    public function __construct($min, $max)
+    public function __construct(int $min, int $max)
     {
         $this->min = $min;
         $this->max = $max;

@@ -37,9 +37,9 @@ class SendNewsletterCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return int
+     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $emails = $this->argument("emails");
         $builder = User::query();
