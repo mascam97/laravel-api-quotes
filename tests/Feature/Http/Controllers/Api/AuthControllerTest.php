@@ -5,20 +5,23 @@ namespace Tests\Feature\Http\Controllers\Api;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Hash;
+use Tests\TestCase;
 
 class AuthControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
     private $url_login = 'api/api-token-auth';
+
     private $fillable_login = ['device_name', 'email', 'password'];
 
     private $url_register = 'api/register';
+
     private $fillable_register = ['name', 'email', 'password'];
 
     private $columns = ['id', 'name', 'email', 'password', 'created_at', 'updated_at'];
+
     private $table = 'users';
 
     public function test_api_token_auth_validate()
@@ -26,14 +29,14 @@ class AuthControllerTest extends TestCase
         $response = $this->json('POST', $this->url_login, [
             'email' => 'user@mail.com',
             'password' => 'userpassword',
-            'device_name' => $this->faker->userAgent
+            'device_name' => $this->faker->userAgent,
         ]);
         $response->assertJsonMissingValidationErrors($this->fillable_login);
 
         $response_error = $this->json('POST', $this->url_login, [
             'device_name' => '',
             'email' => '',
-            'password' => ''
+            'password' => '',
         ]);
         $response_error->assertJsonValidationErrors($this->fillable_login);
     }
@@ -45,13 +48,13 @@ class AuthControllerTest extends TestCase
         $response = $this->json('POST', $this->url_login, [
             'email' => $user->email,
             'password' => 'password', // value by default in factory
-            'device_name' => $this->faker->userAgent
+            'device_name' => $this->faker->userAgent,
         ]);
 
         $response->assertStatus(200)
             ->assertSee([
                 'Action was executed successfully',
-                'user_logged', $user->id, $user->email
+                'user_logged', $user->id, $user->email,
             ]);
 
         $response_error = $this->json('POST', $this->url_login, [
@@ -78,7 +81,7 @@ class AuthControllerTest extends TestCase
             'name' => '',
             'email' => '134email',
             'password' => '',
-            'device_name' => ''
+            'device_name' => '',
         ]);
         $response_error->assertJsonValidationErrors($this->fillable_register)
             ->assertSee('The given data was invalid.');
@@ -106,7 +109,7 @@ class AuthControllerTest extends TestCase
     {
         $data = [
             'name' => 'new user',
-            'email' => 'user@mail.com'
+            'email' => 'user@mail.com',
         ];
 
         $response = $this->json(
@@ -124,7 +127,7 @@ class AuthControllerTest extends TestCase
         $data = [
             'name' => 'new user',
             'email' => 'user@mail.com',
-            'password' => 'userpassword'
+            'password' => 'userpassword',
         ];
 
         $response = $this->json(

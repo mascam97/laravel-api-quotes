@@ -7,6 +7,7 @@ use Exception;
 class InvalidScore extends Exception
 {
     private $min;
+
     private $max;
 
     public function __construct(int $min, int $max)
@@ -21,13 +22,13 @@ class InvalidScore extends Exception
             'message' => 'The given data was invalid.',
             'errors' => [
                 'score' => [
-                    trans("validation.between.numeric", [
-                        "attribute" => "score",
-                        "min" => $this->min,
-                        "max" => $this->max
-                    ])
-                ]
-            ]
+                    trans('validation.between.numeric', [
+                        'attribute' => 'score',
+                        'min' => $this->min,
+                        'max' => $this->max,
+                    ]),
+                ],
+            ],
         ]);
     }
 }

@@ -11,6 +11,7 @@ use Tests\TestCase;
 class WelcomeTest extends TestCase
 {
     use RefreshDatabase;
+
     private $url = '/';
 
     public function test_view()

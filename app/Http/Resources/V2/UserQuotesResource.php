@@ -28,7 +28,7 @@ class UserQuotesResource extends JsonResource
                 'qualifiers' => (int) $this->qualifiers(\App\Models\User::class)->count(),
             ],
             'created_ago' => (string) $this->updated_at->diffForHumans(),
-            'updated_ago' => (string) $this->updated_at->diffForHumans()
+            'updated_ago' => (string) $this->updated_at->diffForHumans(),
         ];
     }
 }

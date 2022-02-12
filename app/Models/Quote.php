@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use App\Utils\CanBeRated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,7 +23,7 @@ class Quote extends Model
     use HasFactory, CanBeRated;
 
     protected $fillable = [
-        'title', 'content'
+        'title', 'content',
     ];
 
     public function getExcerptAttribute(): string

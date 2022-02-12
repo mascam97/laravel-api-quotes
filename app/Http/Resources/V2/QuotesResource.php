@@ -28,7 +28,7 @@ class QuotesResource extends JsonResource
                 'average' => (float) $this->averageRating(\App\Models\User::class),
                 'qualifiers' => (int) $this->qualifiers(\App\Models\User::class)->count(),
             ],
-            'updated_ago' => (string) $this->updated_at->diffForHumans()
+            'updated_ago' => (string) $this->updated_at->diffForHumans(),
         ];
     }
 }

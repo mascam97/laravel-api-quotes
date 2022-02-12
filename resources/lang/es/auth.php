@@ -16,7 +16,7 @@ return [
     'failed'   => 'Estas credenciales no coinciden con nuestros registros.',
     'password' => 'La contraseña ingresada no es correcta.',
     'throttle' => 'Demasiados intentos de acceso. Por favor intente nuevamente en :seconds segundos.',
-    
-    'unauthorized' => 'La acción no fue autorizada.'
+
+    'unauthorized' => 'La acción no fue autorizada.',
 
 ];

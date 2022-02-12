@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class QuoteCollection extends ResourceCollection
 {
     public $collects = QuotesResource::class;
+
     /**
      * Transform the resource collection into an array.
      *

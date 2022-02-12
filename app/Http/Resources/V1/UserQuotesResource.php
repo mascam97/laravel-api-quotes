@@ -24,7 +24,7 @@ class UserQuotesResource extends JsonResource
             'title' => (string) $this->title,
             'excerpt' => (string) $this->excerpt,
             'created_ago' => (string) $this->updated_at->diffForHumans(),
-            'updated_ago' => (string) $this->updated_at->diffForHumans()
+            'updated_ago' => (string) $this->updated_at->diffForHumans(),
         ];
     }
 }

@@ -11,50 +11,57 @@ use Tests\TestCase;
 class QuoteControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
-    private $url = "/api/v1/quotes";
+
+    private $url = '/api/v1/quotes';
+
     private $fillable = ['title', 'content'];
+
     private $columns_collection = ['id', 'title', 'excerpt', 'author_name', 'updated_ago'];
+
     private $columns = [
         'id', 'title', 'content',
         'author' => ['name', 'email'],
-        'created_at', 'updated_at'
+        'created_at', 'updated_at',
     ];
+
     private $table = 'quotes';
 
     public function test_guest_unauthorized()
     {
         $quote = Quote::factory()->create([
-            'user_id' => User::factory()->create()
+            'user_id' => User::factory()->create(),
         ]);
 
-        $this->json("GET", "$this->url")->assertStatus(401);                // index
-        $this->json("GET", "$this->url/$quote->id")->assertStatus(401);     // show
-        $this->json("POST", "$this->url", [])->assertStatus(401);           // store
-        $this->json("PUT", "$this->url/$quote->id", [])->assertStatus(401); // update
-        $this->json("DELETE", "$this->url/$quote->id")->assertStatus(401);  // destroy
+        $this->json('GET', "$this->url")->assertStatus(401);                // index
+        $this->json('GET', "$this->url/$quote->id")->assertStatus(401);     // show
+        $this->json('POST', "$this->url", [])->assertStatus(401);           // store
+        $this->json('PUT', "$this->url/$quote->id", [])->assertStatus(401); // update
+        $this->json('DELETE', "$this->url/$quote->id")->assertStatus(401);  // destroy
     }
 
     public function test_index()
     {
+
         $user = User::factory()->create();
 
         Quote::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
         $response = $this->actingAs($user, 'sanctum')->json('GET', $this->url);
 
         $response->assertJsonStructure([
-            'data' => ['*' => $this->columns_collection]
+            'data' => ['*' => $this->columns_collection],
         ])->assertStatus(200);
     }
 
     public function test_store_validate()
     {
+        /** @var User $user */
         $user = User::factory()->create();
 
         $response = $this->actingAs($user, 'sanctum')->json('POST', $this->url, [
             'title' => '',
-            'content' => ''
+            'content' => '',
         ]);
         $response->assertJsonValidationErrors($this->fillable);
     }
@@ -64,7 +71,7 @@ class QuoteControllerTest extends TestCase
         $user = User::factory()->create();
         $data = [
             'title' => $this->faker->sentence,
-            'content' => $this->faker->text(500)
+            'content' => $this->faker->text(500),
         ];
 
         $response = $this->actingAs($user, 'sanctum')->json('POST', $this->url, $data);
@@ -91,7 +98,7 @@ class QuoteControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $quote = Quote::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $response = $this->actingAs($user, 'sanctum')->json('GET', "$this->url/$quote->id");
@@ -105,12 +112,12 @@ class QuoteControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $quote = Quote::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $response = $this->actingAs($user, 'sanctum')->json('PUT', "$this->url/$quote->id", [
             'title' => '',
-            'content' => ''
+            'content' => '',
         ]);
 
         $response->assertJsonValidationErrors($this->fillable);
@@ -120,24 +127,24 @@ class QuoteControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $quote = Quote::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $user_malicious = User::factory()->create();
         // just the owner $user can delete his quote
         $response = $this->actingAs($user_malicious)->put("$this->url/$quote->id", [
             'title' => 'new title not allowed',
-            'content' => 'new content not allowed'
+            'content' => 'new content not allowed',
         ]);
 
         $response->assertStatus(403);
         $this->assertDatabaseHas($this->table, [
             'title' => $quote->title,
-            'content' => $quote->content
+            'content' => $quote->content,
         ]);
         $this->assertDatabaseMissing($this->table, [
             'title' => 'new title not allowed',
-            'content' => 'new content not allowed'
+            'content' => 'new content not allowed',
         ]);
     }
 
@@ -145,11 +152,11 @@ class QuoteControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $quote = Quote::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
         $new_data = [
             'title' => 'new title',
-            'content' => 'new content'
+            'content' => 'new content',
         ];
 
         $response = $this->actingAs($user, 'sanctum')->json('PUT', "$this->url/$quote->id", $new_data);
@@ -167,7 +174,7 @@ class QuoteControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $quote = Quote::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $user_malicious = User::factory()->create();
@@ -176,7 +183,7 @@ class QuoteControllerTest extends TestCase
         $response->assertStatus(403);
         $this->assertDatabaseHas($this->table, [
             'title' => $quote->title,
-            'content' => $quote->content
+            'content' => $quote->content,
         ]);
     }
 
@@ -193,7 +200,7 @@ class QuoteControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $quote = Quote::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $response = $this->actingAs($user, 'sanctum')->json('DELETE', "$this->url/$quote->id");

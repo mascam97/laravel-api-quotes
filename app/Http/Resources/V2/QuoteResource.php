@@ -33,7 +33,7 @@ class QuoteResource extends JsonResource
             'content' => (string) $this->content,
             'author' => (array) [
                 'name' => (string) $this->user->name,
-                'email' => (string) $this->user->email
+                'email' => (string) $this->user->email,
             ],
             'rating' => (array) [
                 // get the score given the logged user
@@ -43,7 +43,7 @@ class QuoteResource extends JsonResource
                 'qualifiers' => (int) $this->qualifiers(User::class)->count(),
             ],
             'created_at' => (string) $this->created_at,
-            'updated_at' => (string) $this->updated_at
+            'updated_at' => (string) $this->updated_at,
         ];
     }
 }

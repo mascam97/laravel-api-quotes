@@ -23,10 +23,12 @@ class QuotePolicy
 
     public function pass(User $user, Quote $quote)
     {
-        if ($user->id == $quote->user_id)
+        if ($user->id == $quote->user_id) {
             return true;
-        else
-            Log::channel('daily')->warning("User $user->id tried to delete or update the quote $quote->id");
+        }
+
+        Log::channel('daily')->warning("User $user->id tried to delete or update the quote $quote->id");
+
         return false;
     }
 }

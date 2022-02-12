@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Models\Quote;
 use App\Events\ModelRated;
+use App\Models\Quote;
 use App\Notifications\ModelRatedNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;

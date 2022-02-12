@@ -27,10 +27,10 @@ class QuoteResource extends JsonResource
             'author' => (array) [
                 /** @var User $this->user */
                 'name' => (string) $this->user->name,
-                'email' => (string) $this->user->email
+                'email' => (string) $this->user->email,
             ],
             'created_at' => (string) $this->created_at,
-            'updated_at' => (string) $this->updated_at
+            'updated_at' => (string) $this->updated_at,
         ];
     }
 }

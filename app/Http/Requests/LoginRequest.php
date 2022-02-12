@@ -26,7 +26,7 @@ class LoginRequest extends FormRequest
         return [
             'device_name' => 'required',
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ];
     }
 }

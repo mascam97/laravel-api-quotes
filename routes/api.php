@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
             'users/{user}/quotes',
             [
                 App\Http\Controllers\Api\V1\UserController::class,
-                'index_quotes'
+                'index_quotes',
             ]
         )->name('users.quotes.index');
     });
@@ -33,9 +33,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('quotes', App\Http\Controllers\Api\V2\QuoteController::class);
         Route::post('quotes/{quote}/rate', [
             App\Http\Controllers\Api\V2\QuoteController::class,
-            'rate'
+            'rate',
         ]);
-        
+
         Route::apiResource('users', App\Http\Controllers\Api\V2\UserController::class)
             ->only(['index', 'show']);
 
@@ -43,18 +43,18 @@ Route::middleware('auth:sanctum')->group(function () {
             'users/{user}/quotes',
             [
                 App\Http\Controllers\Api\V2\UserController::class,
-                'index_quotes'
+                'index_quotes',
             ]
         )->name('users.quotes.index');
     });
 });
 
-Route::post('api-token-auth',  [
+Route::post('api-token-auth', [
     App\Http\Controllers\Api\AuthController::class,
-    'api_token_auth'
+    'api_token_auth',
 ])->name('api-token-auth');
 
-Route::post('register',  [
+Route::post('register', [
     App\Http\Controllers\Api\AuthController::class,
-    'register'
+    'register',
 ])->name('register');
