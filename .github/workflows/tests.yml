@@ -1,4 +1,4 @@
-name: Laravel
+name: Run test PHPUnit
 
 on:
   push:
