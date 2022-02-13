@@ -12,7 +12,9 @@ class ModelRatedNotification extends Notification implements ShouldQueue
     use Queueable;
 
     private string $rateableName;
+
     private float $score;
+
     private string $qualifierName;
 
     /**
@@ -54,7 +56,7 @@ class ModelRatedNotification extends Notification implements ShouldQueue
             ->line(trans('mail.notification.quote_rated', [
                 'qualifier' => $this->qualifierName,
                 'quote' => $this->rateableName,
-                'score' => $this->score
+                'score' => $this->score,
             ]))
             ->action(trans('mail.link.website'), env('APP_URL', 'http://localhost'))
             ->line(trans('mail.gratitude'));

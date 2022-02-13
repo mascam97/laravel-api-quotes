@@ -16,7 +16,9 @@ class ModelRated
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     private Model $qualifier;
+
     private Model $rateable;
+
     private float $score;
 
     /**

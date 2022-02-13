@@ -9,5 +9,5 @@ return [
     'rating' => [
         'rated' => 'La :attribute :id fue calificada con :score satisfactoriamente',
         'unrated' => 'La :attribute :id fue descalificada satisfactoriamente',
-    ]
+    ],
 ];

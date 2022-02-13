@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Mail;
 class SendWelcomeEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    
+
     private string $userEmail;
 
     /**

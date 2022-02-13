@@ -5,7 +5,7 @@ return [
     'greeting' => [
         'welcome' => 'Bienvenido a :app_name',
         'newsletter' => 'Boletin informativo - Lo nuevo de la comunidad',
-        'quote_rated' => 'Cita calificada'
+        'quote_rated' => 'Cita calificada',
     ],
 
     'notification' => [

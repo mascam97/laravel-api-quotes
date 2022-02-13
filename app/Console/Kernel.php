@@ -37,11 +37,11 @@ class Kernel extends ConsoleKernel
             ->sendOutputTo(storage_path('logs/refresh_database.log'))
             ->monthly()
             ->onSuccess(function () {
-                Log::info("The command to refresh the database worked");
+                Log::info('The command to refresh the database worked');
             })
             ->onFailure(function () {
-                Log::error("The command to refresh the database did not work");
-            });;
+                Log::error('The command to refresh the database did not work');
+            });
 
         // Task to sent a weekly report about how many users and quotes are
         $schedule->command('send:newsletter --schedule')
@@ -50,10 +50,10 @@ class Kernel extends ConsoleKernel
             ->withoutOverlapping()
             ->weekly()
             ->onSuccess(function () {
-                Log::info("The command to refresh the database worked");
+                Log::info('The command to refresh the database worked');
             })
             ->onFailure(function () {
-                Log::error("The command to sent email to users did not work");
+                Log::error('The command to sent email to users did not work');
             });
     }
 
@@ -64,7 +64,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__ . '/Commands');
+        $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
     }

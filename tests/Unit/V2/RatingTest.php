@@ -5,8 +5,8 @@ namespace Tests\Unit\V2;
 use App\Models\Quote;
 use App\Models\Rating;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class RatingTest extends TestCase
@@ -17,7 +17,7 @@ class RatingTest extends TestCase
     {
         $user = User::factory()->create();
         $quote = Quote::factory()->create([
-            'user_id' => $user
+            'user_id' => $user,
         ]);
 
         $user->rate($quote, 5);
@@ -31,7 +31,7 @@ class RatingTest extends TestCase
         $user = User::factory()->create();
         $user2 = User::factory()->create();
         $quote = Quote::factory()->create([
-            'user_id' => $user
+            'user_id' => $user,
         ]);
 
         $user->rate($quote, 5);
@@ -44,7 +44,7 @@ class RatingTest extends TestCase
     {
         $user = User::factory()->create();
         $quote = Quote::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $user->rate($quote, 5);

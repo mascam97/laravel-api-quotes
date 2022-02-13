@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Jobs\SendWelcomeEmail;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UserRequest;
+use App\Jobs\SendWelcomeEmail;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -21,17 +21,18 @@ class AuthController extends Controller
                     'user_logged' => [
                         'id' => $request->user()->id,
                         'name' => $request->user()->name,
-                        'email' => $request->user()->email
-                    ]
+                        'email' => $request->user()->email,
+                    ],
                 ],
                 'token' => $request->user()->createToken($request->device_name)->plainTextToken,
-                'message' => trans("message.success")
+                'message' => trans('message.success'),
             ]);
         }
 
         Log::channel('daily')->error('User failed to login.', ['email' => $request->email]);
+
         return response()->json([
-            'message' => trans("auth.unauthorized")
+            'message' => trans('auth.unauthorized'),
         ], 401);
     }
 
@@ -45,7 +46,7 @@ class AuthController extends Controller
         dispatch(new SendWelcomeEmail($user->email));
 
         return response()->json([
-            'message' => trans("message.created", ["attribute" => "user"])
+            'message' => trans('message.created', ['attribute' => 'user']),
         ]);
     }
 }

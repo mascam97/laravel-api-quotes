@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\Quote;
 use App\Events\ModelRated;
-use App\Observers\QuoteObserver;
 use App\Listeners\SendEmailModelRatedNotification;
+use App\Models\Quote;
+use App\Observers\QuoteObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,8 +23,8 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         ModelRated::class => [
-            SendEmailModelRatedNotification::class
-        ]
+            SendEmailModelRatedNotification::class,
+        ],
     ];
 
     /**

@@ -18,13 +18,14 @@ class QuoteFactory extends Factory
      * Define the model's default state.
      *
      * @return array
+     * @throws \Exception
      */
     public function definition()
     {
         return [
-            'user_id' => rand(1,10),
+            'user_id' => random_int(1, 10),
             'title' => $this->faker->sentence,
-            'content' => $this->faker->text(500)
+            'content' => $this->faker->text(500),
         ];
     }
 }

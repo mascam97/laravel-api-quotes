@@ -37,16 +37,17 @@ class SendNewsletterCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return int
+     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
-        $emails = $this->argument("emails");
+        $emails = $this->argument('emails');
         $builder = User::query();
         $schedule = $this->option('schedule');
 
-        if ($emails)
-            $builder->whereIn("email", $emails);
+        if ($emails) {
+            $builder->whereIn('email', $emails);
+        }
 
         $count = $builder->count();
         if ($count) {
@@ -59,9 +60,10 @@ class SendNewsletterCommand extends Command
                 });
                 $this->output->progressFinish();
                 $this->info(" $count emails were sent.");
+
                 return;
             }
         }
-        $this->info(" 0 emails were sent.");
+        $this->info(' 0 emails were sent.');
     }
 }

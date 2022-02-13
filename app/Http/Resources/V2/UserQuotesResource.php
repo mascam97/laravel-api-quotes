@@ -2,17 +2,22 @@
 
 namespace App\Http\Resources\V2;
 
+use App\Models\Quote;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Quote;
+ */
 class UserQuotesResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'id' => (int) $this->id,
@@ -23,7 +28,7 @@ class UserQuotesResource extends JsonResource
                 'qualifiers' => (int) $this->qualifiers(\App\Models\User::class)->count(),
             ],
             'created_ago' => (string) $this->updated_at->diffForHumans(),
-            'updated_ago' => (string) $this->updated_at->diffForHumans()
+            'updated_ago' => (string) $this->updated_at->diffForHumans(),
         ];
     }
 }

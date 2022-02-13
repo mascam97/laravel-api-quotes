@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use App\Models\Quote;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Requests\V2\QuoteRequest;
-use App\Http\Resources\V2\QuoteResource;
 use App\Http\Resources\V2\QuoteCollection;
+use App\Http\Resources\V2\QuoteResource;
+use App\Models\Quote;
+use Illuminate\Http\Request;
 
 class QuoteController extends Controller
 {
@@ -21,15 +21,17 @@ class QuoteController extends Controller
     public function index()
     {
         $data = new QuoteCollection($this->quote::paginate(10));
+
         return response()->json($data);
     }
 
     public function store(QuoteRequest $request)
     {
         $quote = $request->user()->quotes()->create($request->all());
+
         return response()->json([
             'data' => new QuoteResource($quote),
-            'message' => trans("message.created", ['attribute' => 'quote'])
+            'message' => trans('message.created', ['attribute' => 'quote']),
         ], 201);
     }
 
@@ -47,7 +49,7 @@ class QuoteController extends Controller
 
         return response()->json([
             'data' => new QuoteResource($quote),
-            'message' => trans("message.updated", ['attribute' => 'quote'])
+            'message' => trans('message.updated', ['attribute' => 'quote']),
         ]);
     }
 
@@ -57,8 +59,9 @@ class QuoteController extends Controller
         $this->authorize('pass', $quote);
 
         $quote->delete();
+
         return response()->json([
-            'message' => trans("message.deleted", ['attribute' => 'quote'])
+            'message' => trans('message.deleted', ['attribute' => 'quote']),
         ]);
     }
 
@@ -67,33 +70,36 @@ class QuoteController extends Controller
         // The user can rate from 0 to 5
         // 0 means no rating
         $validated = $request->validate([
-            'score' => 'required|integer'
+            'score' => 'required|integer',
         ]);
 
         // If the user send 0 in score, the rate is deleted
         if ($request->score == 0) {
             $request->user()->unrate($quote);
+
             return response()->json([
                 'data' => new QuoteResource($quote),
-                'message' => trans("message.rating.unrated", [
+                'message' => trans('message.rating.unrated', [
                     'attribute' => 'quote',
                     'id' => $quote->id,
-                ])
+                ]),
             ]);
         }
 
         if ($request->score !== 0) {
-            if ($request->user()->hasRated($quote))
+            if ($request->user()->hasRated($quote)) {
                 $request->user()->unrate($quote);
+            }
 
             $request->user()->rate($quote, $request->score);
+
             return response()->json([
                 'data' => new QuoteResource($quote),
-                'message' => trans("message.rating.rated", [
+                'message' => trans('message.rating.rated', [
                     'attribute' => 'quote',
                     'id' => $quote->id,
-                    'score' => $request->score
-                ])
+                    'score' => $request->score,
+                ]),
             ]);
         }
     }

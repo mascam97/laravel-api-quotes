@@ -2,8 +2,9 @@
 
 namespace App\Notifications;
 
+use App\Models\Quote;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -36,7 +37,7 @@ class NewsletterNotification extends Notification
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {
@@ -44,8 +45,8 @@ class NewsletterNotification extends Notification
             ->greeting(trans('mail.greeting.newsletter'))
             ->line(trans('mail.notification.newsletter', [
                 'user' => $notifiable->name,
-                'user_count' => \App\Models\User::All()->count(),
-                'quote_count' => \App\Models\Quote::All()->count(),
+                'user_count' => count(User::All()),
+                'quote_count' => count(Quote::All()),
             ]))
             ->action(trans('mail.link.website'), env('APP_URL', 'http://localhost'))
             ->line(trans('mail.gratitude'));
