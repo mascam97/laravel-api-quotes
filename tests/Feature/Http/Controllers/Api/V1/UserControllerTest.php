@@ -11,72 +11,68 @@ class UserControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $url = '/api/v1/users';
+    private string $url = '/api/v1/users';
 
-    private $columns_collection = ['id', 'title', 'excerpt', 'created_ago', 'updated_ago'];
+    private array $columns_collection = ['id', 'title', 'excerpt', 'created_ago', 'updated_ago'];
 
-    private $columns = ['id', 'name', 'email', 'quotes_count', 'created_ago'];
+    private array $columns = ['id', 'name', 'email', 'quotes_count', 'created_ago'];
 
-    private $table = 'users';
+    private string $table = 'users';
 
-    public function test_guest_unauthorized()
+    private User $user;
+
+    private Quote $quote;
+
+    protected function setUp(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
+        parent::setUp();
 
-        $this->json('GET', "$this->url")->assertStatus(401);                  // index
-        $this->json('GET', "$this->url/$user->id")->assertStatus(401);        // show
-        $this->json('GET', "$this->url/$user->id/quotes")->assertStatus(401); // index quotes
-    }
-
-    public function test_index()
-    {
-        /** @var User $user */
-        $user = User::factory()->create();
-
-        Quote::factory()->create([
-            'user_id' => $user->id,
+        $this->user = User::factory()->create();
+        $this->quote = Quote::factory()->create([
+            'user_id' => $this->user,
         ]);
-        $response = $this->actingAs($user, 'sanctum')->json('GET', $this->url);
-
-        $response->assertJsonStructure([
-            'data' => ['*' => $this->columns],
-        ])->assertStatus(200);
     }
 
-    public function test_show_404()
+    public function test_guest_unauthorized(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user, 'sanctum')->json('GET', "$this->url/100000");
-
-        $response->assertStatus(404);
+        $this->json('GET', "$this->url")
+            ->assertStatus(401);                  // index
+        $this->json('GET', "$this->url/{$this->user->id}")
+            ->assertStatus(401);        // show
+        $this->json('GET', "$this->url/{$this->user->id}/quotes")
+            ->assertStatus(401); // index quotes
     }
 
-    public function test_show()
+    public function test_index(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
+        $this->actingAs($this->user, 'sanctum')
+            ->json('GET', $this->url)
+            ->assertJsonStructure([
+                'data' => ['*' => $this->columns],
+            ])->assertStatus(200);
+    }
 
-        $response = $this->actingAs($user, 'sanctum')->json('GET', "$this->url/$user->id");
+    public function test_show_404(): void
+    {
+        $this->actingAs($this->user, 'sanctum')
+            ->json('GET', "$this->url/100000")
+            ->assertStatus(404);
+    }
 
-        $response->assertSee([$user->id, $user->name])
+    public function test_show(): void
+    {
+        $this->actingAs($this->user, 'sanctum')
+            ->json('GET', "$this->url/{$this->user->id}")
+        ->assertSee([$this->user->id, $this->user->name])
             ->assertStatus(200);
     }
 
-    public function test_index_quotes()
+    public function test_index_quotes(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
-
-        Quote::factory()->create([
-            'user_id' => $user->id,
-        ]);
-        $response = $this->actingAs($user, 'sanctum')->json('GET', "$this->url/$user->id/quotes");
-
-        $response->assertJsonStructure([
-            'data' => ['*' => $this->columns_collection],
-        ])->assertStatus(200);
+        $this->actingAs($this->user, 'sanctum')
+            ->json('GET', "$this->url/{$this->user->id}/quotes")
+            ->assertJsonStructure([
+                'data' => ['*' => $this->columns_collection],
+            ])->assertStatus(200);
     }
 }

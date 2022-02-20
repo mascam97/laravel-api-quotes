@@ -12,139 +12,130 @@ class QuoteControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
-    private $url = '/api/v2/quotes';
+    private string $url = '/api/v2/quotes';
 
-    private $fillable = ['title', 'content'];
+    private array $fillable = ['title', 'content'];
 
-    private $columns_collection = [
+    private array $columns_collection = [
         'id', 'title', 'excerpt', 'author_name',
         'rating' => ['average', 'qualifiers'],
         'updated_ago',
     ];
 
-    private $columns = [
+    private array $columns = [
         'id', 'title', 'content',
         'author' => ['name', 'email'],
         'rating' => ['score_by_user', 'average', 'qualifiers'],
         'created_at', 'updated_at',
     ];
 
-    private $table = 'quotes';
+    private string $table = 'quotes';
 
-    public function test_guest_unauthorized()
+    private User $user;
+
+    private Quote $quote;
+
+    protected function setUp(): void
     {
-        $quote = Quote::factory()->create([
-            'user_id' => User::factory()->create(),
-        ]);
+        parent::setUp();
 
-        $this->json('GET', "$this->url")->assertStatus(401);                // index
-        $this->json('GET', "$this->url/$quote->id")->assertStatus(401);     // show
-        $this->json('POST', "$this->url", [])->assertStatus(401);           // store
-        $this->json('PUT', "$this->url/$quote->id", [])->assertStatus(401); // update
-        $this->json('DELETE', "$this->url/$quote->id")->assertStatus(401);  // destroy
+        $this->user = User::factory()->create();
+        $this->quote = Quote::factory()->create([
+            'user_id' => $this->user,
+        ]);
     }
 
-    public function test_index()
+    public function test_guest_unauthorized(): void
     {
-        $user = User::factory()->create();
-
-        Quote::factory()->create([
-            'user_id' => $user->id,
-        ]);
-        $response = $this->actingAs($user, 'sanctum')->json('GET', $this->url);
-
-        $response->assertJsonStructure([
-            'data' => ['*' => $this->columns_collection],
-        ])->assertStatus(200);
+        $this->json('GET', "$this->url")
+            ->assertStatus(401);                // index
+        $this->json('GET', "$this->url/{$this->quote->id}")
+            ->assertStatus(401);     // show
+        $this->json('POST', "$this->url", [])
+            ->assertStatus(401);           // store
+        $this->json('PUT', "$this->url/{$this->quote->id}", [])
+            ->assertStatus(401); // update
+        $this->json('DELETE', "$this->url/{$this->quote->id}")
+        ->assertStatus(401);  // destroy
     }
 
-    public function test_store_validate()
+    public function test_index(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user, 'sanctum')->json('POST', $this->url, [
-            'title' => '',
-            'content' => '',
-        ]);
-        $response->assertJsonValidationErrors($this->fillable);
+        $this->actingAs($this->user, 'sanctum')
+            ->json('GET', $this->url)
+            ->assertJsonStructure([
+                'data' => ['*' => $this->columns_collection],
+            ])->assertStatus(200);
     }
 
-    public function test_store()
+    public function test_store_validate(): void
     {
-        $user = User::factory()->create();
+        $this->actingAs($this->user, 'sanctum')
+            ->json('POST', $this->url, [
+                'title' => '',
+                'content' => '',
+            ])->assertJsonValidationErrors($this->fillable);
+    }
+
+    public function test_store(): void
+    {
         $data = [
             'title' => $this->faker->sentence,
             'content' => $this->faker->text(500),
         ];
 
-        $response = $this->actingAs($user, 'sanctum')->json('POST', $this->url, $data);
-
-        $response->assertJsonMissingValidationErrors($this->fillable)
+        $this->actingAs($this->user, 'sanctum')
+            ->json('POST', $this->url, $data)
+            ->assertJsonMissingValidationErrors($this->fillable)
             ->assertSee('The quote was created successfully')
             ->assertJsonStructure(['data' => $this->columns])
             ->assertJson(['data' => $data])
-            ->assertSee([$user->name, $user->email])
+            ->assertSee([$this->user->name, $this->user->email])
             ->assertStatus(201);
+
         $this->assertDatabaseHas($this->table, $data);
     }
 
-    public function test_show_404()
+    public function test_show_404(): void
     {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user, 'sanctum')->json('GET', "$this->url/100000");
-
-        $response->assertStatus(404);
+        $this->actingAs($this->user, 'sanctum')
+            ->json('GET', "$this->url/100000")
+            ->assertStatus(404);
     }
 
-    public function test_show()
+    public function test_show(): void
     {
-        $user = User::factory()->create();
-        $quote = Quote::factory()->create([
-            'user_id' => $user->id,
-        ]);
-
-        $response = $this->actingAs($user, 'sanctum')->json('GET', "$this->url/$quote->id");
-
-        $response->assertJsonStructure($this->columns)
-            ->assertJson(['id' => $quote->id, 'content' => $quote->content])
+        $this->actingAs($this->user, 'sanctum')
+            ->json('GET', "$this->url/{$this->quote->id}")
+            ->assertJsonStructure($this->columns)
+            ->assertJson(['id' => $this->quote->id, 'content' => $this->quote->content])
             ->assertStatus(200);
     }
 
-    public function test_update_validate()
+    public function test_update_validate(): void
     {
-        $user = User::factory()->create();
-        $quote = Quote::factory()->create([
-            'user_id' => $user->id,
-        ]);
-
-        $response = $this->actingAs($user, 'sanctum')->json('PUT', "$this->url/$quote->id", [
-            'title' => '',
-            'content' => '',
-        ]);
-
-        $response->assertJsonValidationErrors($this->fillable);
+        $this->actingAs($this->user, 'sanctum')
+            ->json('PUT', "$this->url/{$this->quote->id}", [
+                'title' => '',
+                'content' => '',
+            ])->assertJsonValidationErrors($this->fillable);
     }
 
-    public function test_update_policy()
+    public function test_update_policy(): void
     {
-        $user = User::factory()->create();
-        $quote = Quote::factory()->create([
-            'user_id' => $user->id,
-        ]);
+        /** @var User $userNotOwner */
+        $userNotOwner = User::factory()->create();
 
-        $user_malicious = User::factory()->create();
-        // just the owner $user can delete his quote
-        $response = $this->actingAs($user_malicious)->put("$this->url/$quote->id", [
-            'title' => 'new title not allowed',
-            'content' => 'new content not allowed',
-        ]);
+        // just the owner $this->>user can delete his quote
+        $this->actingAs($userNotOwner)
+            ->put("$this->url/{$this->quote->id}", [
+                'title' => 'new title not allowed',
+                'content' => 'new content not allowed',
+            ])->assertStatus(403);
 
-        $response->assertStatus(403);
         $this->assertDatabaseHas($this->table, [
-            'title' => $quote->title,
-            'content' => $quote->content,
+            'title' => $this->quote->title,
+            'content' => $this->quote->content,
         ]);
         $this->assertDatabaseMissing($this->table, [
             'title' => 'new title not allowed',
@@ -152,183 +143,143 @@ class QuoteControllerTest extends TestCase
         ]);
     }
 
-    public function test_update()
+    public function test_update(): void
     {
-        $user = User::factory()->create();
-        $quote = Quote::factory()->create([
-            'user_id' => $user->id,
-        ]);
         $new_data = [
             'title' => 'new title',
             'content' => 'new content',
         ];
 
-        $response = $this->actingAs($user, 'sanctum')->json('PUT', "$this->url/$quote->id", $new_data);
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->json('PUT', "$this->url/{$this->quote->id}", $new_data);
 
         $response->assertJsonMissingValidationErrors($this->fillable)
             ->assertSee('The quote was updated successfully')
             ->assertJsonStructure(['data' => $this->columns])
             ->assertJson(['data' => $new_data])
             ->assertStatus(200);
-        $this->assertDatabaseMissing($this->table, ['id' => $quote->id, 'title' => $quote->title]);
-        $this->assertDatabaseHas($this->table, ['id' => $quote->id, 'title' => 'new title']);
+
+        $this->assertDatabaseMissing($this->table, ['id' => $this->quote->id, 'title' => $this->quote->title]);
+        $this->assertDatabaseHas($this->table, ['id' => $this->quote->id, 'title' => 'new title']);
     }
 
-    public function test_destroy_policy()
+    public function test_destroy_policy(): void
     {
-        $user = User::factory()->create();
-        $quote = Quote::factory()->create([
-            'user_id' => $user->id,
-        ]);
+        /** @var User $userNotOwner */
+        $userNotOwner = User::factory()->create();
 
-        $user_malicious = User::factory()->create();
-        $response = $this->actingAs($user_malicious)->delete("$this->url/$quote->id");
+        $this->actingAs($userNotOwner)
+            ->delete("$this->url/{$this->quote->id}")
+            ->assertStatus(403);
 
-        $response->assertStatus(403);
         $this->assertDatabaseHas($this->table, [
-            'title' => $quote->title,
-            'content' => $quote->content,
+            'title' => $this->quote->title,
+            'content' => $this->quote->content,
         ]);
     }
 
-    public function test_delete_404()
+    public function test_delete_404(): void
     {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user, 'sanctum')->json('DELETE', "$this->url/1");
-
-        $response->assertSee(null)->assertStatus(404);
+        $this->actingAs($this->user, 'sanctum')
+            ->json('DELETE', "$this->url/100")
+            ->assertSee(null)->assertStatus(404);
     }
 
-    public function test_delete()
+    public function test_delete(): void
     {
-        $user = User::factory()->create();
-        $quote = Quote::factory()->create([
-            'user_id' => $user->id,
-        ]);
+        $this->actingAs($this->user, 'sanctum')
+            ->json('DELETE', "$this->url/{$this->quote->id}")
+            ->assertSee('The quote was deleted successfully')->assertStatus(200);
 
-        $response = $this->actingAs($user, 'sanctum')->json('DELETE', "$this->url/$quote->id");
-
-        $response->assertSee('The quote was deleted successfully')->assertStatus(200);
-        $this->assertDatabaseMissing($this->table, ['id' => $quote->id]);
+        $this->assertDatabaseMissing($this->table, ['id' => $this->quote->id]);
     }
 
-    public function test_rate_validate()
+    public function test_rate_validate(): void
     {
-        $user = User::factory()->create();
-        $quote = Quote::factory()->create([
-            'user_id' => $user->id,
-        ]);
-
-        $response = $this->actingAs($user, 'sanctum')->json(
-
+        $this->actingAs($this->user, 'sanctum')->json(
             'POST',
-            "$this->url/$quote->id/rate",
+            "$this->url/{$this->quote->id}/rate",
             ['score' => '']
-        );
-        $response->assertJsonValidationErrors('score');
+        )->assertJsonValidationErrors('score');
 
-        $response_not_a_number = $this->actingAs($user, 'sanctum')->json(
+        $this->actingAs($this->user, 'sanctum')->json(
             'POST',
-            "$this->url/$quote->id/rate",
+            "$this->url/{$this->quote->id}/rate",
             ['score' => 'great quote']
-        );
-        $response_not_a_number->assertJsonValidationErrors('score');
+        )->assertJsonValidationErrors('score');
     }
 
-    public function test_rate_validate_range()
+    public function test_rate_validate_range(): void
     {
         // Validate the range of score defined in config/rating.php
-        $user = User::factory()->create();
-        $quote = Quote::factory()->create([
-            'user_id' => $user->id,
-        ]);
-
-        $response = $this->actingAs($user, 'sanctum')->json(
+        $this->actingAs($this->user, 'sanctum')->json(
             'POST',
-            "$this->url/$quote->id/rate",
+            "$this->url/{$this->quote->id}/rate",
             ['score' => '10']
-        );
-        $response->assertJsonValidationErrors('score')
+        )->assertJsonValidationErrors('score')
             ->assertSee('The score must be between 1 and 5.');
     }
 
-    public function test_rate()
+    public function test_rate(): void
     {
-        $user = User::factory()->create();
-        $quote = Quote::factory()->create([
-            'user_id' => $user->id,
-        ]);
-
-        $response = $this->actingAs($user, 'sanctum')->json(
+        $this->actingAs($this->user, 'sanctum')->json(
             'POST',
-            "$this->url/$quote->id/rate",
+            "$this->url/{$this->quote->id}/rate",
             ['score' => 5]
-        );
+        )->assertSee("The quote {$this->quote->id} was rated with 5 successfully")->assertStatus(200);
 
-        $response->assertSee("The quote $quote->id was rated with 5 successfully")->assertStatus(200);
         $this->assertDatabaseHas('ratings', [
             'score' => 5,
-            'rateable_type' => "App\Models\Quote",
-            'rateable_id' => $quote->id,
-            'qualifier_type' => "App\Models\User",
-            'qualifier_id' => $user->id,
+            'rateable_type' => Quote::class,
+            'rateable_id' => $this->quote->id,
+            'qualifier_type' => User::class,
+            'qualifier_id' => $this->user->id,
         ]);
     }
 
-    public function test_rate_updated()
+    public function test_rate_updated(): void
     {
-        $user = User::factory()->create();
-        $quote = Quote::factory()->create([
-            'user_id' => $user->id,
-        ]);
-        $user->rate($quote, 5);
+        $this->user->rate($this->quote, 5);
 
-        $response = $this->actingAs($user, 'sanctum')->json(
+        $this->actingAs($this->user, 'sanctum')->json(
             'POST',
-            "$this->url/$quote->id/rate",
+            "$this->url/{$this->quote->id}/rate",
             ['score' => 1]
-        );
+        )->assertSee("The quote {$this->quote->id} was rated with 1 successfully")->assertStatus(200);
 
-        $response->assertSee("The quote $quote->id was rated with 1 successfully")->assertStatus(200);
         $this->assertDatabaseHas('ratings', [
             'score' => 1,
-            'rateable_type' => "App\Models\Quote",
-            'rateable_id' => $quote->id,
-            'qualifier_type' => "App\Models\User",
-            'qualifier_id' => $user->id,
+            'rateable_type' => Quote::class,
+            'rateable_id' => $this->quote->id,
+            'qualifier_type' => User::class,
+            'qualifier_id' => $this->user->id,
         ]);
         $this->assertDatabaseMissing('ratings', [
             'score' => 5,
-            'rateable_type' => "App\Models\Quote",
-            'rateable_id' => $quote->id,
-            'qualifier_type' => "App\Models\User",
-            'qualifier_id' => $user->id,
+            'rateable_type' => Quote::class,
+            'rateable_id' => $this->quote->id,
+            'qualifier_type' => User::class,
+            'qualifier_id' => $this->user->id,
         ]);
     }
 
-    public function test_unrate()
+    public function test_unrate(): void
     {
         // The user can unrate a quote with score = 0
-        $user = User::factory()->create();
-        $quote = Quote::factory()->create([
-            'user_id' => $user->id,
-        ]);
-        $user->rate($quote, 5);
+        $this->user->rate($this->quote, 5);
 
-        $response = $this->actingAs($user, 'sanctum')->json(
+        $this->actingAs($this->user, 'sanctum')->json(
             'POST',
-            "$this->url/$quote->id/rate",
+            "$this->url/{$this->quote->id}/rate",
             ['score' => 0]
-        );
+        )->assertSee("The quote {$this->quote->id} was unrated successfully")->assertStatus(200);
 
-        $response->assertSee("The quote $quote->id was unrated successfully")->assertStatus(200);
         $this->assertDatabaseMissing('ratings', [
             'score' => 5,
-            'rateable_type' => "App\Models\Quote",
-            'rateable_id' => $quote->id,
-            'qualifier_type' => "App\Models\User",
-            'qualifier_id' => $user->id,
+            'rateable_type' => Quote::class,
+            'rateable_id' => $this->quote->id,
+            'qualifier_type' => User::class,
+            'qualifier_id' => $this->user->id,
         ]);
     }
 }

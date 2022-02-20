@@ -13,41 +13,42 @@ class RatingTest extends TestCase
 {
     use RefreshDatabase;
 
+    private User $user;
+
+    private Quote $quote;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+        $this->quote = Quote::factory()->create([
+            'user_id' => $this->user,
+        ]);
+    }
+
     public function test_users_rate_quotes()
     {
-        $user = User::factory()->create();
-        $quote = Quote::factory()->create([
-            'user_id' => $user,
-        ]);
+        $this->user->rate($this->quote, 5);
 
-        $user->rate($quote, 5);
-
-        $this->assertInstanceOf(Collection::class, $user->ratings(Quote::class)->get());
-        $this->assertInstanceOf(Collection::class, $quote->qualifiers(User::class)->get());
+        $this->assertInstanceOf(Collection::class, $this->user->ratings(Quote::class)->get());
+        $this->assertInstanceOf(Collection::class, $this->quote->qualifiers(User::class)->get());
     }
 
     public function test_calculate_average_rating()
     {
-        $user = User::factory()->create();
-        $user2 = User::factory()->create();
-        $quote = Quote::factory()->create([
-            'user_id' => $user,
-        ]);
+        /** @var User $anotherUser */
+        $anotherUser = User::factory()->create();
 
-        $user->rate($quote, 5);
-        $user2->rate($quote, 3);
+        $this->user->rate($this->quote, 5);
+        $anotherUser->rate($this->quote, 3);
 
-        $this->assertEquals(4, $quote->averageRating(User::class));
+        $this->assertEquals(4, $this->quote->averageRating(User::class));
     }
 
     public function test_rating_model()
     {
-        $user = User::factory()->create();
-        $quote = Quote::factory()->create([
-            'user_id' => $user->id,
-        ]);
-
-        $user->rate($quote, 5);
+        $this->user->rate($this->quote, 5);
 
         $rating = Rating::first();
 
