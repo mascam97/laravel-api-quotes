@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Rating extends Pivot
@@ -10,12 +11,12 @@ class Rating extends Pivot
 
     protected $table = 'ratings';
 
-    public function rateable()
+    public function rateable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function qualifier()
+    public function qualifier(): MorphTo
     {
         return $this->morphTo();
     }

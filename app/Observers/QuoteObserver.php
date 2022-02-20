@@ -10,10 +10,10 @@ class QuoteObserver
     /**
      * Handle the Quote "created" event.
      *
-     * @param  \App\Models\Quote  $quote
+     * @param Quote $quote
      * @return void
      */
-    public function created(Quote $quote)
+    public function created(Quote $quote): void
     {
         Log::error("Quote $quote->id was created.");
     }
@@ -21,10 +21,10 @@ class QuoteObserver
     /**
      * Handle the Quote "updated" event.
      *
-     * @param  \App\Models\Quote  $quote
+     * @param Quote $quote
      * @return void
      */
-    public function updated(Quote $quote)
+    public function updated(Quote $quote): void
     {
         Log::error("Quote $quote->id was updated.");
     }
@@ -32,10 +32,10 @@ class QuoteObserver
     /**
      * Handle the Quote "deleted" event.
      *
-     * @param  \App\Models\Quote  $quote
+     * @param Quote $quote
      * @return void
      */
-    public function deleted(Quote $quote)
+    public function deleted(Quote $quote): void
     {
         Log::error("Quote $quote->id was deleted.");
     }
@@ -43,10 +43,10 @@ class QuoteObserver
     /**
      * Handle the Quote "restored" event.
      *
-     * @param  \App\Models\Quote  $quote
+     * @param Quote $quote
      * @return void
      */
-    public function restored(Quote $quote)
+    public function restored(Quote $quote): void
     {
         // Function for soft delete
     }
@@ -54,10 +54,10 @@ class QuoteObserver
     /**
      * Handle the Quote "force deleted" event.
      *
-     * @param  \App\Models\Quote  $quote
+     * @param Quote $quote
      * @return void
      */
-    public function forceDeleted(Quote $quote)
+    public function forceDeleted(Quote $quote): void
     {
         // Function for soft delete
     }

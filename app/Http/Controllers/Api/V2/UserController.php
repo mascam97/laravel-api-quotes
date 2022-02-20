@@ -7,25 +7,37 @@ use App\Http\Resources\V2\UserQuotesResource;
 use App\Http\Resources\V2\UserResource;
 use App\Models\Quote;
 use App\Models\User;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserController extends Controller
 {
-    public function index()
+    /**
+     * @return AnonymousResourceCollection
+     */
+    public function index(): AnonymousResourceCollection
     {
-        return UserResource::collection(User::withCount('quotes')->paginate(5));
+        return UserResource::collection(User::withCount('quotes')
+            ->paginate(5));
     }
 
-    public function show(User $user)
+    /**
+     * @param User $user
+     * @return UserResource
+     */
+    public function show(User $user): UserResource
     {
         $user->quotes_count = count($user->quotes);
 
         return new UserResource($user);
     }
 
-    public function index_quotes(User $user)
+    /**
+     * @param User $user
+     * @return AnonymousResourceCollection
+     */
+    public function index_quotes(User $user): AnonymousResourceCollection
     {
-        $data = UserQuotesResource::collection(Quote::where('user_id', $user->id)->paginate(6));
-
-        return $data;
+        return UserQuotesResource::collection(Quote::where('user_id', $user->id)
+            ->paginate(6));
     }
 }

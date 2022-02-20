@@ -3,12 +3,13 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Http\JsonResponse;
 
 class InvalidScore extends Exception
 {
-    private $min;
+    private int $min;
 
-    private $max;
+    private int $max;
 
     public function __construct(int $min, int $max)
     {
@@ -16,7 +17,7 @@ class InvalidScore extends Exception
         $this->max = $max;
     }
 
-    public function render()
+    public function render(): JsonResponse
     {
         return response()->json([
             'message' => 'The given data was invalid.',

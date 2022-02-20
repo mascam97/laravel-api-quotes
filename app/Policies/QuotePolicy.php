@@ -11,17 +11,7 @@ class QuotePolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    public function pass(User $user, Quote $quote)
+    public function pass(User $user, Quote $quote): bool
     {
         if ($user->id == $quote->user_id) {
             return true;

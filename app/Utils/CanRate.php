@@ -5,10 +5,11 @@ namespace App\Utils;
 use App\Events\ModelRated;
 use App\Exceptions\InvalidScore;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait CanRate
 {
-    public function ratings($model = null)
+    public function ratings($model = null): MorphToMany
     {
         $modelClass = $model ? (new $model)->getMorphClass() : $this->getMorphClass();
 
@@ -30,6 +31,9 @@ trait CanRate
         return $morphToMany;
     }
 
+    /**
+     * @throws InvalidScore
+     */
     public function rate(Model $model, float $score): bool
     {
         $min = config('rating.min');

@@ -18,6 +18,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property int $quotes_count
+ * @property-read $quotes
  */
 class User extends Authenticatable
 {

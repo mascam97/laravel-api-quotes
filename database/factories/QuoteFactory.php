@@ -20,7 +20,7 @@ class QuoteFactory extends Factory
      * @return array
      * @throws \Exception
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'user_id' => random_int(1, 10),
