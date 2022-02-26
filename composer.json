@@ -18,16 +18,18 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^8.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel-lang/lang": "~8.0",
         "laravel/framework": "^8.12",
         "laravel/sanctum": "^2.9",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "spatie/data-transfer-object": "^3.7"
     },
     "require-dev": {
+        "eduarguz/shift-php-cs": "^3.0",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.3",
