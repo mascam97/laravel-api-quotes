@@ -7,13 +7,18 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UserRequest;
 use App\Jobs\SendWelcomeEmail;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
-    public function api_token_auth(LoginRequest $request)
+    /**
+     * @param LoginRequest $request
+     * @return JsonResponse
+     */
+    public function api_token_auth(LoginRequest $request): JsonResponse
     {
         if (Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
@@ -36,7 +41,11 @@ class AuthController extends Controller
         ], 401);
     }
 
-    public function register(UserRequest $request)
+    /**
+     * @param UserRequest $request
+     * @return JsonResponse
+     */
+    public function register(UserRequest $request): JsonResponse
     {
         $user = User::create(
             $request->except('password') + ['password' => Hash::make($request->password)]

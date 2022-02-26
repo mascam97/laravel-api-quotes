@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Quote;
 use App\Models\Rating;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class RatingUserQuoteSeeder extends Seeder
@@ -11,6 +13,7 @@ class RatingUserQuoteSeeder extends Seeder
      * Run the database seeds.
      *
      * @return void
+     * @throws \Exception
      */
     public function run()
     {
@@ -19,9 +22,9 @@ class RatingUserQuoteSeeder extends Seeder
             for ($quote_id = 1; $quote_id <= 120; $quote_id++) {
                 Rating::create([
                     'score' => random_int(1, 5),
-                    'rateable_type' => "App\Models\Quote",
+                    'rateable_type' => Quote::class,
                     'rateable_id' => $quote_id,
-                    'qualifier_type' => "App\Models\User",
+                    'qualifier_type' => User::class,
                     'qualifier_id' => $user_id,
                 ]);
             }

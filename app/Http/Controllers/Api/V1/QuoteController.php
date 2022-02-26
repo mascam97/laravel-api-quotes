@@ -2,31 +2,52 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Actions\CreateQuoteAction;
+use App\Actions\UpdateQuoteAction;
+use App\DTO\QuoteData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\QuoteRequest;
 use App\Http\Resources\V1\QuoteCollection;
 use App\Http\Resources\V1\QuoteResource;
 use App\Models\Quote;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
 
 class QuoteController extends Controller
 {
-    protected $quote;
+    protected Quote $quote;
 
     public function __construct(Quote $quote)
     {
         $this->quote = $quote;
     }
 
-    public function index()
+    /**
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
     {
         $data = new QuoteCollection($this->quote::paginate(10));
 
         return response()->json($data);
     }
 
-    public function store(QuoteRequest $request)
+    /**
+     * @param QuoteRequest $request
+     * @param CreateQuoteAction $createQuoteAction
+     * @return JsonResponse
+     */
+    public function store(QuoteRequest $request, CreateQuoteAction $createQuoteAction): JsonResponse
     {
-        $quote = $request->user()->quotes()->create($request->all());
+        try {
+            $quote = $createQuoteAction->__invoke(QuoteData::fromRequest($request), $request->user());
+        } catch (\Exception $exception) {
+            report($exception);
+
+            return response()->json([
+                'message' => 'Server error',
+            ], 422);
+        }
 
         return response()->json([
             'data' => new QuoteResource($quote),
@@ -34,17 +55,36 @@ class QuoteController extends Controller
         ], 201);
     }
 
-    public function show(Quote $quote)
+    /**
+     * @param Quote $quote
+     * @return JsonResponse
+     */
+    public function show(Quote $quote): JsonResponse
     {
         return response()->json(new QuoteResource($quote));
     }
 
-    public function update(QuoteRequest $request, Quote $quote)
+    /**
+     * @param QuoteRequest $request
+     * @param Quote $quote
+     * @param UpdateQuoteAction $updateQuoteAction
+     * @return JsonResponse
+     * @throws AuthorizationException
+     */
+    public function update(QuoteRequest $request, Quote $quote, UpdateQuoteAction $updateQuoteAction): JsonResponse
     {
         // user can update a quote if he is the owner
         $this->authorize('pass', $quote);
 
-        $quote->update($request->all());
+        try {
+            $quote = $updateQuoteAction->__invoke(QuoteData::fromRequest($request), $quote);
+        } catch (\Exception $exception) {
+            report($exception);
+
+            return response()->json([
+                'message' => 'Server error',
+            ], 422);
+        }
 
         return response()->json([
             'data' => new QuoteResource($quote),
@@ -52,7 +92,12 @@ class QuoteController extends Controller
         ]);
     }
 
-    public function destroy(Quote $quote)
+    /**
+     * @param Quote $quote
+     * @return JsonResponse
+     * @throws AuthorizationException
+     */
+    public function destroy(Quote $quote): JsonResponse
     {
         // user can delete a quote if he is the owner
         $this->authorize('pass', $quote);

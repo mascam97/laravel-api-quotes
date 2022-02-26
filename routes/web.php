@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Quote;
+use App\Models\Rating;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome/index', [
-        'users_count' => count(\App\Models\User::all()),
-        'quotes_count' => count(\App\Models\Quote::all()),
-        'ratings_count' => count(\App\Models\Rating::all()),
+        'users_count' => count(User::all()),
+        'quotes_count' => count(Quote::all()),
+        'ratings_count' => count(Rating::all()),
     ]);
 })->name('welcome');

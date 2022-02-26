@@ -1,6 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\V1\QuoteController;
+use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V2\QuoteController as QuoteControllerV2;
+use App\Http\Controllers\Api\V2\UserController as UserControllerV2;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,45 +20,30 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('v1')->group(function () {
-        Route::apiResource('quotes', App\Http\Controllers\Api\V1\QuoteController::class);
+        Route::apiResource('quotes', QuoteController::class);
 
-        Route::apiResource('users', App\Http\Controllers\Api\V1\UserController::class)
+        Route::apiResource('users', UserController::class)
             ->only(['index', 'show']);
 
-        Route::get(
-            'users/{user}/quotes',
-            [
-                App\Http\Controllers\Api\V1\UserController::class,
-                'index_quotes',
-            ]
-        )->name('users.quotes.index');
+        Route::get('users/{user}/quotes', [UserController::class, 'index_quotes'])
+            ->name('users.quotes.index');
     });
-    Route::prefix('v2')->group(function () {
-        Route::apiResource('quotes', App\Http\Controllers\Api\V2\QuoteController::class);
-        Route::post('quotes/{quote}/rate', [
-            App\Http\Controllers\Api\V2\QuoteController::class,
-            'rate',
-        ]);
 
-        Route::apiResource('users', App\Http\Controllers\Api\V2\UserController::class)
+    Route::prefix('v2')->group(function () {
+        Route::apiResource('quotes', QuoteControllerV2::class);
+
+        Route::post('quotes/{quote}/rate', [QuoteControllerV2::class, 'rate']);
+
+        Route::apiResource('users', UserControllerV2::class)
             ->only(['index', 'show']);
 
-        Route::get(
-            'users/{user}/quotes',
-            [
-                App\Http\Controllers\Api\V2\UserController::class,
-                'index_quotes',
-            ]
-        )->name('users.quotes.index');
+        Route::get('users/{user}/quotes', [UserControllerV2::class, 'index_quotes'])
+            ->name('users.quotes.index');
     });
 });
 
-Route::post('api-token-auth', [
-    App\Http\Controllers\Api\AuthController::class,
-    'api_token_auth',
-])->name('api-token-auth');
+Route::post('api-token-auth', [AuthController::class, 'api_token_auth'])
+    ->name('api-token-auth');
 
-Route::post('register', [
-    App\Http\Controllers\Api\AuthController::class,
-    'register',
-])->name('register');
+Route::post('register', [AuthController::class, 'register'])
+    ->name('register');

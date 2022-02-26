@@ -13,22 +13,12 @@ class NewsletterNotification extends Notification
     use Queueable;
 
     /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Get the notification's delivery channels.
      *
      * @param  mixed  $notifiable
      * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -39,7 +29,7 @@ class NewsletterNotification extends Notification
      * @param  mixed  $notifiable
      * @return MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
             ->greeting(trans('mail.greeting.newsletter'))
@@ -58,7 +48,7 @@ class NewsletterNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //
