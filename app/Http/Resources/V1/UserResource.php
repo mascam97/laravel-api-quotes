@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'id' => (int) $this->id,
             'name' => (string) $this->name,
             'email' => (string) $this->email,
+            'quotes'=> QuoteCollection::make($this->whenLoaded('quotes')),
             'quotes_count' => (int) $this->quotes_count,
             'created_ago' => (string) $this->created_at->diffForHumans(),
         ];

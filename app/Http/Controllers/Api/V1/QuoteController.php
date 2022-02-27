@@ -12,7 +12,9 @@ use App\Http\Resources\V1\QuoteResource;
 use App\Models\Quote;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Spatie\QueryBuilder\QueryBuilder;
 
+// TODO: Delete versioning and some duplicated routes, and use the QueryBuilder instead
 class QuoteController extends Controller
 {
     protected Quote $quote;
@@ -23,13 +25,17 @@ class QuoteController extends Controller
     }
 
     /**
-     * @return JsonResponse
+     * @return QuoteCollection
      */
-    public function index(): JsonResponse
+    public function index(): QuoteCollection
     {
-        $data = new QuoteCollection($this->quote::paginate(10));
+        $quotes = QueryBuilder::for(Quote::class)
+            ->allowedFilters(['title', 'content'])
+            ->allowedIncludes('user')
+            ->allowedSorts('id', 'title')
+            ->get();
 
-        return response()->json($data);
+        return new QuoteCollection($quotes);
     }
 
     /**
