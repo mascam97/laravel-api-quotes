@@ -8,6 +8,7 @@ use App\Http\Resources\V2\UserResource;
 use App\Models\Quote;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {
@@ -16,8 +17,13 @@ class UserController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return UserResource::collection(User::withCount('quotes')
-            ->paginate(5));
+        $users = QueryBuilder::for(User::class)
+            ->allowedFilters('name')
+            ->allowedIncludes('quotes')
+            ->allowedSorts('id', 'name')
+            ->get();
+
+        return UserResource::collection($users);
     }
 
     /**

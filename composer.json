@@ -26,7 +26,8 @@
         "laravel/framework": "^8.12",
         "laravel/sanctum": "^2.9",
         "laravel/tinker": "^2.5",
-        "spatie/data-transfer-object": "^3.7"
+        "spatie/data-transfer-object": "^3.7",
+        "spatie/laravel-query-builder": "4.0.2"
     },
     "require-dev": {
         "eduarguz/shift-php-cs": "^3.0",
