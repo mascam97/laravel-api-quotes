@@ -15,6 +15,7 @@ use App\Models\Quote;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class QuoteController extends Controller
 {
@@ -26,13 +27,17 @@ class QuoteController extends Controller
     }
 
     /**
-     * @return JsonResponse
+     * @return QuoteCollection
      */
-    public function index(): JsonResponse
+    public function index(): QuoteCollection
     {
-        $data = new QuoteCollection($this->quote::paginate(10));
+        $quotes = QueryBuilder::for(Quote::class)
+            ->allowedFilters(['title', 'content'])
+            ->allowedIncludes('user')
+            ->allowedSorts('id', 'title')
+            ->get();
 
-        return response()->json($data);
+        return new QuoteCollection($quotes);
     }
 
     /**

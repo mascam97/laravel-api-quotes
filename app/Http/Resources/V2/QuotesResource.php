@@ -23,6 +23,7 @@ class QuotesResource extends JsonResource
             'id' => (int) $this->id,
             'title' => (string) $this->title,
             'excerpt' => (string) $this->excerpt,
+            'user' => UserResource::make($this->whenLoaded('user')),
             'author_name' => (string) $this->user->name,
             'rating' => (array) [
                 'average' => (float) $this->averageRating(\App\Models\User::class),
