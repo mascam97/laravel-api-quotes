@@ -66,10 +66,10 @@ class IndexQuoteControllerTest extends TestCase
         $this->assertCount(5, $responseData);
         $this->assertArrayHasKey('user', $responseData[0]);
 
-        $user = User::factory()->create();
+        $newUser = User::factory()->create();
         $quote = Quote::factory()->create([
             'title' => 'Some text about something',
-            'user_id'=> $user->getKey(),
+            'user_id'=> $newUser->getKey(),
         ]);
 
         $responseDataTwo = $this->actingAs($this->user, 'sanctum')
@@ -78,7 +78,7 @@ class IndexQuoteControllerTest extends TestCase
 
         $this->assertCount(1, $responseDataTwo);
         $this->assertEquals($quote->getKey(), $responseDataTwo[0]['id']);
-        $this->assertEquals($user->getKey(), $responseDataTwo[0]['user']['id']);
+        $this->assertEquals($newUser->getKey(), $responseDataTwo[0]['user']['id']);
     }
 
     public function test_id_sort(): void

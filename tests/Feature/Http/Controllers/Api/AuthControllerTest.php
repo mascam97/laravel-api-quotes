@@ -20,8 +20,6 @@ class AuthControllerTest extends TestCase
 
     private array $fillable_register = ['name', 'email', 'password'];
 
-    private array $columns = ['id', 'name', 'email', 'password', 'created_at', 'updated_at'];
-
     private string $table = 'users';
 
     public function test_api_token_auth_validate(): void

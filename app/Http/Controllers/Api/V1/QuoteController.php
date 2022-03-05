@@ -17,7 +17,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
-// TODO: Delete versioning and some duplicated routes, and use the QueryBuilder instead
 class QuoteController extends Controller
 {
     protected Quote $quote;

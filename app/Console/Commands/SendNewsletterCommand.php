@@ -25,16 +25,6 @@ class SendNewsletterCommand extends Command
     protected $description = 'Send an email';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return void
@@ -50,19 +40,19 @@ class SendNewsletterCommand extends Command
         }
 
         $count = $builder->count();
-        if ($count) {
-            if ($this->confirm("Are you sure to send an email to $count users?") || $schedule) {
-                $this->output->progressStart($count);
-                // TODO: whereNotNull("email_verified_at") should work
-                $builder->each(function (User $user) {
-                    $user->notify(new NewsletterNotification());
-                    $this->output->progressAdvance();
-                });
-                $this->output->progressFinish();
-                $this->info(" $count emails were sent.");
+        if ($count &&
+            ($this->confirm("Are you sure to send an email to $count users?") || $schedule)
+        ) {
+            $this->output->progressStart($count);
+            // TODO: whereNotNull("email_verified_at") should work
+            $builder->each(function (User $user) {
+                $user->notify(new NewsletterNotification());
+                $this->output->progressAdvance();
+            });
+            $this->output->progressFinish();
+            $this->info(" $count emails were sent.");
 
-                return;
-            }
+            return;
         }
         $this->info(' 0 emails were sent.');
     }

@@ -39,26 +39,4 @@ class QuoteObserver
     {
         Log::error("Quote $quote->id was deleted.");
     }
-
-    /**
-     * Handle the Quote "restored" event.
-     *
-     * @param Quote $quote
-     * @return void
-     */
-    public function restored(Quote $quote): void
-    {
-        // Function for soft delete
-    }
-
-    /**
-     * Handle the Quote "force deleted" event.
-     *
-     * @param Quote $quote
-     * @return void
-     */
-    public function forceDeleted(Quote $quote): void
-    {
-        // Function for soft delete
-    }
 }
