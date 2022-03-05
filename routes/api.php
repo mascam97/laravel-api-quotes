@@ -3,8 +3,6 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\V1\QuoteController;
 use App\Http\Controllers\Api\V1\UserController;
-use App\Http\Controllers\Api\V2\QuoteController as QuoteControllerV2;
-use App\Http\Controllers\Api\V2\UserController as UserControllerV2;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,18 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('users/{user}/quotes', [UserController::class, 'index_quotes'])
             ->name('users.quotes.index');
-    });
 
-    Route::prefix('v2')->group(function () {
-        Route::apiResource('quotes', QuoteControllerV2::class);
-
-        Route::post('quotes/{quote}/rate', [QuoteControllerV2::class, 'rate']);
-
-        Route::apiResource('users', UserControllerV2::class)
-            ->only(['index', 'show']);
-
-        Route::get('users/{user}/quotes', [UserControllerV2::class, 'index_quotes'])
-            ->name('users.quotes.index');
+        Route::post('quotes/{quote}/rate', [QuoteController::class, 'rate']);
     });
 });
 

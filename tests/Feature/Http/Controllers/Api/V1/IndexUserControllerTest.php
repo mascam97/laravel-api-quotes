@@ -13,8 +13,6 @@ class IndexUserControllerTest extends TestCase
 
     private string $url = '/api/v1/users';
 
-    private string $table = 'users';
-
     private User $user;
 
     protected function setUp(): void
@@ -28,7 +26,7 @@ class IndexUserControllerTest extends TestCase
 
     public function test_name_filter(): void
     {
-        $user = User::factory()->create([
+        $newUser = User::factory()->create([
             'name' => 'Shakespeare',
         ]);
 
@@ -37,7 +35,7 @@ class IndexUserControllerTest extends TestCase
             ->json('data');
 
         $this->assertCount(1, $responseData);
-        $this->assertEquals($user->getKey(), $responseData[0]['id']);
+        $this->assertEquals($newUser->getKey(), $responseData[0]['id']);
     }
 
     public function test_quotes_include(): void
@@ -49,11 +47,11 @@ class IndexUserControllerTest extends TestCase
         $this->assertCount(5, $responseData);
         $this->assertArrayHasKey('quotes', $responseData[0]);
 
-        $user = User::factory()->create([
+        $newUser = User::factory()->create([
             'name' => 'User with quote',
         ]);
         $quote = Quote::factory()->create([
-            'user_id'=> $user->getKey(),
+            'user_id'=> $newUser->getKey(),
         ]);
 
         $responseDataTwo = $this->actingAs($this->user, 'sanctum')
