@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Actions\CreateQuoteAction;
+use App\Actions\RateQuoteAction;
 use App\Actions\UpdateQuoteAction;
 use App\DTO\QuoteData;
+use App\Exceptions\InvalidScore;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\QuoteRequest;
 use App\Http\Resources\V1\QuoteCollection;
@@ -12,6 +14,7 @@ use App\Http\Resources\V1\QuoteResource;
 use App\Models\Quote;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 // TODO: Delete versioning and some duplicated routes, and use the QueryBuilder instead
@@ -112,6 +115,44 @@ class QuoteController extends Controller
 
         return response()->json([
             'message' => trans('message.deleted', ['attribute' => 'quote']),
+        ]);
+    }
+
+    /**
+     * @param Quote $quote
+     * @param Request $request
+     * @param RateQuoteAction $rateQuoteAction
+     * @return JsonResponse
+     * @throws InvalidScore
+     */
+    public function rate(Quote $quote, Request $request, RateQuoteAction $rateQuoteAction)
+    {
+        // The user can rate from 0 to 5
+        // 0 means no rating
+        $request->validate([
+            'score' => 'required|integer',
+        ]);
+
+        $data = QuoteData::fromRequest($request);
+        $rateQuoteAction->__invoke($data, $quote, $request->user());
+
+        if ($data->quoteIsUnrated()) {
+            return response()->json([
+                'data' => new QuoteResource($quote),
+                'message' => trans('message.rating.unrated', [
+                    'attribute' => 'quote',
+                    'id' => $quote->id,
+                ]),
+            ]);
+        }
+
+        return response()->json([
+            'data' => new QuoteResource($quote),
+            'message' => trans('message.rating.rated', [
+                'attribute' => 'quote',
+                'id' => $quote->id,
+                'score' => $data->score,
+            ]),
         ]);
     }
 }
