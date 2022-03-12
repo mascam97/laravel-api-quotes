@@ -19,8 +19,6 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class QuoteController extends Controller
 {
-    protected Quote $quote;
-
     /**
      * @return AnonymousResourceCollection
      */
