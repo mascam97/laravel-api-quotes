@@ -34,9 +34,9 @@ class UserControllerTest extends TestCase
     public function test_guest_unauthorized(): void
     {
         $this->json('GET', "$this->url")
-            ->assertStatus(401);                  // index
+            ->assertUnauthorized();                  // index
         $this->json('GET', "$this->url/{$this->user->id}")
-            ->assertStatus(401);        // show
+            ->assertUnauthorized();        // show
     }
 
     public function test_index(): void
@@ -45,14 +45,14 @@ class UserControllerTest extends TestCase
             ->json('GET', $this->url)
             ->assertJsonStructure([
                 'data' => ['*' => $this->fields],
-            ])->assertStatus(200);
+            ])->assertOk();
     }
 
     public function test_show_404(): void
     {
         $this->actingAs($this->user, 'sanctum')
             ->json('GET', "$this->url/100000")
-            ->assertStatus(404);
+            ->assertNotFound();
     }
 
     public function test_show(): void
@@ -60,6 +60,6 @@ class UserControllerTest extends TestCase
         $this->actingAs($this->user, 'sanctum')
             ->json('GET', "$this->url/{$this->user->id}")
         ->assertSee([$this->user->id, $this->user->name])
-            ->assertStatus(200);
+            ->assertOk();
     }
 }

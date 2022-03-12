@@ -53,7 +53,7 @@ class QuoteController extends Controller
         }
 
         return response()->json([
-            'data' => new QuoteResource($quote),
+            'data' => QuoteResource::make($quote),
             'message' => trans('message.created', ['attribute' => 'quote']),
         ], 201);
     }
@@ -64,7 +64,7 @@ class QuoteController extends Controller
      */
     public function show(Quote $quote): JsonResponse
     {
-        return response()->json(new QuoteResource($quote));
+        return response()->json(QuoteResource::make($quote));
     }
 
     /**
@@ -90,7 +90,7 @@ class QuoteController extends Controller
         }
 
         return response()->json([
-            'data' => new QuoteResource($quote),
+            'data' => QuoteResource::make($quote),
             'message' => trans('message.updated', ['attribute' => 'quote']),
         ]);
     }
@@ -132,7 +132,7 @@ class QuoteController extends Controller
 
         if ($data->quoteIsUnrated()) {
             return response()->json([
-                'data' => new QuoteResource($quote),
+                'data' => QuoteResource::make($quote),
                 'message' => trans('message.rating.unrated', [
                     'attribute' => 'quote',
                     'id' => $quote->id,
@@ -141,7 +141,7 @@ class QuoteController extends Controller
         }
 
         return response()->json([
-            'data' => new QuoteResource($quote),
+            'data' => QuoteResource::make($quote),
             'message' => trans('message.rating.rated', [
                 'attribute' => 'quote',
                 'id' => $quote->id,

@@ -19,7 +19,7 @@ class WelcomeTest extends TestCase
         Quote::factory(20)->create();
 
         $this->get($this->url)
-            ->assertStatus(200)
+            ->assertOk()
             ->assertSee([count(User::all()), count(Quote::all())]);
     }
 }

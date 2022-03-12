@@ -26,7 +26,7 @@ class AuthControllerTest extends TestCase
     {
         $this->json('POST', $this->url_login, [
             'email' => 'user@mail.com',
-            'password' => 'userpassword',
+            'password' => 'userPassword',
             'device_name' => $this->faker->userAgent,
         ])->assertJsonMissingValidationErrors($this->fillable_login);
 
@@ -46,7 +46,7 @@ class AuthControllerTest extends TestCase
             'email' => $user->email,
             'password' => 'password', // value by default in factory
             'device_name' => $this->faker->userAgent,
-        ])->assertStatus(200)
+        ])->assertOk()
             ->assertSee([
                 'Action was executed successfully',
                 'user_logged', $user->id, $user->email,
@@ -56,7 +56,7 @@ class AuthControllerTest extends TestCase
             'email' => $user->email,
             'password' => 'wrong password',
             'device_name' => $this->faker->userAgent,
-        ])->assertStatus(401)
+        ])->assertUnauthorized()
             ->assertSee('The action was unauthorized');
     }
 
@@ -65,7 +65,7 @@ class AuthControllerTest extends TestCase
         $this->json('POST', $this->url_register, [
             'name' => 'new user',
             'email' => 'user@mail.com',
-            'password' => 'userpassword',
+            'password' => 'userPassword',
             'device_name' => $this->faker->userAgent,
         ])->assertJsonMissingValidationErrors($this->fillable_register);
 
@@ -86,7 +86,7 @@ class AuthControllerTest extends TestCase
         $this->json('POST', $this->url_register, [
             'name' => 'other name',
             'email' => $user->email,
-            'password' => 'other password',
+            'password' => 'otherPassword',
         ])->assertStatus(422)
             ->assertSee('The email has already been taken.');
     }
@@ -99,8 +99,8 @@ class AuthControllerTest extends TestCase
         ];
 
         $this->json('POST', $this->url_register,
-            $data + ['password' => 'userpassword']
-        )->assertStatus(200)
+            $data + ['password' => 'userPassword']
+        )->assertOk()
             ->assertSee('The user was created successfully');
 
         $this->assertDatabaseHas($this->table, $data);
@@ -111,11 +111,11 @@ class AuthControllerTest extends TestCase
         $data = [
             'name' => 'new user',
             'email' => 'user@mail.com',
-            'password' => 'userpassword',
+            'password' => 'userPassword',
         ];
 
         $this->json('POST', $this->url_register, $data)
-            ->assertStatus(200);
+            ->assertOk();
 
         $this->assertTrue(Hash::check(
                 $data['password'],

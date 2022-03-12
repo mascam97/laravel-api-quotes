@@ -32,7 +32,7 @@ class UserController extends Controller
     {
         $user->quotes_count = count($user->quotes);
 
-        return new UserResource($user);
+        return UserResource::make($user);
     }
 
 //    TODO: Add missing update and destroy functions
