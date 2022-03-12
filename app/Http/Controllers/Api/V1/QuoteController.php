@@ -59,12 +59,16 @@ class QuoteController extends Controller
     }
 
     /**
-     * @param Quote $quote
-     * @return JsonResponse
+     * @param int $quote_id
+     * @return QuoteResource
      */
-    public function show(Quote $quote): JsonResponse
+    public function show(int $quote_id): QuoteResource
     {
-        return response()->json(QuoteResource::make($quote));
+        $quote = QueryBuilder::for(Quote::query()->where('id', $quote_id))
+            ->allowedIncludes('user')
+            ->firstOrFail();
+
+        return QuoteResource::make($quote);
     }
 
     /**

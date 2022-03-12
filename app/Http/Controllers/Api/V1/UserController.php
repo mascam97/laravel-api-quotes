@@ -25,12 +25,14 @@ class UserController extends Controller
     }
 
     /**
-     * @param User $user
+     * @param int $user_id
      * @return UserResource
      */
-    public function show(User $user): UserResource
+    public function show(int $user_id): UserResource
     {
-        $user->quotes_count = count($user->quotes);
+        $user = QueryBuilder::for(User::query()->where('id', $user_id))
+            ->allowedIncludes('quotes')
+            ->firstOrFail();
 
         return UserResource::make($user);
     }

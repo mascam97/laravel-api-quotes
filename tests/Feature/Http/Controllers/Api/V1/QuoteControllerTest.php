@@ -94,11 +94,14 @@ class QuoteControllerTest extends TestCase
 
     public function test_show(): void
     {
-        $this->actingAs($this->user, 'sanctum')
+        $responseData = $this->actingAs($this->user, 'sanctum')
             ->json('GET', "$this->url/{$this->quote->id}")
-            ->assertJsonStructure($this->fields)
-            ->assertJson(['id' => $this->quote->id, 'content' => $this->quote->content])
-            ->assertOk();
+            ->assertJsonStructure(['data' => $this->fields])
+            ->assertOk()
+            ->json('data');
+
+        $this->assertEquals($this->quote->id, $responseData['id']);
+        $this->assertEquals($this->quote->content, $responseData['content']);
     }
 
     public function test_update_validate(): void
