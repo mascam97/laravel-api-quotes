@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\UserQuotesResource;
 use App\Http\Resources\V1\UserResource;
-use App\Models\Quote;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -18,7 +16,7 @@ class UserController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $users = QueryBuilder::for(User::class)
-            ->allowedFilters('name')
+            ->allowedFilters(['id', 'name'])
             ->allowedIncludes('quotes')
             ->allowedSorts('id', 'name')
             ->get();
@@ -27,23 +25,17 @@ class UserController extends Controller
     }
 
     /**
-     * @param User $user
+     * @param int $user_id
      * @return UserResource
      */
-    public function show(User $user): UserResource
+    public function show(int $user_id): UserResource
     {
-        $user->quotes_count = count($user->quotes);
+        $user = QueryBuilder::for(User::query()->where('id', $user_id))
+            ->allowedIncludes('quotes')
+            ->firstOrFail();
 
-        return new UserResource($user);
+        return UserResource::make($user);
     }
 
-    /**
-     * @param User $user
-     * @return AnonymousResourceCollection
-     */
-    public function index_quotes(User $user): AnonymousResourceCollection
-    {
-        return UserQuotesResource::collection(Quote::where('user_id', $user->id)
-            ->paginate(6));
-    }
+//    TODO: Add missing update and destroy functions
 }

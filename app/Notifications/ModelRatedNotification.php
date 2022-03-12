@@ -11,25 +11,16 @@ class ModelRatedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    private string $rateableName;
-
-    private float $score;
-
-    private string $qualifierName;
-
     /**
      * Create a new notification instance.
      *
      * @return void
      */
     public function __construct(
-        string $qualifierName,
-        string $rateableName,
-        float $score
+        private string $qualifierName,
+        private string $rateableName,
+        private float $score
     ) {
-        $this->qualifierName = $qualifierName;
-        $this->rateableName = $rateableName;
-        $this->score = $score;
     }
 
     /**

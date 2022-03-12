@@ -16,13 +16,7 @@ class QuoteControllerTest extends TestCase
 
     private array $fillable = ['title', 'content'];
 
-    private array $columns_collection = ['id', 'title', 'excerpt', 'author_name', 'updated_ago'];
-
-    private array $columns = [
-        'id', 'title', 'content',
-        'author' => ['name', 'email'],
-        'created_at', 'updated_at',
-    ];
+    private array $fields = ['id', 'title', 'content', 'excerpt', 'created_at', 'updated_at'];
 
     private string $table = 'quotes';
 
@@ -43,15 +37,15 @@ class QuoteControllerTest extends TestCase
     public function test_guest_unauthorized(): void
     {
         $this->json('GET', "$this->url")
-            ->assertStatus(401);                // index
+            ->assertUnauthorized();                // index
         $this->json('GET', "$this->url/{$this->quote->id}")
-            ->assertStatus(401);     // show
+            ->assertUnauthorized();     // show
         $this->json('POST', "$this->url", [])
-            ->assertStatus(401);           // store
+            ->assertUnauthorized();           // store
         $this->json('PUT', "$this->url/{$this->quote->id}", [])
-            ->assertStatus(401); // update
+            ->assertUnauthorized(); // update
         $this->json('DELETE', "$this->url/{$this->quote->id}")
-            ->assertStatus(401);  // destroy
+            ->assertUnauthorized();  // destroy
     }
 
     public function test_index(): void
@@ -59,8 +53,8 @@ class QuoteControllerTest extends TestCase
         $this->actingAs($this->user, 'sanctum')
             ->json('GET', $this->url)
             ->assertJsonStructure([
-                'data' => ['*' => $this->columns_collection],
-            ])->assertStatus(200);
+                'data' => ['*' => $this->fields],
+            ])->assertOk();
     }
 
     public function test_store_validate(): void
@@ -83,10 +77,10 @@ class QuoteControllerTest extends TestCase
             ->json('POST', $this->url, $data)
             ->assertJsonMissingValidationErrors($this->fillable)
             ->assertSee('The quote was created successfully')
-            ->assertJsonStructure(['data' => $this->columns])
+            ->assertJsonStructure(['data' => $this->fields])
             ->assertJson(['data' => $data])
             ->assertSee([$this->user->name, $this->user->email])
-            ->assertStatus(201);
+            ->assertCreated();
 
         $this->assertDatabaseHas($this->table, $data);
     }
@@ -95,16 +89,19 @@ class QuoteControllerTest extends TestCase
     {
         $this->actingAs($this->user, 'sanctum')
             ->json('GET', "$this->url/100000")
-            ->assertStatus(404);
+            ->assertNotFound();
     }
 
     public function test_show(): void
     {
-        $this->actingAs($this->user, 'sanctum')
+        $responseData = $this->actingAs($this->user, 'sanctum')
             ->json('GET', "$this->url/{$this->quote->id}")
-            ->assertJsonStructure($this->columns)
-            ->assertJson(['id' => $this->quote->id, 'content' => $this->quote->content])
-            ->assertStatus(200);
+            ->assertJsonStructure(['data' => $this->fields])
+            ->assertOk()
+            ->json('data');
+
+        $this->assertEquals($this->quote->id, $responseData['id']);
+        $this->assertEquals($this->quote->content, $responseData['content']);
     }
 
     public function test_update_validate(): void
@@ -126,7 +123,7 @@ class QuoteControllerTest extends TestCase
             ->put("$this->url/{$this->quote->id}", [
                 'title' => 'new title not allowed',
                 'content' => 'new content not allowed',
-            ])->assertStatus(403);
+            ])->assertForbidden();
 
         $this->assertDatabaseHas($this->table, [
             'title' => $this->quote->title,
@@ -149,9 +146,9 @@ class QuoteControllerTest extends TestCase
             ->json('PUT', "$this->url/{$this->quote->id}", $new_data)
             ->assertJsonMissingValidationErrors($this->fillable)
             ->assertSee('The quote was updated successfully')
-            ->assertJsonStructure(['data' => $this->columns])
+            ->assertJsonStructure(['data' => $this->fields])
             ->assertJson(['data' => $new_data])
-            ->assertStatus(200);
+            ->assertOk();
 
         $this->assertDatabaseMissing($this->table, ['id' => $this->quote->id, 'title' => $this->quote->title]);
         $this->assertDatabaseHas($this->table, ['id' => $this->quote->id, 'title' => 'new title']);
@@ -164,7 +161,7 @@ class QuoteControllerTest extends TestCase
 
         $this->actingAs($UserNotOwner)
             ->delete("$this->url/{$this->quote->id}")
-            ->assertStatus(403);
+            ->assertForbidden();
 
         $this->assertDatabaseHas($this->table, [
             'title' => $this->quote->title,
@@ -176,14 +173,14 @@ class QuoteControllerTest extends TestCase
     {
         $this->actingAs($this->user, 'sanctum')
             ->json('DELETE', "$this->url/1000")
-            ->assertSee(null)->assertStatus(404);
+            ->assertSee(null)->assertNotFound();
     }
 
     public function test_delete(): void
     {
         $this->actingAs($this->user, 'sanctum')
             ->json('DELETE', "$this->url/{$this->quote->id}")
-            ->assertSee('The quote was deleted successfully')->assertStatus(200);
+            ->assertSee('The quote was deleted successfully')->assertOk();
 
         $this->assertDatabaseMissing($this->table, ['id' => $this->quote->id]);
     }

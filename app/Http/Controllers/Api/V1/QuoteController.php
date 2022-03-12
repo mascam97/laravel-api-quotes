@@ -9,35 +9,28 @@ use App\DTO\QuoteData;
 use App\Exceptions\InvalidScore;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\QuoteRequest;
-use App\Http\Resources\V1\QuoteCollection;
 use App\Http\Resources\V1\QuoteResource;
 use App\Models\Quote;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class QuoteController extends Controller
 {
-    protected Quote $quote;
-
-    public function __construct(Quote $quote)
-    {
-        $this->quote = $quote;
-    }
-
     /**
-     * @return QuoteCollection
+     * @return AnonymousResourceCollection
      */
-    public function index(): QuoteCollection
+    public function index(): AnonymousResourceCollection
     {
         $quotes = QueryBuilder::for(Quote::class)
-            ->allowedFilters(['title', 'content'])
+            ->allowedFilters(['title', 'content', 'user_id'])
             ->allowedIncludes('user')
             ->allowedSorts('id', 'title')
             ->get();
 
-        return new QuoteCollection($quotes);
+        return QuoteResource::collection($quotes);
     }
 
     /**
@@ -58,18 +51,22 @@ class QuoteController extends Controller
         }
 
         return response()->json([
-            'data' => new QuoteResource($quote),
+            'data' => QuoteResource::make($quote),
             'message' => trans('message.created', ['attribute' => 'quote']),
         ], 201);
     }
 
     /**
-     * @param Quote $quote
-     * @return JsonResponse
+     * @param int $quote_id
+     * @return QuoteResource
      */
-    public function show(Quote $quote): JsonResponse
+    public function show(int $quote_id): QuoteResource
     {
-        return response()->json(new QuoteResource($quote));
+        $quote = QueryBuilder::for(Quote::query()->where('id', $quote_id))
+            ->allowedIncludes('user')
+            ->firstOrFail();
+
+        return QuoteResource::make($quote);
     }
 
     /**
@@ -95,7 +92,7 @@ class QuoteController extends Controller
         }
 
         return response()->json([
-            'data' => new QuoteResource($quote),
+            'data' => QuoteResource::make($quote),
             'message' => trans('message.updated', ['attribute' => 'quote']),
         ]);
     }
@@ -137,7 +134,7 @@ class QuoteController extends Controller
 
         if ($data->quoteIsUnrated()) {
             return response()->json([
-                'data' => new QuoteResource($quote),
+                'data' => QuoteResource::make($quote),
                 'message' => trans('message.rating.unrated', [
                     'attribute' => 'quote',
                     'id' => $quote->id,
@@ -146,7 +143,7 @@ class QuoteController extends Controller
         }
 
         return response()->json([
-            'data' => new QuoteResource($quote),
+            'data' => QuoteResource::make($quote),
             'message' => trans('message.rating.rated', [
                 'attribute' => 'quote',
                 'id' => $quote->id,
