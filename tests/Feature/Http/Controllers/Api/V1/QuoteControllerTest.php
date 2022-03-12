@@ -16,13 +16,7 @@ class QuoteControllerTest extends TestCase
 
     private array $fillable = ['title', 'content'];
 
-    private array $columns_collection = ['id', 'title', 'excerpt', 'author_name', 'updated_ago'];
-
-    private array $columns = [
-        'id', 'title', 'content',
-        'author' => ['name', 'email'],
-        'created_at', 'updated_at',
-    ];
+    private array $fields = ['id', 'title', 'content', 'excerpt', 'created_at', 'updated_at'];
 
     private string $table = 'quotes';
 
@@ -59,7 +53,7 @@ class QuoteControllerTest extends TestCase
         $this->actingAs($this->user, 'sanctum')
             ->json('GET', $this->url)
             ->assertJsonStructure([
-                'data' => ['*' => $this->columns_collection],
+                'data' => ['*' => $this->fields],
             ])->assertStatus(200);
     }
 
@@ -83,7 +77,7 @@ class QuoteControllerTest extends TestCase
             ->json('POST', $this->url, $data)
             ->assertJsonMissingValidationErrors($this->fillable)
             ->assertSee('The quote was created successfully')
-            ->assertJsonStructure(['data' => $this->columns])
+            ->assertJsonStructure(['data' => $this->fields])
             ->assertJson(['data' => $data])
             ->assertSee([$this->user->name, $this->user->email])
             ->assertStatus(201);
@@ -102,7 +96,7 @@ class QuoteControllerTest extends TestCase
     {
         $this->actingAs($this->user, 'sanctum')
             ->json('GET', "$this->url/{$this->quote->id}")
-            ->assertJsonStructure($this->columns)
+            ->assertJsonStructure($this->fields)
             ->assertJson(['id' => $this->quote->id, 'content' => $this->quote->content])
             ->assertStatus(200);
     }
@@ -149,7 +143,7 @@ class QuoteControllerTest extends TestCase
             ->json('PUT', "$this->url/{$this->quote->id}", $new_data)
             ->assertJsonMissingValidationErrors($this->fillable)
             ->assertSee('The quote was updated successfully')
-            ->assertJsonStructure(['data' => $this->columns])
+            ->assertJsonStructure(['data' => $this->fields])
             ->assertJson(['data' => $new_data])
             ->assertStatus(200);
 

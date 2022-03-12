@@ -57,6 +57,23 @@ class IndexQuoteControllerTest extends TestCase
         $this->assertEquals($quote->getKey(), $responseData[0]['id']);
     }
 
+    public function test_user_id_filter(): void
+    {
+        /** @var User $newUser */
+        $newUser = User::factory()->create();
+
+        $quote = Quote::factory()->create([
+            'user_id' => $newUser,
+        ]);
+
+        $responseData = $this->actingAs($this->user, 'sanctum')
+            ->json('GET', "$this->url?filter[user_id]=$newUser->id")
+            ->json('data');
+
+        $this->assertCount(1, $responseData);
+        $this->assertEquals($quote->getKey(), $responseData[0]['id']);
+    }
+
     public function test_user_include(): void
     {
         $responseData = $this->actingAs($this->user, 'sanctum')

@@ -9,35 +9,30 @@ use App\DTO\QuoteData;
 use App\Exceptions\InvalidScore;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\QuoteRequest;
-use App\Http\Resources\V1\QuoteCollection;
 use App\Http\Resources\V1\QuoteResource;
 use App\Models\Quote;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class QuoteController extends Controller
 {
     protected Quote $quote;
 
-    public function __construct(Quote $quote)
-    {
-        $this->quote = $quote;
-    }
-
     /**
-     * @return QuoteCollection
+     * @return AnonymousResourceCollection
      */
-    public function index(): QuoteCollection
+    public function index(): AnonymousResourceCollection
     {
         $quotes = QueryBuilder::for(Quote::class)
-            ->allowedFilters(['title', 'content'])
+            ->allowedFilters(['title', 'content', 'user_id'])
             ->allowedIncludes('user')
             ->allowedSorts('id', 'title')
             ->get();
 
-        return new QuoteCollection($quotes);
+        return QuoteResource::collection($quotes);
     }
 
     /**

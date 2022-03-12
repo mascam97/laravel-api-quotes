@@ -24,6 +24,19 @@ class IndexUserControllerTest extends TestCase
         User::factory(4)->create();
     }
 
+    public function test_id_filter(): void
+    {
+        /** @var User $newUser */
+        $newUser = User::factory()->create();
+
+        $responseData = $this->actingAs($this->user, 'sanctum')
+            ->json('GET', "$this->url?filter[id]=$newUser->id")
+            ->json('data');
+
+        $this->assertCount(1, $responseData);
+        $this->assertEquals($newUser->getKey(), $responseData[0]['id']);
+    }
+
     public function test_name_filter(): void
     {
         $newUser = User::factory()->create([

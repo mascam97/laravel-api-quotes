@@ -23,9 +23,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('users', UserController::class)
             ->only(['index', 'show']);
 
-        Route::get('users/{user}/quotes', [UserController::class, 'index_quotes'])
-            ->name('users.quotes.index');
-
         Route::post('quotes/{quote}/rate', [QuoteController::class, 'rate']);
     });
 });
