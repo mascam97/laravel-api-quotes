@@ -4,11 +4,14 @@
     "description": "Community to share and rate quotes.",
     "keywords": [
         "laravel8",
+        "php8",
         "api-rest",
         "ratings",
         "test-driven-development",
         "laravel-sail",
-        "laravel-sanctum"
+        "laravel-sanctum",
+        "phpstan",
+        "query-builder"
     ],
     "license": "MIT",
     "authors": [

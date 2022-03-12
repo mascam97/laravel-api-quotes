@@ -1,10 +1,12 @@
-# Laravel8 API Quotes ![Status](https://img.shields.io/badge/status-in_rafactoring-yellowgreen) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
+# Laravel8 API Quotes ![Stable](https://img.shields.io/badge/stable-3.0.0-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
 
 _Community to share and rate quotes._
 
 ### Project goal by martin-stepwolf :goal_net:
 
 Personal project to apply my knowledge about API REST and learn more about Laravel and [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum).
+
+**Update March 2022**: Personal project to apply some experience like defining business logic, applying best practices, using some packages and integrating some tools.
 
 ### Achievements :star2:
 
@@ -14,11 +16,22 @@ Personal project to apply my knowledge about API REST and learn more about Larav
 - Implemented a 2nd version where users can rate quotes (**Polymorphic relationships**).
 - Tested with PHPUnit (**Test-Driven Development**) and [Postman](https://www.postman.com/) and created a documentation [link](https://documenter.getpostman.com/view/14344048/TWDUrJfS).
 - Implemented custom errors and logs about information of the policy, authentication and an [Observer](https://laravel.com/docs/8.x/eloquent#observers) in Quotes.
-- Create a custom [Artisan command](https://laravel.com/docs/8.x/artisan) to sent an email and tested it in local ([mailhog](http://localhost:8025)).
-- Implemented [Task Scheduling](https://laravel.com/docs/8.x/scheduling) to refresh the database each month and sent an email to users weekly.
-- Implemented a [Listener and an Event](https://laravel.com/docs/8.x/events) to send an email to the user when one of his quotes were rated.
+- Create a custom [Artisan command](https://laravel.com/docs/8.x/artisan) to send an email and tested it in local ([mailhog](http://localhost:8025)).
+- Implemented [Task Scheduling](https://laravel.com/docs/8.x/scheduling) to refresh the database each month and sending an email to users weekly.
+- Implemented a [Listener and an Event](https://laravel.com/docs/8.x/events) to sending an email to the user when one of his quotes were rated.
 - Implemented [Queue and Jobs](https://laravel.com/docs/8.x/queues) with the container Redis.
 - Implemented support for spanish language (messages and emails).
+
+### Achievements Update March 2022 :star2:
+
+- Created a **[Project definition](./project-definition.md)** file to define the main business logic
+- Implemented **Continuous Integration** with **GitHub Actions**
+- Implemented **PHP CS Fixer** to fix code standard
+- Implemented **PHPStan** for a static analysis in the code
+- Updated to **PHP 8.0**
+- Refactoring all the code (setUps implementation in test, use of Actions, DTOs, type hinting, etc.)
+- Implemented a **QueryBuilder library** and improve the **API logic** (delete unnecessary API versioning)
+- Implemented **Sonar Cloud to reduce Technical Debt** (duplications, smells code, etc.)
 
 ---
 
@@ -73,7 +86,7 @@ Then generate the application key.
 sail artisan key:generate
 ```
 
-Finally generate the database with fake data:
+Finally, generate the database with fake data:
 
 ```
 sail artisan migrate --seed
@@ -87,13 +100,32 @@ And now you have all the environment in the port 80 (http://localhost/).
 
 ## Testing
 
+### Static Analysis
+
+In order to find errors in the code without running it. It is better before running the tests.
+
+```
+sail composer phpstan
+```
+
+
 ### Backend testing
 
-There are some unit testing in Models and Traits and some feature testings in controllers, all these test guarantee functionalities like table relationship, validations, authentication, authorization, actions as create, read, update and delete, etc. 
+There are some unit testing in Models and Traits and some feature testings in controllers, all these tests guarantee functionalities like table relationship, validations, authentication, authorization, actions as create, read, update and delete, etc. 
 
 ```
 sail artisan test
 ```
+
+### Fix Code Standard
+
+After we are sure our code passes the analysis and tests, before we commit it, we ensure it has the standard of code style. This should look like just one programmer has written it.
+
+```
+sail composer php-cs-fixer
+```
+
+This command fits the code automatically.
 
 ---
 
@@ -101,7 +133,7 @@ sail artisan test
 
 ### Running Artisan Commands
 
-There is a custom command to sent an email as example to the users.
+There is a custom command to send an email as example to the users.
 
 ```
 sail artisan send:newsletter
@@ -111,7 +143,7 @@ In docker-compose there is a container about MailHog, this container shows the e
 
 ### Running Tasks Scheduled
 
-There are two task, one to refresh the database (monthly) and other to send an email to users (weekly) about how many users and quotes there are. Run it with:
+There are two task, one to refresh the database (monthly) and other to email users (weekly) about how many users and quotes there are. Run it with:
 
 ```
 sail artisan schedule:run
@@ -136,10 +168,14 @@ Note: Remember in production the better command is `queue:work`, [explanation](h
 -   [Laravel 8](https://laravel.com/docs/8.x/releases/) - PHP framework.
 -   [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum) - Authentication system.
 -   [Laravel Sail](https://laravel.com/docs/8.x/sail) - Docker development environment.
+-   [Larastan](https://github.com/nunomaduro/larastan) - PHP tool to find errors in your code.
+-   [PHP Code Standards Fixer](https://cs.symfony.com/) - PHP tool to fixe your code to follow standards.
+-   [Data transfer objects with batteries included](https://github.com/spatie/data-transfer-object)
+-   [Laravel Query Builder v4](https://spatie.be/docs/laravel-query-builder/v4/introduction) - PHP package that allows you to filter, sort and include eloquent relations based on a request.
 
 ### Authors
 
--   Martín Campos - [martin-stepwolf](https://github.com/martin-stepwolf)
+-   Martín Campos - [martin-stepwolf](https://www.martin-stepwolf.com)
 
 ### Contributing
 
@@ -157,3 +193,5 @@ This project is licensed under the [MIT License](https://choosealicense.com/lice
 - [Testing with PHP and Laravel Basic Course](https://platzi.com/clases/laravel-testing/)
 - [API REST with Laravel Course](https://platzi.com/clases/laravel-api/)
 - [API REST Course](https://platzi.com/clases/api-rest/)
+- [GitHub Actions Basic Course](https://platzi.com/cursos/github-actions/)
+- [Backend Architecture Practical Course](https://platzi.com/cursos/practico-backend/)
