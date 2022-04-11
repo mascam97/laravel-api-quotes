@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\User;
+use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Tests\TestCase;
 

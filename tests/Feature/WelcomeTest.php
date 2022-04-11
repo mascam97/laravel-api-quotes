@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Quote;
-use App\Models\User;
+use Domain\Quotes\Models\Quote;
+use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

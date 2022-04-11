@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\V2;
 
-use App\Models\Quote;
-use App\Models\Rating;
-use App\Models\User;
+use Domain\Quotes\Models\Quote;
+use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Support\Models\Rating;
 use Tests\TestCase;
 
 class RatingTest extends TestCase

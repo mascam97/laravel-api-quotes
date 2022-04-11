@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Quote;
-use App\Models\Rating;
-use App\Models\User;
+use Domain\Quotes\Models\Quote;
+use Support\Models\Rating;
+use Domain\Users\Models\User;
 use Illuminate\Database\Seeder;
 
 class RatingUserQuoteSeeder extends Seeder

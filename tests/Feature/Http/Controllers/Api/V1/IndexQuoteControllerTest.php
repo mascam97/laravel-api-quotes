@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Http\Controllers\Api\V1;
 
-use App\Models\Quote;
-use App\Models\User;
+use Domain\Quotes\Models\Quote;
+use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;

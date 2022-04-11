@@ -5,7 +5,7 @@ use PhpCsFixer\Finder;
 $project_path = getcwd();
 $finder = Finder::create()
     ->in([
-        $project_path . '/app',
+        $project_path . '/src',
         $project_path . '/config',
         $project_path . '/database',
         $project_path . '/resources',
