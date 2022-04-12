@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use Domain\Quotes\Models\Quote;
-use Support\Models\Rating;
 use Domain\Users\Models\User;
 use Illuminate\Database\Seeder;
+use Support\Models\Rating;
 
 class RatingUserQuoteSeeder extends Seeder
 {

@@ -41,7 +41,7 @@ class QuoteController extends Controller
     public function store(QuoteRequest $request, CreateQuoteAction $createQuoteAction): JsonResponse
     {
         try {
-            $quote = $createQuoteAction->__invoke(QuoteData::fromRequest($request), $request->user());
+            $quote = $createQuoteAction->__invoke(new QuoteData(...$request->validated()), $request->user());
         } catch (\Exception $exception) {
             report($exception);
 
@@ -82,7 +82,7 @@ class QuoteController extends Controller
         $this->authorize('pass', $quote);
 
         try {
-            $quote = $updateQuoteAction->__invoke(QuoteData::fromRequest($request), $quote);
+            $quote = $updateQuoteAction->__invoke(new QuoteData(...$request->validated()), $quote);
         } catch (\Exception $exception) {
             report($exception);
 
@@ -129,7 +129,7 @@ class QuoteController extends Controller
             'score' => 'required|integer',
         ]);
 
-        $data = QuoteData::fromRequest($request);
+        $data = new QuoteData(...$request->validated());
         $rateQuoteAction->__invoke($data, $quote, $request->user());
 
         if ($data->quoteIsUnrated()) {

@@ -29,10 +29,10 @@
         "laravel/framework": "^8.12",
         "laravel/sanctum": "^2.9",
         "laravel/tinker": "^2.5",
-        "spatie/data-transfer-object": "^3.7",
         "spatie/laravel-query-builder": "4.0.2"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-latest",
         "eduarguz/shift-php-cs": "^3.0",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
