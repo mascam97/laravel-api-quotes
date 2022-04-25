@@ -57,12 +57,13 @@ class QuoteController extends Controller
     }
 
     /**
-     * @param int $quote_id
+     * @param int $quoteId
      * @return QuoteResource
      */
-    public function show(int $quote_id): QuoteResource
+    public function show(int $quoteId): QuoteResource
     {
-        $quote = QueryBuilder::for(Quote::query()->where('id', $quote_id))
+        $quote = QueryBuilder::for(Quote::class)
+            ->whereId($quoteId)
             ->allowedIncludes('user')
             ->firstOrFail();
 

@@ -47,7 +47,6 @@ class ShowUserControllerTest extends TestCase
 
         $responseData = $this->actingAs($this->user, 'sanctum')
             ->json('GET', "$this->url/{$this->user->getKey()}?include=quotesCount")
-            ->dump()
             ->json('data');
 
         $this->assertArrayNotHasKey('quotes', $responseData);

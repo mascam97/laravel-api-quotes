@@ -25,12 +25,13 @@ class UserController extends Controller
     }
 
     /**
-     * @param int $user_id
+     * @param int $userId
      * @return UserResource
      */
-    public function show(int $user_id): UserResource
+    public function show(int $userId): UserResource
     {
-        $user = QueryBuilder::for(User::query()->where('id', $user_id))
+        $user = QueryBuilder::for(User::query()->where('id', $userId))
+            ->whereId($userId)
             ->allowedIncludes('quotes')
             ->firstOrFail();
 

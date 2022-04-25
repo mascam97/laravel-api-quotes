@@ -3,7 +3,9 @@
 namespace Domain\Quotes\Models;
 
 use Database\Factories\QuoteFactory;
+use Domain\Quotes\QueryBuilders\QuoteQueryBuilder;
 use Domain\Users\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,11 +34,16 @@ class Quote extends Model
     /**
      * Create a new factory instance for the model.
      *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     * @return Factory
      */
-    protected static function newFactory()
+    protected static function newFactory(): Factory
     {
         return QuoteFactory::new();
+    }
+
+    public function newEloquentBuilder($query): QuoteQueryBuilder
+    {
+        return new QuoteQueryBuilder($query);
     }
 
     public function getExcerptAttribute(): string
