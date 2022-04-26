@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers\Api\V1;
+namespace Tests\Feature\App\Api\Controllers\V1;
 
 use Domain\Quotes\Models\Quote;
 use Domain\Users\Models\User;

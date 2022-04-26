@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Models;
+namespace Tests\Unit\Users\Models;
 
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Collection;

@@ -31,6 +31,10 @@ class Quote extends Model
         'title', 'content',
     ];
 
+//    TODO: Add state pattern for a new field to manage more business logic
+
+    // TODO: Add some enums for a field called topic
+
     /**
      * Create a new factory instance for the model.
      *

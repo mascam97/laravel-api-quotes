@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Models;
+namespace Tests\Unit\Quotes\Models;
 
 use Domain\Quotes\Models\Quote;
 use Domain\Users\Models\User;
