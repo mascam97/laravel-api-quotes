@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api\Middleware;
+namespace Support\App\Api\Middleware;
 
 use App\Providers\RouteServiceProvider;
 use Closure;

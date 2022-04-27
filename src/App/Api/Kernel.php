@@ -15,11 +15,11 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
-        \App\Api\Middleware\TrustProxies::class,
+        \Support\App\Api\Middleware\TrustProxies::class,
         \Fruitcake\Cors\HandleCors::class,
-        \App\Api\Middleware\PreventRequestsDuringMaintenance::class,
+        \Support\App\Api\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
-        \App\Api\Middleware\TrimStrings::class,
+        \Support\App\Api\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
 
@@ -53,11 +53,11 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \App\Api\Middleware\Authenticate::class,
+        'auth' => \Support\App\Api\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest' => \App\Api\Middleware\RedirectIfAuthenticated::class,
+        'guest' => \Support\App\Api\Middleware\RedirectIfAuthenticated::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,

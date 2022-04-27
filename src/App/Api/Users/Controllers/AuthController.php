@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Api\Controllers\Api;
+namespace App\Api\Users\Controllers;
 
-use App\Api\Controllers\Controller;
-use App\Api\Requests\LoginRequest;
-use App\Api\Requests\UserRequest;
+use App\Api\Users\Requests\LoginRequest;
+use App\Api\Users\Requests\UserRequest;
 use App\Jobs\SendWelcomeEmail;
 use Domain\Users\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Support\App\Api\Controller;
 
 class AuthController extends Controller
 {

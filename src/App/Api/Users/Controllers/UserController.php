@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Api\Controllers\Api\V1;
+namespace App\Api\Users\Controllers;
 
-use App\Api\Controllers\Controller;
-use App\Api\Resources\V1\UserResource;
+use App\Api\Users\Resources\UserResource;
 use Domain\Users\Models\User;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
+use Support\App\Api\Controller;
 
 class UserController extends Controller
 {

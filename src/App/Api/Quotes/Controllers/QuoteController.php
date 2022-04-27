@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Api\Controllers\Api\V1;
+namespace App\Api\Quotes\Controllers;
 
-use App\Api\Controllers\Controller;
-use App\Api\Requests\V1\QuoteRequest;
-use App\Api\Resources\V1\QuoteResource;
+use App\Api\Quotes\Requests\QuoteRequest;
+use App\Api\Quotes\Resources\QuoteResource;
 use Domain\Quotes\Actions\CreateQuoteAction;
 use Domain\Quotes\Actions\RateQuoteAction;
 use Domain\Quotes\Actions\UpdateQuoteAction;
@@ -15,6 +14,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
+use Support\App\Api\Controller;
 use Support\Exceptions\InvalidScore;
 
 class QuoteController extends Controller

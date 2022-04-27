@@ -17,6 +17,7 @@ use Support\Models\Rating;
 */
 
 Route::get('/', function () {
+//    TODO: Create a controller that uses collections and more logic business
     return view('welcome/index', [
         'users_count' => count(User::all()),
         'quotes_count' => count(Quote::all()),

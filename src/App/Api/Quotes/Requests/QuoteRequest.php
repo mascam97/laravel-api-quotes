@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Api\Requests;
+namespace App\Api\Quotes\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class QuoteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'device_name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
+            'title' => 'required',
+            'content' => 'required',
         ];
     }
 }

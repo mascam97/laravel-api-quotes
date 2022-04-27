@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Api\Resources\V1;
+namespace App\Api\Quotes\Resources;
 
+use App\Api\Users\Resources\UserResource;
 use Domain\Quotes\Models\Quote;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
