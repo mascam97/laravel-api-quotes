@@ -2,6 +2,7 @@
 
 namespace App\Api\Users\Controllers;
 
+use App\Api\Users\Queries\UserIndexQuery;
 use App\Api\Users\Resources\UserResource;
 use Domain\Users\Models\User;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -11,15 +12,12 @@ use Support\App\Api\Controller;
 class UserController extends Controller
 {
     /**
+     * @param UserIndexQuery $userQuery
      * @return AnonymousResourceCollection
      */
-    public function index(): AnonymousResourceCollection
+    public function index(UserIndexQuery $userQuery): AnonymousResourceCollection
     {
-        $users = QueryBuilder::for(User::class)
-            ->allowedFilters(['id', 'name'])
-            ->allowedIncludes('quotes')
-            ->allowedSorts('id', 'name')
-            ->get();
+        $users = $userQuery->get();
 
         return UserResource::collection($users);
     }
@@ -30,7 +28,7 @@ class UserController extends Controller
      */
     public function show(int $userId): UserResource
     {
-        $user = QueryBuilder::for(User::query()->where('id', $userId))
+        $user = QueryBuilder::for(User::class)
             ->whereId($userId)
             ->allowedIncludes('quotes')
             ->firstOrFail();

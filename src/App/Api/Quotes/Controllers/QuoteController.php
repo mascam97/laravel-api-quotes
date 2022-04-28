@@ -2,6 +2,7 @@
 
 namespace App\Api\Quotes\Controllers;
 
+use App\Api\Quotes\Queries\QuoteIndexQuery;
 use App\Api\Quotes\Requests\QuoteRequest;
 use App\Api\Quotes\Resources\QuoteResource;
 use Domain\Quotes\Actions\CreateQuoteAction;
@@ -20,15 +21,12 @@ use Support\Exceptions\InvalidScore;
 class QuoteController extends Controller
 {
     /**
+     * @param QuoteIndexQuery $quoteQuery
      * @return AnonymousResourceCollection
      */
-    public function index(): AnonymousResourceCollection
+    public function index(QuoteIndexQuery $quoteQuery): AnonymousResourceCollection
     {
-        $quotes = QueryBuilder::for(Quote::class)
-            ->allowedFilters(['title', 'content', 'user_id'])
-            ->allowedIncludes('user')
-            ->allowedSorts('id', 'title')
-            ->get();
+        $quotes = $quoteQuery->get();
 
         return QuoteResource::collection($quotes);
     }
