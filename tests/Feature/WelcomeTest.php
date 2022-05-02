@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\Quote;
-use App\Models\User;
+use Domain\Quotes\Factories\QuoteFactory;
+use Domain\Quotes\Models\Quote;
+use Domain\Users\Factories\UserFactory;
+use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,8 +17,8 @@ class WelcomeTest extends TestCase
 
     public function test_view(): void
     {
-        User::factory(10)->create();
-        Quote::factory(20)->create();
+        (new UserFactory)->setAmount(10)->create();
+        (new QuoteFactory)->setAmount(20)->create();
 
         $this->get($this->url)
             ->assertOk()

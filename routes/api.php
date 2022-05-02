@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\V1\QuoteController;
-use App\Http\Controllers\Api\V1\UserController;
+use App\Api\Quotes\Controllers\QuoteController;
+use App\Api\Users\Controllers\AuthController;
+use App\Api\Users\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*

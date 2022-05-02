@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Quote;
-use App\Models\Rating;
-use App\Models\User;
+use Domain\Quotes\Models\Quote;
+use Domain\Users\Models\User;
 use Illuminate\Support\Facades\Route;
+use Support\Models\Rating;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+//    TODO: Create a controller that uses collections and more logic business
     return view('welcome/index', [
         'users_count' => count(User::all()),
         'quotes_count' => count(Quote::all()),
