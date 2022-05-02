@@ -2,7 +2,9 @@
 
 namespace Tests\Unit\Support;
 
+use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
+use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -21,10 +23,8 @@ class RatingTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
-        $this->quote = Quote::factory()->create([
-            'user_id' => $this->user,
-        ]);
+        $this->user = (new UserFactory)->create();
+        $this->quote = (new QuoteFactory)->withUser($this->user)->create();
     }
 
     public function test_users_rate_quotes()
@@ -38,7 +38,7 @@ class RatingTest extends TestCase
     public function test_calculate_average_rating()
     {
         /** @var User $anotherUser */
-        $anotherUser = User::factory()->create();
+        $anotherUser = (new UserFactory)->create();
 
         $this->user->rate($this->quote, 5);
         $anotherUser->rate($this->quote, 3);

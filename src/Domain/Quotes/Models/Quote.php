@@ -2,7 +2,7 @@
 
 namespace Domain\Quotes\Models;
 
-use Database\Factories\QuoteFactory;
+use Database\Factories\DBQuoteFactory;
 use Domain\Quotes\QueryBuilders\QuoteQueryBuilder;
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -42,7 +42,7 @@ class Quote extends Model
      */
     protected static function newFactory(): Factory
     {
-        return QuoteFactory::new();
+        return DBQuoteFactory::new();
     }
 
     public function newEloquentBuilder($query): QuoteQueryBuilder

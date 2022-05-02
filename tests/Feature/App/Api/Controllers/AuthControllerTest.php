@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\App\Api\Controllers;
 
+use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -40,7 +41,7 @@ class AuthControllerTest extends TestCase
     public function test_api_token_auth(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = (new UserFactory)->create();
 
         $this->json('POST', $this->url_login, [
             'email' => $user->email,
@@ -81,7 +82,7 @@ class AuthControllerTest extends TestCase
     public function test_register_validate_not_email_duplicated(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = (new UserFactory)->create();
 
         $this->json('POST', $this->url_register, [
             'name' => 'other name',

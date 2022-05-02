@@ -1,21 +1,26 @@
 <?php
 
-namespace Quotes\Actions;
+namespace Tests\Unit\Quotes\Actions;
 
 use Domain\Quotes\Actions\CreateQuoteAction;
 use Domain\Quotes\DTO\QuoteData;
+use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
-use PHPUnit\Framework\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 
 class CreateQuoteActionTest extends TestCase
 {
+    use RefreshDatabase, WithFaker;
+
     private User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
+        $this->user = (new UserFactory)->create();
     }
 
     public function test_quote_is_created(): void

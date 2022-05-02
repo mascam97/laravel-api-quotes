@@ -1,22 +1,28 @@
 <?php
 
-namespace Quotes\Actions;
+namespace Tests\Unit\Quotes\Actions;
 
 use Domain\Quotes\Actions\RateQuoteAction;
 use Domain\Quotes\DTO\QuoteData;
+use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
+use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
-use PHPUnit\Framework\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 
 class RateQuoteActionTest extends TestCase
 {
+    use RefreshDatabase, WithFaker;
+
     private User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
+        $this->user = (new UserFactory)->create();
     }
 
     /**
@@ -25,11 +31,10 @@ class RateQuoteActionTest extends TestCase
     public function test_quote_is_created(): void
     {
         $quoteData = new QuoteData(score: 0);
-        $rateQuoteAction = new RateQuoteAction();
         /** @var Quote $quote */
-        $quote = Quote::factory()->create();
+        $quote = (new QuoteFactory)->withUser((new UserFactory)->create())->create();
 
-        $quoteRated = $rateQuoteAction->__invoke($quoteData, $quote, $this->user);
+        $quoteRated = (new RateQuoteAction)->__invoke($quoteData, $quote, $this->user);
 
         $this->assertEquals($quote->getKey(), $quoteRated->getKey());
     }

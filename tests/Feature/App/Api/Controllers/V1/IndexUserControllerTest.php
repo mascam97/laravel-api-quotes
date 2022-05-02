@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\App\Api\Controllers\V1;
 
+use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
+use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -19,15 +21,15 @@ class IndexUserControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
+        $this->user = (new UserFactory)->create();
 
-        User::factory(4)->create();
+        (new UserFactory)->setAmount(4)->create();
     }
 
     public function test_id_filter(): void
     {
         /** @var User $newUser */
-        $newUser = User::factory()->create();
+        $newUser = (new UserFactory)->create();
 
         $responseData = $this->actingAs($this->user, 'sanctum')
             ->json('GET', "$this->url?filter[id]=$newUser->id")
@@ -39,7 +41,7 @@ class IndexUserControllerTest extends TestCase
 
     public function test_name_filter(): void
     {
-        $newUser = User::factory()->create([
+        $newUser = (new UserFactory)->create([
             'name' => 'Shakespeare',
         ]);
 
@@ -60,12 +62,10 @@ class IndexUserControllerTest extends TestCase
         $this->assertCount(5, $responseData);
         $this->assertArrayHasKey('quotes', $responseData[0]);
 
-        $newUser = User::factory()->create([
+        $newUser = (new UserFactory)->create([
             'name' => 'User with quote',
         ]);
-        $quote = Quote::factory()->create([
-            'user_id'=> $newUser->getKey(),
-        ]);
+        $quote = (new QuoteFactory)->withUser($newUser)->create();
 
         $responseDataTwo = $this->actingAs($this->user, 'sanctum')
             ->json('GET', "$this->url?filter[name]=User with quote&include=quotes")

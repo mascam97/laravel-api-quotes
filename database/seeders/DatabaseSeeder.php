@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Domain\Quotes\Models\Quote;
-use Domain\Users\Models\User;
+use Domain\Quotes\Factories\QuoteFactory;
+use Domain\Users\Factories\UserFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,8 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(10)->create();
-        Quote::factory(120)->create();
+        (new UserFactory)->create();
+        (new QuoteFactory)->setAmount(120)->create();
 
         $this->call(RatingUserQuoteSeeder::class);
     }

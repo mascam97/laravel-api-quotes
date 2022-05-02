@@ -6,7 +6,7 @@ use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class UserFactory extends Factory
+class DBUserFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

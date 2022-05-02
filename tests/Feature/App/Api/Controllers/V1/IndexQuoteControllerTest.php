@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\App\Api\Controllers\V1;
 
+use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
+use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -20,18 +22,15 @@ class IndexQuoteControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
+        $this->user = (new UserFactory)->create();
 
-        Quote::factory(5)->create([
-            'user_id' => $this->user->getKey(),
-        ]);
+        (new QuoteFactory)->setAmount(5)->withUser($this->user)->create();
     }
 
     public function test_title_filter(): void
     {
-        $quote = Quote::factory()->create([
+        $quote = (new QuoteFactory)->withUser($this->user)->create([
             'title' => 'Hamlet',
-            'user_id' => $this->user,
         ]);
 
         $responseData = $this->actingAs($this->user, 'sanctum')
@@ -44,9 +43,8 @@ class IndexQuoteControllerTest extends TestCase
 
     public function test_content_filter(): void
     {
-        $quote = Quote::factory()->create([
+        $quote = (new QuoteFactory)->withUser($this->user)->create([
             'content' => 'Some text about something',
-            'user_id' => $this->user,
         ]);
 
         $responseData = $this->actingAs($this->user, 'sanctum')
@@ -60,11 +58,9 @@ class IndexQuoteControllerTest extends TestCase
     public function test_user_id_filter(): void
     {
         /** @var User $newUser */
-        $newUser = User::factory()->create();
+        $newUser = (new UserFactory)->create();
 
-        $quote = Quote::factory()->create([
-            'user_id' => $newUser,
-        ]);
+        $quote = (new QuoteFactory)->withUser($newUser)->create();
 
         $responseData = $this->actingAs($this->user, 'sanctum')
             ->json('GET', "$this->url?filter[user_id]=$newUser->id")
@@ -83,10 +79,9 @@ class IndexQuoteControllerTest extends TestCase
         $this->assertCount(5, $responseData);
         $this->assertArrayHasKey('user', $responseData[0]);
 
-        $newUser = User::factory()->create();
-        $quote = Quote::factory()->create([
+        $newUser = (new UserFactory)->create();
+        $quote = (new QuoteFactory)->withUser($newUser)->create([
             'title' => 'Some text about something',
-            'user_id'=> $newUser->getKey(),
         ]);
 
         $responseDataTwo = $this->actingAs($this->user, 'sanctum')
@@ -115,9 +110,8 @@ class IndexQuoteControllerTest extends TestCase
 
     public function test_title_sort(): void
     {
-        Quote::factory()->create([
+        (new QuoteFactory)->withUser($this->user)->create([
             'title' => 'AAA',
-            'user_id' => $this->user->getKey(),
         ]);
 
         $responseData = $this->actingAs($this->user, 'sanctum')

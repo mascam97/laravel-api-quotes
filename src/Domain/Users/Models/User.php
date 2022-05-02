@@ -2,7 +2,7 @@
 
 namespace Domain\Users\Models;
 
-use Database\Factories\UserFactory;
+use Database\Factories\DBUserFactory;
 use Domain\Quotes\Models\Quote;
 use Domain\Users\QueryBuilders\UserQueryBuilder;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -65,7 +65,7 @@ class User extends Authenticatable
      */
     protected static function newFactory(): Factory
     {
-        return UserFactory::new();
+        return DBUserFactory::new();
     }
 
     public function newEloquentBuilder($query): UserQueryBuilder

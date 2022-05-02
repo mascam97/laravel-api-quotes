@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\App\Api\Controllers\V1;
 
+use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
+use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -22,14 +24,10 @@ class ShowQuoteControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
-        $this->quote = Quote::factory()->create([
-            'user_id' => $this->user->getKey(),
-        ]);
+        $this->user = (new UserFactory)->create();
+        $this->quote = (new QuoteFactory)->withUser($this->user)->create();
 
-        Quote::factory(3)->create([
-            'user_id' => $this->user->getKey(),
-        ]);
+        (new QuoteFactory)->setAmount(3)->withUser($this->user)->create();
     }
 
     public function test_user_include(): void

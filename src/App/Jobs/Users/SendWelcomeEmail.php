@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Jobs\Users;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -30,6 +30,7 @@ class SendWelcomeEmail implements ShouldQueue
      */
     public function handle()
     {
+//        TODO: check spatie/laravel-queueable-action
         $email = new WelcomeEmail();
 
         Mail::to($this->userEmail)->send($email);

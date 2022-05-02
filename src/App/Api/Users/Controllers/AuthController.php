@@ -4,7 +4,7 @@ namespace App\Api\Users\Controllers;
 
 use App\Api\Users\Requests\LoginRequest;
 use App\Api\Users\Requests\UserRequest;
-use App\Jobs\SendWelcomeEmail;
+use App\Jobs\Users\SendWelcomeEmail;
 use Domain\Users\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
