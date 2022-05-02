@@ -6,9 +6,9 @@ _Community to share and rate quotes._
 
 Personal project to apply my knowledge about API REST and learn more about Laravel and [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum).
 
-**Update March 2022**: Personal project to apply some experience like defining business logic, applying best practices, using some packages and integrating some tools.
+**Update 2022**: Personal project to apply some experience like defining business logic, applying best practices, using some packages and integrating some tools.
 
-### Achievements :star2:
+### Achievements 2021 :star2:
 
 - Learned better practices about APIs (versioning, url names and Authentication by API tokens).
 - Implemented Authentication functions (register and login) and [Authorization - Policies](https://laravel.com/docs/8.x/authorization).
@@ -22,7 +22,7 @@ Personal project to apply my knowledge about API REST and learn more about Larav
 - Implemented [Queue and Jobs](https://laravel.com/docs/8.x/queues) with the container Redis.
 - Implemented support for spanish language (messages and emails).
 
-### Achievements Update March 2022 :star2:
+### Achievements 2022 :star2:
 
 - Created a **[Project definition](./project-definition.md)** file to define the main business logic
 - Implemented **Continuous Integration** with **GitHub Actions**
@@ -32,6 +32,7 @@ Personal project to apply my knowledge about API REST and learn more about Larav
 - Refactoring all the code (setUps implementation in test, use of Actions, DTOs, type hinting, etc.)
 - Implemented a **QueryBuilder library** and improve the **API logic** (delete unnecessary API versioning)
 - Implemented **Sonar Cloud to reduce Technical Debt** (duplications, smells code, etc.)
+- Implemented some **recommendations to build large-than-average web applications**
 
 ---
 
@@ -187,6 +188,7 @@ This project is licensed under the [MIT License](https://choosealicense.com/lice
 
 ### References :books:
 
+- [Laravel Beyond CRUD](https://laravel-beyond-crud.com/)
 - [Laravel Advanced Course](https://platzi.com/clases/laravel-avanzado/)
 - [Postman Course](https://platzi.com/clases/postman/)
 - [Test Driven Development with Laravel Course](https://platzi.com/clases/laravel-tdd/)
