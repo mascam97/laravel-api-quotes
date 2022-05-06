@@ -42,10 +42,8 @@ class ModelRated
 
     /**
      * Get the channels the event should broadcast on.
-     *
-     * @return Channel|array
      */
-    public function broadcastOn()
+    public function broadcastOn(): \Illuminate\Broadcasting\Channel|array
     {
         return new PrivateChannel('channel-name');
     }

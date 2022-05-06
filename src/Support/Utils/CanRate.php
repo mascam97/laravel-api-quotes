@@ -44,7 +44,7 @@ trait CanRate
 
         $this->ratings($model)->attach($model->getKey(), [
             'score' => $score,
-            'rateable_type' => get_class($model),
+            'rateable_type' => $model::class,
         ]);
 
         // if the user is not the creator of the quote

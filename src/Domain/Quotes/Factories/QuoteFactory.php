@@ -12,10 +12,6 @@ class QuoteFactory
 
     private ?int $amount = null;
 
-    /**
-     * @param int $amount
-     * @return QuoteFactory
-     */
     public function setAmount(int $amount): self
     {
         $this->amount = $amount;
@@ -23,10 +19,6 @@ class QuoteFactory
         return $this;
     }
 
-    /**
-     * @param User $user
-     * @return QuoteFactory
-     */
     public function withUser(User $user): self
     {
         $this->properties += [

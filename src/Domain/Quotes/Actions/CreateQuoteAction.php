@@ -8,11 +8,6 @@ use Domain\Users\Models\User;
 
 class CreateQuoteAction
 {
-    /**
-     * @param QuoteData $data
-     * @param User $user
-     * @return Quote
-     */
     public function __invoke(QuoteData $data, User $user): Quote
     {
         $quote = new Quote();

@@ -8,7 +8,6 @@ trait CanBeRated
 {
     /**
      * @param string|null $model
-     * @return MorphToMany
      */
     public function qualifiers(string $model = null): MorphToMany
     {
@@ -22,7 +21,6 @@ trait CanBeRated
 
     /**
      * @param string|null $model
-     * @return float
      */
     public function averageRating(string $model = null): float
     {

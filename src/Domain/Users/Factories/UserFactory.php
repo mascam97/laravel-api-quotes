@@ -9,10 +9,6 @@ class UserFactory
 {
     private ?int $amount = null;
 
-    /**
-     * @param int $amount
-     * @return UserFactory
-     */
     public function setAmount(int $amount): self
     {
         $this->amount = $amount;

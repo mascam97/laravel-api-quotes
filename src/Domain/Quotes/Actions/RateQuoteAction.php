@@ -10,10 +10,6 @@ use Support\Exceptions\InvalidScore;
 class RateQuoteAction
 {
     /**
-     * @param QuoteData $data
-     * @param Quote $quote
-     * @param User $user
-     * @return Quote
      * @throws InvalidScore
      */
     public function __invoke(QuoteData $data, Quote $quote, User $user): Quote

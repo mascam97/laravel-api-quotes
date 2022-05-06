@@ -14,7 +14,6 @@ class SendEmailModelRatedNotification
     /**
      * Handle the event.
      *
-     * @param  ModelRated  $event
      * @return void
      */
     public function handle(ModelRated $event)

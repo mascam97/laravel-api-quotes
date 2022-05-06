@@ -20,10 +20,6 @@ use Support\Exceptions\InvalidScore;
 
 class QuoteController extends Controller
 {
-    /**
-     * @param QuoteIndexQuery $quoteQuery
-     * @return AnonymousResourceCollection
-     */
     public function index(QuoteIndexQuery $quoteQuery): AnonymousResourceCollection
     {
         $quotes = $quoteQuery->get();
@@ -31,11 +27,6 @@ class QuoteController extends Controller
         return QuoteResource::collection($quotes);
     }
 
-    /**
-     * @param QuoteRequest $request
-     * @param CreateQuoteAction $createQuoteAction
-     * @return JsonResponse
-     */
     public function store(QuoteRequest $request, CreateQuoteAction $createQuoteAction): JsonResponse
     {
         try {
@@ -54,10 +45,6 @@ class QuoteController extends Controller
         ], 201);
     }
 
-    /**
-     * @param int $quoteId
-     * @return QuoteResource
-     */
     public function show(int $quoteId): QuoteResource
     {
         $quote = QueryBuilder::for(Quote::class)
@@ -69,10 +56,6 @@ class QuoteController extends Controller
     }
 
     /**
-     * @param QuoteRequest $request
-     * @param Quote $quote
-     * @param UpdateQuoteAction $updateQuoteAction
-     * @return JsonResponse
      * @throws AuthorizationException
      */
     public function update(QuoteRequest $request, Quote $quote, UpdateQuoteAction $updateQuoteAction): JsonResponse
@@ -97,8 +80,6 @@ class QuoteController extends Controller
     }
 
     /**
-     * @param Quote $quote
-     * @return JsonResponse
      * @throws AuthorizationException
      */
     public function destroy(Quote $quote): JsonResponse
@@ -114,9 +95,6 @@ class QuoteController extends Controller
     }
 
     /**
-     * @param Quote $quote
-     * @param Request $request
-     * @param RateQuoteAction $rateQuoteAction
      * @return JsonResponse
      * @throws InvalidScore
      */
