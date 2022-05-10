@@ -76,7 +76,7 @@ class AuthControllerTest extends TestCase
             'password' => '',
             'device_name' => '',
         ])->assertJsonValidationErrors($this->fillable_register)
-            ->assertSee('The given data was invalid.');
+            ->assertSee('The name field is required. (and 2 more errors)');
     }
 
     public function test_register_validate_not_email_duplicated(): void
@@ -109,18 +109,19 @@ class AuthControllerTest extends TestCase
 
     public function test_register_password_hashed(): void
     {
-        $data = [
+        $this->json('POST', $this->url_register, [
             'name' => 'new user',
             'email' => 'user@mail.com',
             'password' => 'userPassword',
-        ];
-
-        $this->json('POST', $this->url_register, $data)
+        ])
             ->assertOk();
 
+        /** @var User $user */
+        $user = User::query()->where('email', 'user@mail.com')->first();
+
         $this->assertTrue(Hash::check(
-                $data['password'],
-                User::where('email', $data['email'])->first()->password
+                'userPassword',
+                $user->password,
             ));
     }
 }

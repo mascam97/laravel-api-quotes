@@ -40,7 +40,7 @@ class AuthController extends Controller
     public function register(UserRequest $request): JsonResponse
     {
         $user = User::create(
-            $request->except('password') + ['password' => Hash::make($request->getPassword())]
+            $request->except('password') + ['password' => Hash::make($request->input('password'))]
         );
         Log::channel('daily')->info('New user was created.', ['email' => $user->email]);
 

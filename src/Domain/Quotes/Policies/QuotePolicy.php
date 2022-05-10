@@ -13,7 +13,7 @@ class QuotePolicy
 
     public function pass(User $user, Quote $quote): bool
     {
-        if ($user->id === $quote->user_id) {
+        if ($quote->user()->is($user)) {
             return true;
         }
 
