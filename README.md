@@ -1,12 +1,12 @@
-# Laravel8 API Quotes ![Stable](https://img.shields.io/badge/stable-3.0.0-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
+# Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.1.0-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
 
 _Community to share and rate quotes._
 
 ### Project goal by martin-stepwolf :goal_net:
 
-Personal project to apply my knowledge about API REST and learn more about Laravel and [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum).
+**2021**: Personal project to apply my knowledge about API REST and learn more about Laravel and [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum).
 
-**Update 2022**: Personal project to apply some experience like defining business logic, applying best practices, using some packages and integrating some tools.
+**2022**: Personal project to apply some experience like defining business logic, applying best practices, using some packages and integrating some tools.
 
 ### Achievements 2021 :star2:
 
@@ -28,7 +28,8 @@ Personal project to apply my knowledge about API REST and learn more about Larav
 - Implemented **Continuous Integration** with **GitHub Actions**
 - Implemented **PHP CS Fixer** to fix code standard
 - Implemented **PHPStan** for a static analysis in the code
-- Updated to **PHP 8.0**
+- Implemented **rector** for handle automated refactorings
+- Updated to **PHP 8.0** and **Laravel 9**
 - Refactoring all the code (setUps implementation in test, use of Actions, DTOs, type hinting, etc.)
 - Implemented a **QueryBuilder library** and improve the **API logic** (delete unnecessary API versioning)
 - Implemented **Sonar Cloud to reduce Technical Debt** (duplications, smells code, etc.)
@@ -130,6 +131,18 @@ This command fits the code automatically.
 
 ---
 
+### Automated Refactoring
+
+There are some rules to refactoring the code, as code quality, dead code and standard PHP 8.
+
+```
+sail composer rector
+```
+
+This is not a required step, it is an extra improving by rector.php.
+
+---
+
 ## Advanced features
 
 ### Running Artisan Commands
@@ -171,6 +184,7 @@ Note: Remember in production the better command is `queue:work`, [explanation](h
 -   [Laravel Sail](https://laravel.com/docs/8.x/sail) - Docker development environment.
 -   [Larastan](https://github.com/nunomaduro/larastan) - PHP tool to find errors in your code.
 -   [PHP Code Standards Fixer](https://cs.symfony.com/) - PHP tool to fixe your code to follow standards.
+-   [Rector](https://getrector.org/) - Instant Upgrades and Automated Refactoring of any PHP 5.3+ code.
 -   [Data transfer objects with batteries included](https://github.com/spatie/data-transfer-object)
 -   [Laravel Query Builder v4](https://spatie.be/docs/laravel-query-builder/v4/introduction) - PHP package that allows you to filter, sort and include eloquent relations based on a request.
 

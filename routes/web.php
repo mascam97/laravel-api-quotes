@@ -1,9 +1,9 @@
 <?php
 
 use Domain\Quotes\Models\Quote;
+use Domain\Rating\Models\Rating;
 use Domain\Users\Models\User;
 use Illuminate\Support\Facades\Route;
-use Support\Models\Rating;
 
 /*
 |--------------------------------------------------------------------------

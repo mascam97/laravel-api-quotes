@@ -4,8 +4,8 @@ namespace Domain\Quotes\Actions;
 
 use Domain\Quotes\DTO\QuoteData;
 use Domain\Quotes\Models\Quote;
+use Domain\Rating\Exceptions\InvalidScore;
 use Domain\Users\Models\User;
-use Support\Exceptions\InvalidScore;
 
 class RateQuoteAction
 {

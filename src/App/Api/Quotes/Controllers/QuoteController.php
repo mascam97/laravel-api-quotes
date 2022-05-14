@@ -10,13 +10,13 @@ use Domain\Quotes\Actions\RateQuoteAction;
 use Domain\Quotes\Actions\UpdateQuoteAction;
 use Domain\Quotes\DTO\QuoteData;
 use Domain\Quotes\Models\Quote;
+use Domain\Rating\Exceptions\InvalidScore;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
 use Support\App\Api\Controller;
-use Support\Exceptions\InvalidScore;
 
 class QuoteController extends Controller
 {

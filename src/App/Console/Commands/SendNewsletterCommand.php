@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use Domain\Users\Models\User;
+use Domain\Users\Notifications\NewsletterNotification;
 use Illuminate\Console\Command;
-use Support\Notifications\NewsletterNotification;
 
 class SendNewsletterCommand extends Command
 {

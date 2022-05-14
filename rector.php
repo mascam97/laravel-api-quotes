@@ -10,7 +10,6 @@ use Rector\Set\ValueObject\SetList;
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->paths([__DIR__ . '/src', __DIR__ . '/tests']);
     $rectorConfig->sets([
-        LaravelSetList::LARAVEL_80,
         SetList::CODE_QUALITY,
         SetList::DEAD_CODE,
         SetList::PHP_80,
