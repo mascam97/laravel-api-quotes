@@ -1,6 +1,6 @@
 <?php
 
-use Support\Models\Rating;
+use Domain\Rating\Models\Rating;
 
 return [
     'models' => [

@@ -26,7 +26,7 @@ class RateQuoteActionTest extends TestCase
     }
 
     /**
-     * @throws \Support\Exceptions\InvalidScore
+     * @throws \Domain\Rating\Exceptions\InvalidScore
      */
     public function test_quote_is_created(): void
     {

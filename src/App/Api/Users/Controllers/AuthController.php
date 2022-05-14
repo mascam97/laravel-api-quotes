@@ -14,10 +14,6 @@ use Support\App\Api\Controller;
 
 class AuthController extends Controller
 {
-    /**
-     * @param LoginRequest $request
-     * @return JsonResponse
-     */
     public function api_token_auth(LoginRequest $request): JsonResponse
     {
         if (Auth::attempt($request->only('email', 'password'))) {
@@ -41,14 +37,10 @@ class AuthController extends Controller
         ], 401);
     }
 
-    /**
-     * @param UserRequest $request
-     * @return JsonResponse
-     */
     public function register(UserRequest $request): JsonResponse
     {
         $user = User::create(
-            $request->except('password') + ['password' => Hash::make($request->password)]
+            $request->except('password') + ['password' => Hash::make($request->input('password'))]
         );
         Log::channel('daily')->info('New user was created.', ['email' => $user->email]);
 

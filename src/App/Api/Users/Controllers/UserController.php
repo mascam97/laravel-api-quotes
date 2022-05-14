@@ -11,10 +11,6 @@ use Support\App\Api\Controller;
 
 class UserController extends Controller
 {
-    /**
-     * @param UserIndexQuery $userQuery
-     * @return AnonymousResourceCollection
-     */
     public function index(UserIndexQuery $userQuery): AnonymousResourceCollection
     {
         $users = $userQuery->get();
@@ -22,10 +18,6 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
-    /**
-     * @param int $userId
-     * @return UserResource
-     */
     public function show(int $userId): UserResource
     {
         $user = QueryBuilder::for(User::class)

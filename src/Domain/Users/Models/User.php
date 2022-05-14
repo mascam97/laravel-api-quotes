@@ -4,6 +4,7 @@ namespace Domain\Users\Models;
 
 use Database\Factories\DBUserFactory;
 use Domain\Quotes\Models\Quote;
+use Domain\Rating\Utils\CanRate;
 use Domain\Users\QueryBuilders\UserQueryBuilder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +13,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
-use Support\Utils\CanRate;
 
 /**
  * @property-read int $id
@@ -60,8 +60,6 @@ class User extends Authenticatable
 
     /**
      * Create a new factory instance for the model.
-     *
-     * @return Factory
      */
     protected static function newFactory(): Factory
     {

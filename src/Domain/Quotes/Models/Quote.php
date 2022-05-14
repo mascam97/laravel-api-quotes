@@ -4,6 +4,7 @@ namespace Domain\Quotes\Models;
 
 use Database\Factories\DBQuoteFactory;
 use Domain\Quotes\QueryBuilders\QuoteQueryBuilder;
+use Domain\Rating\Utils\CanBeRated;
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-use Support\Utils\CanBeRated;
 
 /**
  * @property-read int $id
@@ -32,13 +32,9 @@ class Quote extends Model
     ];
 
 //    TODO: Add state pattern for a new field to manage more business logic
-
     // TODO: Add some enums for a field called topic
-
     /**
      * Create a new factory instance for the model.
-     *
-     * @return Factory
      */
     protected static function newFactory(): Factory
     {

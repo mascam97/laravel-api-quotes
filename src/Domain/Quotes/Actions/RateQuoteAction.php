@@ -4,16 +4,12 @@ namespace Domain\Quotes\Actions;
 
 use Domain\Quotes\DTO\QuoteData;
 use Domain\Quotes\Models\Quote;
+use Domain\Rating\Exceptions\InvalidScore;
 use Domain\Users\Models\User;
-use Support\Exceptions\InvalidScore;
 
 class RateQuoteAction
 {
     /**
-     * @param QuoteData $data
-     * @param Quote $quote
-     * @param User $user
-     * @return Quote
      * @throws InvalidScore
      */
     public function __invoke(QuoteData $data, Quote $quote, User $user): Quote
