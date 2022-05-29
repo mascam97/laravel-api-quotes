@@ -1,5 +1,5 @@
 {
-    "name": "martin-stepwolf/laravel8-api-quotes",
+    "name": "mascam97/laravel-api-quotes",
     "type": "project",
     "description": "Community to share and rate quotes.",
     "keywords": [
@@ -16,8 +16,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Martín Campos",
-            "homepage": "https://www.martin-stepwolf.com"
+            "name": "Martín S. Campos",
+            "homepage": "https://github.com/mascam97"
         }
     ],
     "require": {

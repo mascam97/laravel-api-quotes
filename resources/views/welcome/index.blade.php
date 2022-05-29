@@ -80,8 +80,8 @@
                 <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
                     <div class="text-center text-sm text-gray-500 sm:text-left">
                         <div class="flex items-center">
-                            Personal project by <a href="https://www.martin-stepwolf.com/"><strong>martin-stepwolf</strong></a> -
-                            <a href="https://github.com/martin-stepwolf/laravel8-api-quotes"><strong>Source Code</strong></a>
+                            Personal project by <a href="https://github.com/mascam97"><strong>mascam97</strong></a> -
+                            <a href="https://github.com/mascam97/laravel-api-quotes"><strong>Source Code</strong></a>
                         </div>
                     </div>
 

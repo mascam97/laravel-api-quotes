@@ -50,7 +50,7 @@ class AuthControllerTest extends TestCase
         ])->assertOk()
             ->assertSee([
                 'Action was executed successfully',
-                'user_logged', $user->id, $user->email,
+                'user', $user->id, $user->email,
             ]);
 
         $this->json('POST', $this->url_login, [

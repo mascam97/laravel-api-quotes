@@ -1,19 +1,19 @@
 # Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.1.0-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
 
-_Community to share and rate quotes._
+_Main project - My guinea pig - Community to share and rate quotes_
 
-### Project goal by martin-stepwolf :goal_net:
+## Project goal :goal_net:
 
-**2021**: Personal project to apply my knowledge about API REST and learn more about Laravel and [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum).
+**2021**: Personal project to apply my knowledge about API REST and learn more about Laravel.
 
-**2022**: Personal project to apply some experience like defining business logic, applying best practices, using some packages and integrating some tools.
+**2022**: Personal project to apply some experience like defining business logic, applying best practices, integrating some tools and packages.
 
 ### Achievements 2021 :star2:
 
 - Learned better practices about APIs (versioning, url names and Authentication by API tokens).
 - Implemented Authentication functions (register and login) and [Authorization - Policies](https://laravel.com/docs/8.x/authorization).
 - Implemented [API resources](https://laravel.com/docs/8.x/eloquent-resources) to transform data.
-- Implemented a 2nd version where users can rate quotes (**Polymorphic relationships**).
+- Implemented a feature where users can rate quotes (**Polymorphic relationships**).
 - Tested with PHPUnit (**Test-Driven Development**) and [Postman](https://www.postman.com/) and created a documentation [link](https://documenter.getpostman.com/view/14344048/TWDUrJfS).
 - Implemented custom errors and logs about information of the policy, authentication and an [Observer](https://laravel.com/docs/8.x/eloquent#observers) in Quotes.
 - Create a custom [Artisan command](https://laravel.com/docs/8.x/artisan) to send an email and tested it in local ([mailhog](http://localhost:8025)).
@@ -29,11 +29,20 @@ _Community to share and rate quotes._
 - Implemented **PHP CS Fixer** to fix code standard
 - Implemented **PHPStan** for a static analysis in the code
 - Implemented **rector** for handle automated refactorings
-- Updated to **PHP 8.0** and **Laravel 9**
+- Implemented **State pattern and Enums**
+- Upgraded to **PHP 8.0** and **Laravel 9**
 - Refactoring all the code (setUps implementation in test, use of Actions, DTOs, type hinting, etc.)
 - Implemented a **QueryBuilder library** and improve the **API logic** (delete unnecessary API versioning)
 - Implemented **Sonar Cloud to reduce Technical Debt** (duplications, smells code, etc.)
 - Implemented some **recommendations to build large-than-average web applications**
+
+### TODOS
+
+- Implement an external API, tested with Mocks
+- Improve testing with [PEST PHP](https://pestphp.com/)
+- Reach the highest level in PHPStan
+- Reach a 100% coverage (test jobs and missing features)
+- Database optimization (avoid unnecessary queries)
 
 ---
 
@@ -179,7 +188,7 @@ Note: Remember in production the better command is `queue:work`, [explanation](h
 
 ### Built With 🛠️
 
--   [Laravel 8](https://laravel.com/docs/8.x/releases/) - PHP framework.
+-   [Laravel 9](https://laravel.com/docs/9.x/releases/) - PHP framework.
 -   [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum) - Authentication system.
 -   [Laravel Sail](https://laravel.com/docs/8.x/sail) - Docker development environment.
 -   [Larastan](https://github.com/nunomaduro/larastan) - PHP tool to find errors in your code.
@@ -187,14 +196,16 @@ Note: Remember in production the better command is `queue:work`, [explanation](h
 -   [Rector](https://getrector.org/) - Instant Upgrades and Automated Refactoring of any PHP 5.3+ code.
 -   [Data transfer objects with batteries included](https://github.com/spatie/data-transfer-object)
 -   [Laravel Query Builder v4](https://spatie.be/docs/laravel-query-builder/v4/introduction) - PHP package that allows you to filter, sort and include eloquent relations based on a request.
+-   [Laravel Model State](https://spatie.be/docs/laravel-model-states/v2/01-introduction) - Advanced state support for Laravel models
+-   [Laravel Enums](https://spatie.be/docs/enum/v3/usage/100-laravel) - Strongly typed enums.
 
 ### Authors
 
--   Martín Campos - [martin-stepwolf](https://www.martin-stepwolf.com)
+-   Martín S. Campos - [mascam97](https://github.com/mascam97)
 
 ### Contributing
 
-You're free to contribute to this project by submitting [issues](https://github.com/martin-stepwolf/laravel8-api-quotes/issues) and/or [pull requests](https://github.com/martin-stepwolf/laravel8-api-quotes/pulls).
+You're free to contribute to this project by submitting [issues](https://github.com/mascam97/laravel-api-quotes/issues) and/or [pull requests](https://github.com/mascam97/laravel-api-quotes/pulls).
 
 ### License
 
