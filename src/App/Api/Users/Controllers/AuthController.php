@@ -20,6 +20,7 @@ class AuthController extends Controller
             return response()->json([
                 'data' => [
                     'user_logged' => [
+                        //                        TODO: Use a resource
                         'id' => $request->user()->id,
                         'name' => $request->user()->name,
                         'email' => $request->user()->email,
@@ -39,6 +40,7 @@ class AuthController extends Controller
 
     public function register(UserRequest $request): JsonResponse
     {
+//        TODO: Move to an Action and DTOs
         $user = User::create(
             $request->except('password') + ['password' => Hash::make($request->input('password'))]
         );
