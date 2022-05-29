@@ -4,6 +4,7 @@ namespace Domain\Quotes\Models;
 
 use Database\Factories\DBQuoteFactory;
 use Domain\Quotes\QueryBuilders\QuoteQueryBuilder;
+use Domain\Quotes\States\QuoteState;
 use Domain\Rating\Utils\CanBeRated;
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -12,11 +13,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
+use Spatie\ModelStates\HasStates;
 
 /**
  * @property-read int $id
  * @property string $title
  * @property string $content
+ * @property QuoteState $state
  * @property int $user_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -25,13 +28,16 @@ use Illuminate\Support\Str;
  */
 class Quote extends Model
 {
-    use HasFactory, CanBeRated;
+    use HasFactory, CanBeRated, HasStates;
 
     protected $fillable = [
         'title', 'content',
     ];
 
-//    TODO: Add state pattern for a new field to manage more business logic
+    protected $casts = [
+        'state' => QuoteState::class,
+    ];
+
     // TODO: Add some enums for a field called topic
     /**
      * Create a new factory instance for the model.

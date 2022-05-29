@@ -18,7 +18,7 @@ class QuoteControllerTest extends TestCase
 
     private array $fillable = ['title', 'content'];
 
-    private array $fields = ['id', 'title', 'content', 'excerpt', 'created_at', 'updated_at'];
+    private array $fields = ['id', 'title', 'content', 'state', 'excerpt', 'created_at', 'updated_at'];
 
     private string $table = 'quotes';
 

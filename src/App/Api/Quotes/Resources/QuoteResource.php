@@ -24,6 +24,7 @@ class QuoteResource extends JsonResource
             'title' => (string) $this->title,
             'excerpt' => (string) $this->excerpt,
             'content' => (string) $this->content,
+            'state' => (string) $this->state->name(),
             'user' => UserResource::make($this->whenLoaded('user')),
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,

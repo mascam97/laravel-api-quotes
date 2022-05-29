@@ -1,5 +1,8 @@
 <?php
 
+use Domain\Quotes\States\Banned;
+use Domain\Quotes\States\Drafted;
+use Domain\Quotes\States\Published;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,9 +20,9 @@ class CreateQuotesTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->unsignedBigInteger('user_id');
+            $table->enum('state', [Drafted::class, Published::class, Banned::class]);
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

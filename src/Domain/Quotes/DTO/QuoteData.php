@@ -8,6 +8,7 @@ class QuoteData
         public ?string $title = null,
         public ?string $content = null,
         public ?int $score = null,
+        public ?bool $published = false,
     ) {
     }
 
