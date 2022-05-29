@@ -5,6 +5,7 @@ namespace Domain\Users\Models;
 use Database\Factories\DBUserFactory;
 use Domain\Quotes\Models\Quote;
 use Domain\Rating\Utils\CanRate;
+use Domain\Users\Enums\SexEnum;
 use Domain\Users\QueryBuilders\UserQueryBuilder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -47,6 +48,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'sex' => SexEnum::class.':nullable',
     ];
 
     /**

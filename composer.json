@@ -1,5 +1,5 @@
 {
-    "name": "martin-stepwolf/laravel8-api-quotes",
+    "name": "mascam97/laravel-api-quotes",
     "type": "project",
     "description": "Community to share and rate quotes.",
     "keywords": [
@@ -16,8 +16,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Martín Campos",
-            "homepage": "https://www.martin-stepwolf.com"
+            "name": "Martín S. Campos",
+            "homepage": "https://github.com/mascam97"
         }
     ],
     "require": {
@@ -29,6 +29,8 @@
         "laravel/sanctum": "^2.9",
         "laravel/tinker": "^2.5",
         "league/flysystem-aws-s3-v3": "3.0",
+        "spatie/laravel-enum": "^3.0",
+        "spatie/laravel-model-states": "^2.3",
         "spatie/laravel-query-builder": "5.0",
         "symfony/http-client": "^6.0",
         "symfony/mailgun-mailer": "^6.0"

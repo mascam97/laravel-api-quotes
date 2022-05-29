@@ -19,7 +19,8 @@ class AuthController extends Controller
         if (Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
                 'data' => [
-                    'user_logged' => [
+                    'user' => [
+                        //                        TODO: Use a resource and move to /me
                         'id' => $request->user()->id,
                         'name' => $request->user()->name,
                         'email' => $request->user()->email,
@@ -39,6 +40,7 @@ class AuthController extends Controller
 
     public function register(UserRequest $request): JsonResponse
     {
+//        TODO: Move to an Action and DTOs
         $user = User::create(
             $request->except('password') + ['password' => Hash::make($request->input('password'))]
         );
@@ -50,4 +52,6 @@ class AuthController extends Controller
             'message' => trans('message.created', ['attribute' => 'user']),
         ]);
     }
+
+//    TODO: Implement Laravel Fortify
 }

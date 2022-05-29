@@ -24,10 +24,27 @@
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
-                <h1>{{ env('APP_NAME') }}</h1>
+                <h1>{{ env('APP_NAME', 'Laravel API Quotes') }}</h1>
                 </div>
-                <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
-                    Users: <strong>{{ $users_count }}</strong>|Quotes: <strong>{{ $quotes_count }}</strong>|Ratings: <strong>{{ $ratings_count }}</strong>
+
+                <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
+                    <div class="grid grid-cols-1 md:grid-cols-2">
+                        @foreach($quotes as $quote)
+                        <div class="p-6">
+                            <div class="flex items-center">
+                                <div class="ml-4 text-lg leading-7 font-semibold"><span class="text-gray-900 dark:text-white">{{ $quote->title }}</span></div>
+                            </div>
+                            <div class="ml-12">
+                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
+                                    {{ $quote->content }}
+                                </div>
+                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
+                                    {{ $quote->created_at->diffForHumans() }}
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
                 </div>
                 <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                     <div class="grid grid-cols-1 md:grid-cols-2">
@@ -39,7 +56,7 @@
 
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                Laravel8 API Quotes is a <strong>community to share quotes</strong>. My goal about building this personal project is <strong>applying my knowledge about API REST and learn about <a href="https://laravel.com/docs/8.x/sanctum" target="_blank" rel="noopener noreferrer">Laravel Sanctum</a></strong>.
+                                    Laravel API Quotes is a <strong>community to share quotes</strong>. My goal about building this personal project is <strong>applying my knowledge about API REST and learn about <a href="https://laravel.com/docs/8.x/sanctum" target="_blank" rel="noopener noreferrer">Laravel Sanctum</a></strong>.
                                 </div>
                             </div>
                         </div>
@@ -59,11 +76,12 @@
                     </div>
                 </div>
 
+
                 <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
                     <div class="text-center text-sm text-gray-500 sm:text-left">
                         <div class="flex items-center">
-                            Personal project by <a href="https://www.martin-stepwolf.com/"><strong>martin-stepwolf</strong></a> -
-                            <a href="https://github.com/martin-stepwolf/laravel8-api-quotes"><strong>Source Code</strong></a>
+                            Personal project by <a href="https://github.com/mascam97"><strong>mascam97</strong></a> -
+                            <a href="https://github.com/mascam97/laravel-api-quotes"><strong>Source Code</strong></a>
                         </div>
                     </div>
 
