@@ -2,6 +2,7 @@
 
 namespace Domain\Rating\Utils;
 
+use Domain\Quotes\Models\Quote;
 use Domain\Rating\Events\ModelRated;
 use Domain\Rating\Exceptions\InvalidScore;
 use Illuminate\Database\Eloquent\Model;
@@ -32,6 +33,9 @@ trait CanRate
     }
 
     /**
+     * @param Quote $model
+     * @param float $score
+     * @return bool
      * @throws InvalidScore
      */
     public function rate(Model $model, float $score): bool

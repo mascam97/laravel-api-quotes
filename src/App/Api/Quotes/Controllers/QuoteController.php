@@ -12,8 +12,8 @@ use Domain\Quotes\DTO\QuoteData;
 use Domain\Quotes\Models\Quote;
 use Domain\Rating\Exceptions\InvalidScore;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
 use Support\App\Api\Controller;
@@ -47,8 +47,10 @@ class QuoteController extends Controller
 
     public function show(int $quoteId): QuoteResource
     {
-        $quote = QueryBuilder::for(Quote::class)
-            ->whereId($quoteId)
+        $query = Quote::query()
+            ->whereId($quoteId);
+
+        $quote = QueryBuilder::for($query)
             ->allowedIncludes('user')
             ->firstOrFail();
 
@@ -98,7 +100,7 @@ class QuoteController extends Controller
      * @return JsonResponse
      * @throws InvalidScore
      */
-    public function rate(Quote $quote, Request $request, RateQuoteAction $rateQuoteAction)
+    public function rate(Quote $quote, FormRequest $request, RateQuoteAction $rateQuoteAction)
     {
         // The user can rate from 0 to 5
         // 0 means no rating
