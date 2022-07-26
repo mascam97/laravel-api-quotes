@@ -17,18 +17,15 @@ class UserControllerTest extends TestCase
 
     private array $fields = ['id', 'name', 'email', 'created_at'];
 
-    private string $table = 'users';
-
     private User $user;
 
-    private Quote $quote;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->user = (new UserFactory)->create();
-        $this->quote = (new QuoteFactory)->withUser($this->user)->create();
+        (new QuoteFactory)->withUser($this->user)->create();
     }
 
     public function test_guest_unauthorized(): void
