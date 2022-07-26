@@ -173,7 +173,7 @@ class QuoteControllerTest extends TestCase
     {
         $this->actingAs($this->user, 'sanctum')
             ->json('DELETE', "$this->url/1000")
-            ->assertSee(null)->assertNotFound();
+            ->assertSee([])->assertNotFound();
     }
 
     public function test_delete(): void

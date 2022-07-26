@@ -20,6 +20,7 @@ class AuthController extends Controller
 
             /** @var User $authUser */
             $authUser = $request->user();
+
             return response()->json([
                 'data' => [
                     'user' => [

@@ -104,7 +104,7 @@ class QuoteController extends Controller
     {
         // The user can rate from 0 to 5
         // 0 means no rating
-        $request->validate([ /* @phpstan-ignore-line */
+        $request->validate([/* @phpstan-ignore-line */
             'score' => 'required|integer',
         ]);
 

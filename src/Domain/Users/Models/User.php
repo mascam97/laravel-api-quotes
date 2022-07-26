@@ -23,7 +23,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $password
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property int $quotes_count
+ * @property ?int $quotes_count
  * @property-read HasMany $quotes
  *
  * @method static UserFactory factory(...$parameters)
