@@ -12,7 +12,7 @@ trait CanRate
 {
     public function ratings(null|string|Model $model = null): MorphToMany
     {
-        $modelClass = $model ? (new $model)->getMorphClass() : $this->getMorphClass();
+        $modelClass = $model ? (new $model)->getMorphClass() : $this->getMorphClass(); /* @phpstan-ignore-line */
 
         $morphToMany = $this->morphToMany(
             $modelClass,

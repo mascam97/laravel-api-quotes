@@ -6,7 +6,6 @@ use Database\Factories\DBUserFactory;
 use Domain\Quotes\Models\Quote;
 use Domain\Rating\Utils\CanRate;
 use Domain\Users\Enums\SexEnum;
-use Domain\Users\Factories\UserFactory;
 use Domain\Users\QueryBuilders\UserQueryBuilder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,7 +25,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property ?int $quotes_count
  * @property-read HasMany $quotes
  *
- * @method static UserFactory factory(...$parameters)
+ * @method static DBUserFactory factory(...$parameters)
  * @method static UserQueryBuilder query()
  */
 class User extends Authenticatable

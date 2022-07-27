@@ -22,7 +22,7 @@ class RateQuoteActionTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = (new UserFactory)->create();
+        $this->user = User::factory()->create();
     }
 
     /**
@@ -32,7 +32,7 @@ class RateQuoteActionTest extends TestCase
     {
         $quoteData = new QuoteData(score: 0);
         /** @var Quote $quote */
-        $quote = (new QuoteFactory)->withUser((new UserFactory)->create())->create();
+        $quote = (new QuoteFactory)->withUser(User::factory()->create())->create();
 
         $quoteRated = (new RateQuoteAction)->__invoke($quoteData, $quote, $this->user);
 

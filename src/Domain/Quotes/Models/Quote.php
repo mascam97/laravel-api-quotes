@@ -3,7 +3,6 @@
 namespace Domain\Quotes\Models;
 
 use Database\Factories\DBQuoteFactory;
-use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\QueryBuilders\QuoteQueryBuilder;
 use Domain\Quotes\States\QuoteState;
 use Domain\Rating\Utils\CanBeRated;
@@ -27,7 +26,7 @@ use Spatie\ModelStates\HasStates;
  * @property-read string $excerpt
  * @property User $user
  *
- * @method static QuoteFactory factory(...$parameters)
+ * @method static DBQuoteFactory factory(...$parameters)
  * @method static QuoteQueryBuilder query()
  */
 class Quote extends Model

@@ -4,7 +4,6 @@ namespace Tests\Feature\App\Api\Quotes\Controllers;
 
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
-use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -30,8 +29,8 @@ class QuoteControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = (new UserFactory)->create();
-        $this->quote = (new QuoteFactory)->withUser($this->user)->create();
+        $this->user = User::factory()->create();
+        $this->quote = (new QuoteFactory)->withUser($this->user)->create(); /* @phpstan-ignore-line */
     }
 
     public function test_guest_unauthorized(): void
@@ -116,7 +115,7 @@ class QuoteControllerTest extends TestCase
     public function test_update_policy(): void
     {
         /** @var User $userNotOwner */
-        $userNotOwner = (new UserFactory)->create();
+        $userNotOwner = User::factory()->create();
         // just the owner $this->user can delete his quote
 
         $this->actingAs($userNotOwner)
@@ -157,7 +156,7 @@ class QuoteControllerTest extends TestCase
     public function test_destroy_policy(): void
     {
         /** @var User $UserNotOwner */
-        $UserNotOwner = (new UserFactory)->create();
+        $UserNotOwner = User::factory()->create();
 
         $this->actingAs($UserNotOwner)
             ->delete("$this->url/{$this->quote->id}")

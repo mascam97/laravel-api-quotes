@@ -23,7 +23,7 @@ class UserControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = (new UserFactory)->create();
+        $this->user = User::factory()->create();
         (new QuoteFactory)->withUser($this->user)->create();
     }
 

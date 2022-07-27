@@ -7,6 +7,7 @@ use Domain\Quotes\DTO\QuoteData;
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
 use Domain\Users\Factories\UserFactory;
+use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -22,7 +23,7 @@ class UpdateQuoteActionTest extends TestCase
         );
         $updateQuoteAction = new UpdateQuoteAction();
         /** @var Quote $quote */
-        $quote = (new QuoteFactory)->withUser((new UserFactory)->create())->create([
+        $quote = (new QuoteFactory)->withUser(User::factory()->create())->create([
             'title' => 'old title',
             'content' => 'old content',
         ]);

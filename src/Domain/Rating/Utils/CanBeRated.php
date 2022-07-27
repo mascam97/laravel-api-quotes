@@ -11,7 +11,7 @@ trait CanBeRated
      */
     public function qualifiers(string $model = null): MorphToMany
     {
-        $modelClass = $model ? (new $model)->getMorphClass() : $this->getMorphClass();
+        $modelClass = $model ? (new $model)->getMorphClass() : $this->getMorphClass(); /* @phpstan-ignore-line */
 
         return $this->morphToMany($modelClass, 'rateable', 'ratings', 'rateable_id', 'qualifier_id')
             ->withPivot('qualifier_type', 'score')

@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        (new UserFactory)->create();
+        User::factory()->create();
         (new QuoteFactory)->setAmount(120)->create();
 
         $this->call(RatingUserQuoteSeeder::class);

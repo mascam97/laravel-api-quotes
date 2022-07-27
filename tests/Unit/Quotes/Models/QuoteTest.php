@@ -4,7 +4,6 @@ namespace Tests\Unit\Quotes\Models;
 
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
-use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -23,7 +22,8 @@ class QuoteTest extends TestCase
 
     public function test_belongs_to_user(): void
     {
-        $quote = (new QuoteFactory)->withUser((new UserFactory)->create())->create();
+        /** @var Quote $quote */
+        $quote = (new QuoteFactory)->withUser(User::factory()->create())->create();
 
         $this->assertInstanceOf(User::class, $quote->user);
     }

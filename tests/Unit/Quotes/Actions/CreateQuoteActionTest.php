@@ -22,7 +22,7 @@ class CreateQuoteActionTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = (new UserFactory)->create();
+        $this->user = User::factory()->create();
     }
 
     public function test_quote_is_created(): void

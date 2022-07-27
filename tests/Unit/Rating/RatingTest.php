@@ -24,8 +24,8 @@ class RatingTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = (new UserFactory)->create();
-        $this->quote = (new QuoteFactory)->withUser($this->user)->create();
+        $this->user = User::factory()->create();
+        $this->quote = (new QuoteFactory)->withUser($this->user)->create();  /* @phpstan-ignore-line */
     }
 
     /**
@@ -45,7 +45,7 @@ class RatingTest extends TestCase
     public function test_calculate_average_rating(): void
     {
         /** @var User $anotherUser */
-        $anotherUser = (new UserFactory)->create();
+        $anotherUser = User::factory()->create();
 
         $this->user->rate($this->quote, 5);
         $anotherUser->rate($this->quote, 3);

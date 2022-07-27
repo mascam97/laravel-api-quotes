@@ -24,8 +24,8 @@ class ShowQuoteControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = (new UserFactory)->create();
-        $this->quote = (new QuoteFactory)->withUser($this->user)->create();
+        $this->user = User::factory()->create();
+        $this->quote = (new QuoteFactory)->withUser($this->user)->create();  /* @phpstan-ignore-line */
 
         (new QuoteFactory)->setAmount(3)->withUser($this->user)->create();
     }

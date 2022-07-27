@@ -41,7 +41,7 @@ class AuthControllerTest extends TestCase
     public function test_api_token_auth(): void
     {
         /** @var User $user */
-        $user = (new UserFactory)->create();
+        $user = User::factory()->create();
 
         $this->json('POST', $this->url_login, [
             'email' => $user->email,
@@ -82,7 +82,7 @@ class AuthControllerTest extends TestCase
     public function test_register_validate_not_email_duplicated(): void
     {
         /** @var User $user */
-        $user = (new UserFactory)->create();
+        $user = User::factory()->create();
 
         $this->json('POST', $this->url_register, [
             'name' => 'other name',
