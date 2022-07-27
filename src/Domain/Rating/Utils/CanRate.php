@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait CanRate
 {
-    public function ratings($model = null): MorphToMany
+    public function ratings(null|string|Model $model = null): MorphToMany
     {
         $modelClass = $model ? (new $model)->getMorphClass() : $this->getMorphClass();
 
@@ -65,13 +65,13 @@ trait CanRate
             return false;
         }
 
-        $this->ratings($model->getMorphClass())->detach($model->getKey());
+        $this->ratings($model)->detach($model->getKey());
 
         return true;
     }
 
     public function hasRated(Model $model): bool
     {
-        return ! is_null($this->ratings($model->getMorphClass())->find($model->getKey()));
+        return ! is_null($this->ratings($model)->find($model->getKey()));
     }
 }

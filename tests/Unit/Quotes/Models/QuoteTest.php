@@ -13,7 +13,7 @@ class QuoteTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_get_excerpt()
+    public function test_get_excerpt(): void
     {
         $quote = new Quote();
         $quote->content = 'Sunt quaerat eveniet hic voluptatem quod quibusdam voluptas. Cum iusto assumenda mollitia ea ut consequuntur. Labore ipsam voluptatem delectus libero ab deserunt. Recusandae ut quia rem quia qui dolorem soluta. Exercitationem saepe vel minus dolore et et maiores.';
@@ -21,7 +21,7 @@ class QuoteTest extends TestCase
         $this->assertEquals('Sunt quaerat eveniet hic voluptatem quod quibusdam voluptas. Cum iusto assu...', $quote->excerpt);
     }
 
-    public function test_belongs_to_user()
+    public function test_belongs_to_user(): void
     {
         $quote = (new QuoteFactory)->withUser((new UserFactory)->create())->create();
 
