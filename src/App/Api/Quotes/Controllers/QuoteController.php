@@ -9,6 +9,7 @@ use Domain\Quotes\Actions\CreateQuoteAction;
 use Domain\Quotes\Actions\RateQuoteAction;
 use Domain\Quotes\Actions\UpdateQuoteAction;
 use Domain\Quotes\DTO\QuoteData;
+use Domain\Quotes\DTO\UpdateQuoteData;
 use Domain\Quotes\Models\Quote;
 use Domain\Rating\Exceptions\InvalidScore;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -66,7 +67,7 @@ class QuoteController extends Controller
         $this->authorize('pass', $quote);
 
         try {
-            $quote = $updateQuoteAction->__invoke(new QuoteData(...$request->validated()), $quote);
+            $quote = $updateQuoteAction->__invoke(new UpdateQuoteData(...$request->validated()), $quote);
         } catch (\Exception $exception) {
             report($exception);
 

@@ -60,6 +60,7 @@ class RatingTest extends TestCase
     {
         $this->user->rate($this->quote, 5);
 
+        /** @var Rating $rating */
         $rating = Rating::query()->first();
 
         $this->assertInstanceOf(Quote::class, $rating->rateable);

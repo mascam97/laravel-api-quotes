@@ -30,7 +30,7 @@ class RateQuoteActionTest extends TestCase
      */
     public function test_quote_is_created(): void
     {
-        $quoteData = new QuoteData(score: 0);
+        $quoteData = new QuoteData(title: 'title', content: 'content', score: 1);
         /** @var Quote $quote */
         $quote = (new QuoteFactory)->withUser(User::factory()->create())->create();
 

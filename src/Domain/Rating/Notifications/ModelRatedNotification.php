@@ -19,7 +19,7 @@ class ModelRatedNotification extends Notification implements ShouldQueue
     public function __construct(
         private string $qualifierName,
         private string $rateableName,
-        private float $score
+        private ?int $score
     ) {
     }
 

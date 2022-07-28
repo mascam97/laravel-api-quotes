@@ -21,7 +21,7 @@ class ModelRated
     public function __construct(
         private Model $qualifier,
         private Model $rateable,
-        private float $score
+        private ?int $score
     ) {
     }
 
@@ -35,7 +35,7 @@ class ModelRated
         return $this->rateable;
     }
 
-    public function getScore(): float
+    public function getScore(): ?int
     {
         return $this->score;
     }

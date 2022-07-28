@@ -3,15 +3,21 @@
 namespace Domain\Quotes\Actions;
 
 use Domain\Quotes\DTO\QuoteData;
+use Domain\Quotes\DTO\UpdateQuoteData;
 use Domain\Quotes\Models\Quote;
-use Domain\Users\Models\User;
 
 class UpdateQuoteAction
 {
-    public function __invoke(QuoteData $data, Quote $quote): Quote
+    public function __invoke(UpdateQuoteData $data, Quote $quote): Quote
     {
-        $quote->title = $data->title;
-        $quote->content = $data->content;
+        if ($data->title) {
+            $quote->title = $data->title;
+        }
+
+        if ($data->content) {
+            $quote->content = $data->content;
+        }
+
         $quote->update();
 
         return $quote;

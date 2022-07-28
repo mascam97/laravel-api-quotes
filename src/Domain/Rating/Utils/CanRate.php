@@ -34,11 +34,11 @@ trait CanRate
 
     /**
      * @param Quote $model
-     * @param float $score
+     * @param int|null $score
      * @return bool
      * @throws InvalidScore
      */
-    public function rate(Model $model, float $score): bool
+    public function rate(Model $model, int|null $score): bool
     {
         $min = config('rating.min');
         $max = config('rating.max');
