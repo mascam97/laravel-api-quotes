@@ -23,5 +23,8 @@ jobs:
         uses: ramsey/composer-install@v1
 
 
-      - name: Run PHPStan
+      - name: Run PHPStan on src
         run: ./vendor/bin/phpstan --error-format=github
+
+      - name: Run PHPStan on tests
+        run: .vendor/bin/phpstan analyse -c phpstan.tests.neon --error-format=github

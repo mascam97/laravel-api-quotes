@@ -24,6 +24,8 @@ trait CanBeRated
      */
     public function averageRating(string $model = null): float
     {
-        return round($this->qualifiers($model)->avg('score'), 1) ?: 0.0;
+        $modelScore = $this->qualifiers($model)->avg('score');
+
+        return round($modelScore, 1) ?: 0.0; /* @phpstan-ignore-line */
     }
 }

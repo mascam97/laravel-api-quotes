@@ -9,9 +9,11 @@ use Domain\Quotes\Actions\CreateQuoteAction;
 use Domain\Quotes\Actions\RateQuoteAction;
 use Domain\Quotes\Actions\UpdateQuoteAction;
 use Domain\Quotes\DTO\QuoteData;
+use Domain\Quotes\DTO\RateQuoteData;
 use Domain\Quotes\DTO\UpdateQuoteData;
 use Domain\Quotes\Models\Quote;
 use Domain\Rating\Exceptions\InvalidScore;
+use Domain\Users\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
@@ -31,7 +33,14 @@ class QuoteController extends Controller
     public function store(QuoteRequest $request, CreateQuoteAction $createQuoteAction): JsonResponse
     {
         try {
-            $quote = $createQuoteAction->__invoke(new QuoteData(...$request->validated()), $request->user());
+            $quoteData = new QuoteData(
+                title: $request->string('title'),
+                content: (string) $request->string('content')
+            );
+            /** @var User $authUser */
+            $authUser = $request->user();
+
+            $quote = $createQuoteAction->__invoke($quoteData, $authUser);
         } catch (\Exception $exception) {
             report($exception);
 
@@ -67,7 +76,12 @@ class QuoteController extends Controller
         $this->authorize('pass', $quote);
 
         try {
-            $quote = $updateQuoteAction->__invoke(new UpdateQuoteData(...$request->validated()), $quote);
+            $updateQuoteData = new UpdateQuoteData(
+                title: $request->string('title'),
+                content: $request->string('content')
+            );
+
+            $quote = $updateQuoteAction->__invoke($updateQuoteData, $quote);
         } catch (\Exception $exception) {
             report($exception);
 
@@ -98,10 +112,9 @@ class QuoteController extends Controller
     }
 
     /**
-     * @return JsonResponse
      * @throws InvalidScore
      */
-    public function rate(Quote $quote, FormRequest $request, RateQuoteAction $rateQuoteAction)
+    public function rate(Quote $quote, FormRequest $request, RateQuoteAction $rateQuoteAction): JsonResponse
     {
         // The user can rate from 0 to 5
         // 0 means no rating
@@ -109,15 +122,18 @@ class QuoteController extends Controller
             'score' => 'required|integer',
         ]);
 
-        $data = new QuoteData(...$request->validated());
-        $rateQuoteAction->__invoke($data, $quote, $request->user());
+        $rateQuoteData = new RateQuoteData(score: $request->input('score')); /* @phpstan-ignore-line */
+        /** @var User $authUser */
+        $authUser = $request->user();
 
-        if ($data->quoteIsUnrated()) {
+        $rateQuoteAction->__invoke($rateQuoteData, $quote, $authUser);
+
+        if ($rateQuoteData->quoteIsUnrated()) {
             return response()->json([
                 'data' => QuoteResource::make($quote),
                 'message' => trans('message.rating.unrated', [
                     'attribute' => 'quote',
-                    'id' => $quote->id,
+                    'id' => $quote->getKey(),
                 ]),
             ]);
         }
@@ -127,7 +143,7 @@ class QuoteController extends Controller
             'message' => trans('message.rating.rated', [
                 'attribute' => 'quote',
                 'id' => $quote->id,
-                'score' => $data->score,
+                'score' => $rateQuoteData->score,
             ]),
         ]);
     }

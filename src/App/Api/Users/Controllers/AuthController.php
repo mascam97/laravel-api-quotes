@@ -30,12 +30,12 @@ class AuthController extends Controller
                         'email' => $authUser->email,
                     ],
                 ],
-                'token' => $request->user()->createToken($request->input('device_name'))->plainTextToken,
+                'token' => $authUser->createToken($request->string('device_name'))->plainTextToken,
                 'message' => trans('message.success'),
             ]);
         }
 
-        Log::channel('daily')->error('User failed to login.', ['email' => $request->input('email')]);
+        Log::channel('daily')->error('User failed to login.', ['email' => $request->string('email')]);
 
         return response()->json([
             'message' => trans('auth.unauthorized'),
@@ -46,9 +46,9 @@ class AuthController extends Controller
     {
 //        TODO: Move to an Action and DTOs
         $user = new User();
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->password = Hash::make($request->input('password'));
+        $user->name = $request->string('name');
+        $user->email = $request->string('email');
+        $user->password = Hash::make($request->string('password'));
         $user->save();
 
         Log::channel('daily')->info('New user was created.', ['email' => $user->email]);
