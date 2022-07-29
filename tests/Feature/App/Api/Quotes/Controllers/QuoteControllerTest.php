@@ -103,15 +103,6 @@ class QuoteControllerTest extends TestCase
         $this->assertEquals($this->quote->content, $responseData['content']);
     }
 
-    public function test_update_validate(): void
-    {
-        $this->actingAs($this->user, 'sanctum')
-            ->json('PUT', "$this->url/{$this->quote->id}", [
-                'title' => '',
-                'content' => '',
-            ])->assertJsonValidationErrors($this->fillable);
-    }
-
     public function test_update_policy(): void
     {
         /** @var User $userNotOwner */

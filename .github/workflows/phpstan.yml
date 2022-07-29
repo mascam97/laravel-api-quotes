@@ -27,4 +27,4 @@ jobs:
         run: ./vendor/bin/phpstan --error-format=github
 
       - name: Run PHPStan on tests
-        run: .vendor/bin/phpstan analyse -c phpstan.tests.neon --error-format=github
+        run: ./vendor/bin/phpstan analyse -c phpstan.tests.neon --error-format=github

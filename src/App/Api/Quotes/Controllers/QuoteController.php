@@ -3,7 +3,9 @@
 namespace App\Api\Quotes\Controllers;
 
 use App\Api\Quotes\Queries\QuoteIndexQuery;
-use App\Api\Quotes\Requests\QuoteRequest;
+use App\Api\Quotes\Requests\RateQuoteRequest;
+use App\Api\Quotes\Requests\StoreQuoteRequest;
+use App\Api\Quotes\Requests\UpdateQuoteRequest;
 use App\Api\Quotes\Resources\QuoteResource;
 use Domain\Quotes\Actions\CreateQuoteAction;
 use Domain\Quotes\Actions\RateQuoteAction;
@@ -15,7 +17,6 @@ use Domain\Quotes\Models\Quote;
 use Domain\Rating\Exceptions\InvalidScore;
 use Domain\Users\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -30,7 +31,7 @@ class QuoteController extends Controller
         return QuoteResource::collection($quotes);
     }
 
-    public function store(QuoteRequest $request, CreateQuoteAction $createQuoteAction): JsonResponse
+    public function store(StoreQuoteRequest $request, CreateQuoteAction $createQuoteAction): JsonResponse
     {
         try {
             $quoteData = new QuoteData(
@@ -70,7 +71,7 @@ class QuoteController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function update(QuoteRequest $request, Quote $quote, UpdateQuoteAction $updateQuoteAction): JsonResponse
+    public function update(UpdateQuoteRequest $request, Quote $quote, UpdateQuoteAction $updateQuoteAction): JsonResponse
     {
         // user can update a quote if he is the owner
         $this->authorize('pass', $quote);
@@ -114,14 +115,8 @@ class QuoteController extends Controller
     /**
      * @throws InvalidScore
      */
-    public function rate(Quote $quote, FormRequest $request, RateQuoteAction $rateQuoteAction): JsonResponse
+    public function rate(Quote $quote, RateQuoteRequest $request, RateQuoteAction $rateQuoteAction): JsonResponse
     {
-        // The user can rate from 0 to 5
-        // 0 means no rating
-        $request->validate([/* @phpstan-ignore-line */
-            'score' => 'required|integer',
-        ]);
-
         $rateQuoteData = new RateQuoteData(score: $request->input('score')); /* @phpstan-ignore-line */
         /** @var User $authUser */
         $authUser = $request->user();
