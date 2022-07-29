@@ -3,17 +3,21 @@
 namespace App\Api\Quotes\Controllers;
 
 use App\Api\Quotes\Queries\QuoteIndexQuery;
-use App\Api\Quotes\Requests\QuoteRequest;
+use App\Api\Quotes\Requests\RateQuoteRequest;
+use App\Api\Quotes\Requests\StoreQuoteRequest;
+use App\Api\Quotes\Requests\UpdateQuoteRequest;
 use App\Api\Quotes\Resources\QuoteResource;
 use Domain\Quotes\Actions\CreateQuoteAction;
 use Domain\Quotes\Actions\RateQuoteAction;
 use Domain\Quotes\Actions\UpdateQuoteAction;
 use Domain\Quotes\DTO\QuoteData;
+use Domain\Quotes\DTO\RateQuoteData;
+use Domain\Quotes\DTO\UpdateQuoteData;
 use Domain\Quotes\Models\Quote;
 use Domain\Rating\Exceptions\InvalidScore;
+use Domain\Users\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
 use Support\App\Api\Controller;
@@ -27,10 +31,17 @@ class QuoteController extends Controller
         return QuoteResource::collection($quotes);
     }
 
-    public function store(QuoteRequest $request, CreateQuoteAction $createQuoteAction): JsonResponse
+    public function store(StoreQuoteRequest $request, CreateQuoteAction $createQuoteAction): JsonResponse
     {
         try {
-            $quote = $createQuoteAction->__invoke(new QuoteData(...$request->validated()), $request->user());
+            $quoteData = new QuoteData(
+                title: $request->string('title'),
+                content: (string) $request->string('content')
+            );
+            /** @var User $authUser */
+            $authUser = $request->user();
+
+            $quote = $createQuoteAction->__invoke($quoteData, $authUser);
         } catch (\Exception $exception) {
             report($exception);
 
@@ -47,8 +58,10 @@ class QuoteController extends Controller
 
     public function show(int $quoteId): QuoteResource
     {
-        $quote = QueryBuilder::for(Quote::class)
-            ->whereId($quoteId)
+        $query = Quote::query()
+            ->whereId($quoteId);
+
+        $quote = QueryBuilder::for($query)
             ->allowedIncludes('user')
             ->firstOrFail();
 
@@ -58,13 +71,18 @@ class QuoteController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function update(QuoteRequest $request, Quote $quote, UpdateQuoteAction $updateQuoteAction): JsonResponse
+    public function update(UpdateQuoteRequest $request, Quote $quote, UpdateQuoteAction $updateQuoteAction): JsonResponse
     {
         // user can update a quote if he is the owner
         $this->authorize('pass', $quote);
 
         try {
-            $quote = $updateQuoteAction->__invoke(new QuoteData(...$request->validated()), $quote);
+            $updateQuoteData = new UpdateQuoteData(
+                title: $request->string('title'),
+                content: $request->string('content')
+            );
+
+            $quote = $updateQuoteAction->__invoke($updateQuoteData, $quote);
         } catch (\Exception $exception) {
             report($exception);
 
@@ -95,26 +113,22 @@ class QuoteController extends Controller
     }
 
     /**
-     * @return JsonResponse
      * @throws InvalidScore
      */
-    public function rate(Quote $quote, Request $request, RateQuoteAction $rateQuoteAction)
+    public function rate(Quote $quote, RateQuoteRequest $request, RateQuoteAction $rateQuoteAction): JsonResponse
     {
-        // The user can rate from 0 to 5
-        // 0 means no rating
-        $request->validate([
-            'score' => 'required|integer',
-        ]);
+        $rateQuoteData = new RateQuoteData(score: $request->input('score')); /* @phpstan-ignore-line */
+        /** @var User $authUser */
+        $authUser = $request->user();
 
-        $data = new QuoteData(...$request->validated());
-        $rateQuoteAction->__invoke($data, $quote, $request->user());
+        $rateQuoteAction->__invoke($rateQuoteData, $quote, $authUser);
 
-        if ($data->quoteIsUnrated()) {
+        if ($rateQuoteData->quoteIsUnrated()) {
             return response()->json([
                 'data' => QuoteResource::make($quote),
                 'message' => trans('message.rating.unrated', [
                     'attribute' => 'quote',
-                    'id' => $quote->id,
+                    'id' => $quote->getKey(),
                 ]),
             ]);
         }
@@ -124,7 +138,7 @@ class QuoteController extends Controller
             'message' => trans('message.rating.rated', [
                 'attribute' => 'quote',
                 'id' => $quote->id,
-                'score' => $data->score,
+                'score' => $rateQuoteData->score,
             ]),
         ]);
     }

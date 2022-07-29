@@ -4,7 +4,7 @@ namespace App\Api\Quotes\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class QuoteRequest extends FormRequest
+class UpdateQuoteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,8 +20,8 @@ class QuoteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required',
-            'content' => 'required',
+            'title' => 'nullable|string',
+            'content' => 'nullable|string',
         ];
     }
 }

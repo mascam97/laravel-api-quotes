@@ -22,9 +22,12 @@ class CreateQuoteActionTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = (new UserFactory)->create();
+        $this->user = User::factory()->create();
     }
 
+    /**
+     * @throws \Spatie\ModelStates\Exceptions\CouldNotPerformTransition
+     */
     public function test_quote_is_created(): void
     {
         $quoteData = new QuoteData(
@@ -40,6 +43,9 @@ class CreateQuoteActionTest extends TestCase
         $this->assertEquals(Drafted::class, $quote->state);
     }
 
+    /**
+     * @throws \Spatie\ModelStates\Exceptions\CouldNotPerformTransition
+     */
     public function test_quote_can_be_published(): void
     {
         $quoteData = new QuoteData(

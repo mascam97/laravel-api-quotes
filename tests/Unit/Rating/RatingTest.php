@@ -4,6 +4,7 @@ namespace Tests\Unit\Rating;
 
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
+use Domain\Rating\Exceptions\InvalidScore;
 use Domain\Rating\Models\Rating;
 use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
@@ -23,11 +24,14 @@ class RatingTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = (new UserFactory)->create();
-        $this->quote = (new QuoteFactory)->withUser($this->user)->create();
+        $this->user = User::factory()->create();
+        $this->quote = (new QuoteFactory)->withUser($this->user)->create();  /* @phpstan-ignore-line */
     }
 
-    public function test_users_rate_quotes()
+    /**
+     * @throws InvalidScore
+     */
+    public function test_users_rate_quotes(): void
     {
         $this->user->rate($this->quote, 5);
 
@@ -35,10 +39,13 @@ class RatingTest extends TestCase
         $this->assertInstanceOf(Collection::class, $this->quote->qualifiers(User::class)->get());
     }
 
-    public function test_calculate_average_rating()
+    /**
+     * @throws InvalidScore
+     */
+    public function test_calculate_average_rating(): void
     {
         /** @var User $anotherUser */
-        $anotherUser = (new UserFactory)->create();
+        $anotherUser = User::factory()->create();
 
         $this->user->rate($this->quote, 5);
         $anotherUser->rate($this->quote, 3);
@@ -46,11 +53,15 @@ class RatingTest extends TestCase
         $this->assertEquals(4, $this->quote->averageRating(User::class));
     }
 
-    public function test_rating_model()
+    /**
+     * @throws InvalidScore
+     */
+    public function test_rating_model(): void
     {
         $this->user->rate($this->quote, 5);
 
-        $rating = Rating::first();
+        /** @var Rating $rating */
+        $rating = Rating::query()->first();
 
         $this->assertInstanceOf(Quote::class, $rating->rateable);
         $this->assertInstanceOf(User::class, $rating->qualifier);

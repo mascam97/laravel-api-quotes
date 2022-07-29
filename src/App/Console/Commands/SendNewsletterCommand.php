@@ -34,10 +34,10 @@ class SendNewsletterCommand extends Command
         $schedule = $this->option('schedule');
 
         if ($emails) {
-            $builder->whereIn('email', $emails);
+            $builder->whereIn('email', $emails); /* @phpstan-ignore-line */
         }
 
-        $count = $builder->count();
+        $count = $builder->count(); /* @phpstan-ignore-line */
         if ($count &&
             ($this->confirm("Are you sure to send an email to $count users?") || $schedule)
         ) {

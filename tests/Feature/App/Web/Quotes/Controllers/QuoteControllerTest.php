@@ -3,7 +3,7 @@
 namespace Tests\Feature\App\Web\Quotes\Controllers;
 
 use Domain\Quotes\Factories\QuoteFactory;
-use Domain\Users\Factories\UserFactory;
+use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,7 +15,7 @@ class QuoteControllerTest extends TestCase
 
     public function test_view(): void
     {
-        $user = (new UserFactory)->create();
+        $user = User::factory()->create();
         $quotes = (new QuoteFactory)->setAmount(3)->withUser($user)->create();
 
         $this->get($this->url)

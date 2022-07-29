@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    public function test_has_many_notes()
+    public function test_has_many_notes(): void
     {
         $user = new User();
         $this->assertInstanceOf(Collection::class, $user->quotes);

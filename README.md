@@ -1,4 +1,4 @@
-# Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.1.0-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
+# Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.1.1-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
 
 _Main project - My guinea pig - Community to share and rate quotes_
 
@@ -35,12 +35,12 @@ _Main project - My guinea pig - Community to share and rate quotes_
 - Implemented a **QueryBuilder library** and improve the **API logic** (delete unnecessary API versioning)
 - Implemented **Sonar Cloud to reduce Technical Debt** (duplications, smells code, etc.)
 - Implemented some **recommendations to build large-than-average web applications**
+- Reached the highest level in PHPStan, level 9 for src and level 8 for tests
 
 ### TODOS
 
 - Implement an external API, tested with Mocks
 - Improve testing with [PEST PHP](https://pestphp.com/)
-- Reach the highest level in PHPStan
 - Reach a 100% coverage (test jobs and missing features)
 - Database optimization (avoid unnecessary queries)
 

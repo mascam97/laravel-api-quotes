@@ -2,6 +2,7 @@
 
 namespace Domain\Rating\Utils;
 
+use Domain\Quotes\Models\Quote;
 use Domain\Rating\Events\ModelRated;
 use Domain\Rating\Exceptions\InvalidScore;
 use Illuminate\Database\Eloquent\Model;
@@ -9,9 +10,9 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait CanRate
 {
-    public function ratings($model = null): MorphToMany
+    public function ratings(null|string|Model $model = null): MorphToMany
     {
-        $modelClass = $model ? (new $model)->getMorphClass() : $this->getMorphClass();
+        $modelClass = $model ? (new $model)->getMorphClass() : $this->getMorphClass(); /* @phpstan-ignore-line */
 
         $morphToMany = $this->morphToMany(
             $modelClass,
@@ -32,12 +33,15 @@ trait CanRate
     }
 
     /**
+     * @param Quote $model
+     * @param int|null $score
+     * @return bool
      * @throws InvalidScore
      */
-    public function rate(Model $model, float $score): bool
+    public function rate(Model $model, int|null $score): bool
     {
-        $min = config('rating.min');
-        $max = config('rating.max');
+        $min = (int) config('rating.min'); /* @phpstan-ignore-line */
+        $max = (int) config('rating.max'); /* @phpstan-ignore-line */
         if ($score < $min || $score > $max) {
             throw new InvalidScore($min, $max);
         }
@@ -61,13 +65,13 @@ trait CanRate
             return false;
         }
 
-        $this->ratings($model->getMorphClass())->detach($model->getKey());
+        $this->ratings($model)->detach($model->getKey());
 
         return true;
     }
 
     public function hasRated(Model $model): bool
     {
-        return ! is_null($this->ratings($model->getMorphClass())->find($model->getKey()));
+        return ! is_null($this->ratings($model)->find($model->getKey()));
     }
 }

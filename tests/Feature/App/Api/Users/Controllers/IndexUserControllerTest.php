@@ -21,7 +21,7 @@ class IndexUserControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = (new UserFactory)->create();
+        $this->user = User::factory()->create();
 
         (new UserFactory)->setAmount(4)->create();
     }
@@ -29,7 +29,7 @@ class IndexUserControllerTest extends TestCase
     public function test_id_filter(): void
     {
         /** @var User $newUser */
-        $newUser = (new UserFactory)->create();
+        $newUser = User::factory()->create();
 
         $responseData = $this->actingAs($this->user, 'sanctum')
             ->json('GET', "$this->url?filter[id]=$newUser->id")
@@ -41,7 +41,7 @@ class IndexUserControllerTest extends TestCase
 
     public function test_name_filter(): void
     {
-        $newUser = (new UserFactory)->create([
+        $newUser = User::factory()->create([
             'name' => 'Shakespeare',
         ]);
 
@@ -62,9 +62,11 @@ class IndexUserControllerTest extends TestCase
         $this->assertCount(5, $responseData);
         $this->assertArrayHasKey('quotes', $responseData[0]);
 
-        $newUser = (new UserFactory)->create([
+        $newUser = User::factory()->create([
             'name' => 'User with quote',
         ]);
+
+        /** @var User $quote */
         $quote = (new QuoteFactory)->withUser($newUser)->create();
 
         $responseDataTwo = $this->actingAs($this->user, 'sanctum')

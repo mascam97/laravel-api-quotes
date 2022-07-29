@@ -22,13 +22,14 @@ class IndexQuoteControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = (new UserFactory)->create();
+        $this->user = User::factory()->create();
 
         (new QuoteFactory)->setAmount(5)->withUser($this->user)->create();
     }
 
     public function test_title_filter(): void
     {
+        /** @var Quote $quote */
         $quote = (new QuoteFactory)->withUser($this->user)->create([
             'title' => 'Hamlet',
         ]);
@@ -43,6 +44,7 @@ class IndexQuoteControllerTest extends TestCase
 
     public function test_content_filter(): void
     {
+        /** @var Quote $quote */
         $quote = (new QuoteFactory)->withUser($this->user)->create([
             'content' => 'Some text about something',
         ]);
@@ -58,8 +60,9 @@ class IndexQuoteControllerTest extends TestCase
     public function test_user_id_filter(): void
     {
         /** @var User $newUser */
-        $newUser = (new UserFactory)->create();
+        $newUser = User::factory()->create();
 
+        /** @var Quote $quote */
         $quote = (new QuoteFactory)->withUser($newUser)->create();
 
         $responseData = $this->actingAs($this->user, 'sanctum')
@@ -79,7 +82,9 @@ class IndexQuoteControllerTest extends TestCase
         $this->assertCount(5, $responseData);
         $this->assertArrayHasKey('user', $responseData[0]);
 
-        $newUser = (new UserFactory)->create();
+        $newUser = User::factory()->create();
+
+        /** @var Quote $quote */
         $quote = (new QuoteFactory)->withUser($newUser)->create([
             'title' => 'Some text about something',
         ]);

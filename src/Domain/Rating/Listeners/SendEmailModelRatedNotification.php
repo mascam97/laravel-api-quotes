@@ -21,11 +21,11 @@ class SendEmailModelRatedNotification
         $rateable = $event->getRateable();
         if ($rateable instanceof Quote) {
             $notification = new ModelRatedNotification(
-                $event->getQualifier()->name,
+                $event->getQualifier()->name, /* @phpstan-ignore-line */
                 $rateable->title,
                 $event->getScore()
             );
-            $user = User::find($rateable->user_id);
+            $user = User::query()->find($rateable->user_id);
             $user->notify($notification);
         }
     }

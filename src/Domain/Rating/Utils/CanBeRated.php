@@ -11,7 +11,7 @@ trait CanBeRated
      */
     public function qualifiers(string $model = null): MorphToMany
     {
-        $modelClass = $model ? (new $model)->getMorphClass() : $this->getMorphClass();
+        $modelClass = $model ? (new $model)->getMorphClass() : $this->getMorphClass(); /* @phpstan-ignore-line */
 
         return $this->morphToMany($modelClass, 'rateable', 'ratings', 'rateable_id', 'qualifier_id')
             ->withPivot('qualifier_type', 'score')
@@ -24,6 +24,8 @@ trait CanBeRated
      */
     public function averageRating(string $model = null): float
     {
-        return round($this->qualifiers($model)->avg('score'), 1) ?: 0.0;
+        $modelScore = $this->qualifiers($model)->avg('score');
+
+        return round($modelScore, 1) ?: 0.0; /* @phpstan-ignore-line */
     }
 }

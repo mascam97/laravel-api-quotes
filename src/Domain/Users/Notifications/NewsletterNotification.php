@@ -14,20 +14,16 @@ class NewsletterNotification extends Notification
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
      */
-    public function via($notifiable): array
+    public function via(User $notifiable): array
     {
         return ['mail'];
     }
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
      */
-    public function toMail($notifiable): MailMessage
+    public function toMail(User $notifiable): MailMessage
     {
         return (new MailMessage)
             ->greeting(trans('mail.greeting.newsletter'))
@@ -36,16 +32,14 @@ class NewsletterNotification extends Notification
                 'user_count' => count(User::All()),
                 'quote_count' => count(Quote::All()),
             ]))
-            ->action(trans('mail.link.website'), env('APP_URL', 'http://localhost'))
+            ->action(trans('mail.link.website'), env('APP_URL', 'http://localhost'))   /* @phpstan-ignore-line */
             ->line(trans('mail.gratitude'));
     }
 
     /**
      * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
      */
-    public function toArray($notifiable): array
+    public function toArray(User $notifiable): array
     {
         return [
             //

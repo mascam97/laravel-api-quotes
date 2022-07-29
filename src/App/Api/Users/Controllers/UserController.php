@@ -20,8 +20,10 @@ class UserController extends Controller
 
     public function show(int $userId): UserResource
     {
-        $user = QueryBuilder::for(User::class)
-            ->whereId($userId)
+        $query = User::query()
+            ->whereId($userId);
+
+        $user = QueryBuilder::for($query)
             ->allowedIncludes('quotes')
             ->firstOrFail();
 

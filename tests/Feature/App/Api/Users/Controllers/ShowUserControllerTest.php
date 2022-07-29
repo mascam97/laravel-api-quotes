@@ -21,7 +21,7 @@ class ShowUserControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = (new UserFactory)->create();
+        $this->user = User::factory()->create();
 
         (new UserFactory)->setAmount(4)->create();
     }

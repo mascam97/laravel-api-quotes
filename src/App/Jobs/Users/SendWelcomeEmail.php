@@ -28,7 +28,7 @@ class SendWelcomeEmail implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(): void
     {
 //        TODO: check spatie/laravel-queueable-action
         $email = new WelcomeEmail();

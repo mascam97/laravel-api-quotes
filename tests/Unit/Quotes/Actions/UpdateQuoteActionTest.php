@@ -3,10 +3,10 @@
 namespace Tests\Unit\Quotes\Actions;
 
 use Domain\Quotes\Actions\UpdateQuoteAction;
-use Domain\Quotes\DTO\QuoteData;
+use Domain\Quotes\DTO\UpdateQuoteData;
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
-use Domain\Users\Factories\UserFactory;
+use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -17,12 +17,12 @@ class UpdateQuoteActionTest extends TestCase
 
     public function test_quote_is_created(): void
     {
-        $quoteData = new QuoteData(
+        $quoteData = new UpdateQuoteData(
             title: 'new title', content: 'new title'
         );
         $updateQuoteAction = new UpdateQuoteAction();
         /** @var Quote $quote */
-        $quote = (new QuoteFactory)->withUser((new UserFactory)->create())->create([
+        $quote = (new QuoteFactory)->withUser(User::factory()->create())->create([
             'title' => 'old title',
             'content' => 'old content',
         ]);

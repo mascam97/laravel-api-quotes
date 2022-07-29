@@ -25,6 +25,9 @@ use Spatie\ModelStates\HasStates;
  * @property Carbon $updated_at
  * @property-read string $excerpt
  * @property User $user
+ *
+ * @method static DBQuoteFactory factory(...$parameters)
+ * @method static QuoteQueryBuilder query()
  */
 class Quote extends Model
 {

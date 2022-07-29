@@ -19,7 +19,7 @@ class ModelRatedNotification extends Notification implements ShouldQueue
     public function __construct(
         private string $qualifierName,
         private string $rateableName,
-        private float $score
+        private ?int $score
     ) {
     }
 
@@ -48,7 +48,7 @@ class ModelRatedNotification extends Notification implements ShouldQueue
                 'quote' => $this->rateableName,
                 'score' => $this->score,
             ]))
-            ->action(trans('mail.link.website'), env('APP_URL', 'http://localhost'))
+            ->action(trans('mail.link.website'), env('APP_URL', 'http://localhost'))  /* @phpstan-ignore-line */
             ->line(trans('mail.gratitude'));
     }
 
