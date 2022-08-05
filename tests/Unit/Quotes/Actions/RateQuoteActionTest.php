@@ -3,41 +3,21 @@
 namespace Tests\Unit\Quotes\Actions;
 
 use Domain\Quotes\Actions\RateQuoteAction;
-use Domain\Quotes\DTO\QuoteData;
 use Domain\Quotes\DTO\RateQuoteData;
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
-use Domain\Rating\Exceptions\InvalidScore;
 use Domain\Users\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 
-class RateQuoteActionTest extends TestCase
-{
-    use RefreshDatabase, WithFaker;
+beforeEach(function () {
+    $this->user = User::factory()->create();
+});
 
-    private User $user;
+test('quote is rated', function () {
+    /** @var Quote $quote */
+    $quote = (new QuoteFactory)->withUser(User::factory()->create())->create();
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+    $rateQuoteData = new RateQuoteData(score: 1);
+    $quoteRated = (new RateQuoteAction)->__invoke($rateQuoteData, $quote, $this->user);
 
-        $this->user = User::factory()->create();
-    }
-
-    /**
-     * @throws InvalidScore
-     */
-    public function test_quote_is_created(): void
-    {
-        $quoteData = new QuoteData(title: 'title', content: 'content');
-        /** @var Quote $quote */
-        $quote = (new QuoteFactory)->withUser(User::factory()->create())->create();
-
-        $rateQuoteData = new RateQuoteData(score: 1);
-        $quoteRated = (new RateQuoteAction)->__invoke($rateQuoteData, $quote, $this->user);
-
-        $this->assertEquals($quote->getKey(), $quoteRated->getKey());
-    }
-}
+    $this->assertEquals($quote->getKey(), $quoteRated->getKey());
+});

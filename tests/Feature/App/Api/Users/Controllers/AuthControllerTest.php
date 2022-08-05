@@ -2,126 +2,109 @@
 
 namespace Tests\Feature\App\Api\Users\Controllers;
 
-use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
-use Tests\TestCase;
 
-class AuthControllerTest extends TestCase
-{
-    use RefreshDatabase, WithFaker;
+beforeEach(function () {
+    $this->url_login = 'api/api-token-auth';
+    $this->fillable_login = ['device_name', 'email', 'password'];
+    $this->url_register = 'api/register';
+    $this->fillable_register = ['name', 'email', 'password'];
+    $this->table = 'users';
+});
 
-    private string $url_login = 'api/api-token-auth';
+test('api_token_auth_validate', function () {
+    $this->json('POST', $this->url_login, [
+        'email' => 'user@mail.com',
+        'password' => 'userPassword',
+        'device_name' => $this->faker->userAgent,
+    ])->assertJsonMissingValidationErrors($this->fillable_login);
 
-    private array $fillable_login = ['device_name', 'email', 'password'];
+    $this->json('POST', $this->url_login, [
+        'device_name' => '',
+        'email' => '',
+        'password' => '',
+    ])->assertJsonValidationErrors($this->fillable_login);
+});
 
-    private string $url_register = 'api/register';
+test('api_token_auth', function () {
+    /** @var User $user */
+    $user = User::factory()->create();
 
-    private array $fillable_register = ['name', 'email', 'password'];
+    $this->json('POST', $this->url_login, [
+        'email' => $user->email,
+        'password' => 'password', // value by default in factory
+        'device_name' => $this->faker->userAgent,
+    ])->assertOk()
+        ->assertSee([
+            'Action was executed successfully',
+            'user', $user->id, $user->email,
+        ]);
 
-    private string $table = 'users';
+    $this->json('POST', $this->url_login, [
+        'email' => $user->email,
+        'password' => 'wrong password',
+        'device_name' => $this->faker->userAgent,
+    ])->assertUnauthorized()
+        ->assertSee('The action was unauthorized');
+});
 
-    public function test_api_token_auth_validate(): void
-    {
-        $this->json('POST', $this->url_login, [
-            'email' => 'user@mail.com',
-            'password' => 'userPassword',
-            'device_name' => $this->faker->userAgent,
-        ])->assertJsonMissingValidationErrors($this->fillable_login);
+test('register_validate', function () {
+    $this->json('POST', $this->url_register, [
+        'name' => 'new user',
+        'email' => 'user@mail.com',
+        'password' => 'userPassword',
+        'device_name' => $this->faker->userAgent,
+    ])->assertJsonMissingValidationErrors($this->fillable_register);
 
-        $this->json('POST', $this->url_login, [
-            'device_name' => '',
-            'email' => '',
-            'password' => '',
-        ])->assertJsonValidationErrors($this->fillable_login);
-    }
+    $this->json('POST', $this->url_register, [
+        'name' => '',
+        'email' => '134email',
+        'password' => '',
+        'device_name' => '',
+    ])->assertJsonValidationErrors($this->fillable_register)
+        ->assertSee('The name field is required. (and 2 more errors)');
+});
 
-    public function test_api_token_auth(): void
-    {
-        /** @var User $user */
-        $user = User::factory()->create();
+test('register_validate_not_email_duplicated', function () {
+    /** @var User $user */
+    $user = User::factory()->create();
 
-        $this->json('POST', $this->url_login, [
-            'email' => $user->email,
-            'password' => 'password', // value by default in factory
-            'device_name' => $this->faker->userAgent,
-        ])->assertOk()
-            ->assertSee([
-                'Action was executed successfully',
-                'user', $user->id, $user->email,
-            ]);
+    $this->json('POST', $this->url_register, [
+        'name' => 'other name',
+        'email' => $user->email,
+        'password' => 'otherPassword',
+    ])->assertStatus(422)
+        ->assertSee('The email has already been taken.');
+});
 
-        $this->json('POST', $this->url_login, [
-            'email' => $user->email,
-            'password' => 'wrong password',
-            'device_name' => $this->faker->userAgent,
-        ])->assertUnauthorized()
-            ->assertSee('The action was unauthorized');
-    }
+test('register', function () {
+    $data = [
+        'name' => 'new user',
+        'email' => 'user@mail.com',
+    ];
 
-    public function test_register_validate(): void
-    {
-        $this->json('POST', $this->url_register, [
-            'name' => 'new user',
-            'email' => 'user@mail.com',
-            'password' => 'userPassword',
-            'device_name' => $this->faker->userAgent,
-        ])->assertJsonMissingValidationErrors($this->fillable_register);
+    $this->json('POST', $this->url_register,
+        $data + ['password' => 'userPassword']
+    )->assertOk()
+        ->assertSee('The user was created successfully');
 
-        $this->json('POST', $this->url_register, [
-            'name' => '',
-            'email' => '134email',
-            'password' => '',
-            'device_name' => '',
-        ])->assertJsonValidationErrors($this->fillable_register)
-            ->assertSee('The name field is required. (and 2 more errors)');
-    }
+    $this->assertDatabaseHas($this->table, $data);
+});
 
-    public function test_register_validate_not_email_duplicated(): void
-    {
-        /** @var User $user */
-        $user = User::factory()->create();
+test('register_password_hashed', function () {
+    $this->json('POST', $this->url_register, [
+        'name' => 'new user',
+        'email' => 'user@mail.com',
+        'password' => 'userPassword',
+    ])
+        ->assertOk();
 
-        $this->json('POST', $this->url_register, [
-            'name' => 'other name',
-            'email' => $user->email,
-            'password' => 'otherPassword',
-        ])->assertStatus(422)
-            ->assertSee('The email has already been taken.');
-    }
+    /** @var User $user */
+    $user = User::query()->where('email', 'user@mail.com')->first();
 
-    public function test_register(): void
-    {
-        $data = [
-            'name' => 'new user',
-            'email' => 'user@mail.com',
-        ];
-
-        $this->json('POST', $this->url_register,
-            $data + ['password' => 'userPassword']
-        )->assertOk()
-            ->assertSee('The user was created successfully');
-
-        $this->assertDatabaseHas($this->table, $data);
-    }
-
-    public function test_register_password_hashed(): void
-    {
-        $this->json('POST', $this->url_register, [
-            'name' => 'new user',
-            'email' => 'user@mail.com',
-            'password' => 'userPassword',
-        ])
-            ->assertOk();
-
-        /** @var User $user */
-        $user = User::query()->where('email', 'user@mail.com')->first();
-
-        $this->assertTrue(Hash::check(
-                'userPassword',
-                $user->password,
-            ));
-    }
-}
+    $this->assertTrue(Hash::check(
+            'userPassword',
+            $user->password,
+        ));
+});

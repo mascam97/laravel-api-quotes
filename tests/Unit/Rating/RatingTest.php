@@ -4,66 +4,38 @@ namespace Tests\Unit\Rating;
 
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
-use Domain\Rating\Exceptions\InvalidScore;
 use Domain\Rating\Models\Rating;
-use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class RatingTest extends TestCase
-{
-    use RefreshDatabase;
+beforeEach(function () {
+    $this->user = User::factory()->create();
+    $this->quote = (new QuoteFactory)->withUser($this->user)->create();  /* @phpstan-ignore-line */
+});
 
-    private User $user;
+test('users rate quotes', function () {
+    $this->user->rate($this->quote, 5);
 
-    private Quote $quote;
+    expect($this->user->ratings(Quote::class)->get())->toBeInstanceOf(Collection::class);
+    expect($this->quote->qualifiers(User::class)->get())->toBeInstanceOf(Collection::class);
+});
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+test('calculate average rating', function () {
+    /** @var User $anotherUser */
+    $anotherUser = User::factory()->create();
 
-        $this->user = User::factory()->create();
-        $this->quote = (new QuoteFactory)->withUser($this->user)->create();  /* @phpstan-ignore-line */
-    }
+    $this->user->rate($this->quote, 5);
+    $anotherUser->rate($this->quote, 3);
 
-    /**
-     * @throws InvalidScore
-     */
-    public function test_users_rate_quotes(): void
-    {
-        $this->user->rate($this->quote, 5);
+    expect($this->quote->averageRating(User::class))->toBe((float) 4.0);
+});
 
-        $this->assertInstanceOf(Collection::class, $this->user->ratings(Quote::class)->get());
-        $this->assertInstanceOf(Collection::class, $this->quote->qualifiers(User::class)->get());
-    }
+test('rating model', function () {
+    $this->user->rate($this->quote, 5);
 
-    /**
-     * @throws InvalidScore
-     */
-    public function test_calculate_average_rating(): void
-    {
-        /** @var User $anotherUser */
-        $anotherUser = User::factory()->create();
+    /** @var Rating $rating */
+    $rating = Rating::query()->first();
 
-        $this->user->rate($this->quote, 5);
-        $anotherUser->rate($this->quote, 3);
-
-        $this->assertEquals(4, $this->quote->averageRating(User::class));
-    }
-
-    /**
-     * @throws InvalidScore
-     */
-    public function test_rating_model(): void
-    {
-        $this->user->rate($this->quote, 5);
-
-        /** @var Rating $rating */
-        $rating = Rating::query()->first();
-
-        $this->assertInstanceOf(Quote::class, $rating->rateable);
-        $this->assertInstanceOf(User::class, $rating->qualifier);
-    }
-}
+    expect($rating->rateable)->toBeInstanceOf(Quote::class);
+    expect($rating->qualifier)->toBeInstanceOf(User::class);
+});

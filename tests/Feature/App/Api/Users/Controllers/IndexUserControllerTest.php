@@ -3,111 +3,88 @@
 namespace Tests\Feature\App\Api\Users\Controllers;
 
 use Domain\Quotes\Factories\QuoteFactory;
-use Domain\Quotes\Models\Quote;
 use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class IndexUserControllerTest extends TestCase
-{
-    use RefreshDatabase;
+beforeEach(function () {
+    $this->user = User::factory()->create();
 
-    private string $url = '/api/v1/users';
+    (new UserFactory)->setAmount(4)->create();
 
-    private User $user;
+    $this->actingAs($this->user, 'sanctum');
+});
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+test('id filter', function () {
+    /** @var User $newUser */
+    $newUser = User::factory()->create();
 
-        $this->user = User::factory()->create();
+    $responseData = $this->json('GET', route('users.index', ['filter[id]' => $newUser->id]))
+        ->json('data');
 
-        (new UserFactory)->setAmount(4)->create();
-    }
+    $this->assertCount(1, $responseData);
+    $this->assertEquals($newUser->getKey(), $responseData[0]['id']);
+});
 
-    public function test_id_filter(): void
-    {
-        /** @var User $newUser */
-        $newUser = User::factory()->create();
+test('name filter', function () {
+    $newUser = User::factory()->create([
+        'name' => 'Shakespeare',
+    ]);
 
-        $responseData = $this->actingAs($this->user, 'sanctum')
-            ->json('GET', "$this->url?filter[id]=$newUser->id")
-            ->json('data');
+    $responseData = $this->json('GET', route('users.index', ['filter[name]' => 'shakespeare']))
+        ->json('data');
 
-        $this->assertCount(1, $responseData);
-        $this->assertEquals($newUser->getKey(), $responseData[0]['id']);
-    }
+    $this->assertCount(1, $responseData);
+    $this->assertEquals($newUser->getKey(), $responseData[0]['id']);
+});
 
-    public function test_name_filter(): void
-    {
-        $newUser = User::factory()->create([
-            'name' => 'Shakespeare',
-        ]);
+test('quotes include', function () {
+    $responseData = $this->json('GET', route('users.index', ['include' => 'quotes']))
+        ->json('data');
 
-        $responseData = $this->actingAs($this->user, 'sanctum')
-            ->json('GET', "$this->url?filter[name]=shakespeare")
-            ->json('data');
+    $this->assertCount(5, $responseData);
+    $this->assertArrayHasKey('quotes', $responseData[0]);
 
-        $this->assertCount(1, $responseData);
-        $this->assertEquals($newUser->getKey(), $responseData[0]['id']);
-    }
+    $newUser = User::factory()->create([
+        'name' => 'User with quote',
+    ]);
 
-    public function test_quotes_include(): void
-    {
-        $responseData = $this->actingAs($this->user, 'sanctum')
-            ->json('GET', "$this->url?include=quotes")
-            ->json('data');
+    /** @var User $quote */
+    $quote = (new QuoteFactory)->withUser($newUser)->create();
 
-        $this->assertCount(5, $responseData);
-        $this->assertArrayHasKey('quotes', $responseData[0]);
+    $responseDataTwo = $this->json('GET', route('users.index', [
+        'filter[name]' => 'User with quote',
+        'include' => 'quotes',
+    ]))
+        ->json('data');
 
-        $newUser = User::factory()->create([
-            'name' => 'User with quote',
-        ]);
+    $this->assertCount(1, $responseDataTwo);
+    $this->assertCount(1, $responseDataTwo[0]['quotes']);
+    $this->assertEquals($quote->getKey(), $responseDataTwo[0]['quotes'][0]['id']);
+});
 
-        /** @var User $quote */
-        $quote = (new QuoteFactory)->withUser($newUser)->create();
+test('id sort', function () {
+    $responseData = $this->json('GET', route('users.index', ['sort' => 'id']))
+        ->json('data');
 
-        $responseDataTwo = $this->actingAs($this->user, 'sanctum')
-            ->json('GET', "$this->url?filter[name]=User with quote&include=quotes")
-            ->json('data');
+    $this->assertEquals(1, $responseData[0]['id']);
 
-        $this->assertCount(1, $responseDataTwo);
-        $this->assertCount(1, $responseDataTwo[0]['quotes']);
-        $this->assertEquals($quote->getKey(), $responseDataTwo[0]['quotes'][0]['id']);
-    }
+    $responseDataTwo = $this->json('GET', route('users.index', ['sort' => '-id']))
+        ->json('data');
 
-    public function test_id_sort(): void
-    {
-        $responseData = $this->actingAs($this->user, 'sanctum')
-            ->json('GET', "$this->url?sort=id")
-            ->json('data');
+    $this->assertEquals(5, $responseDataTwo[0]['id']);
+});
 
-        $this->assertEquals(1, $responseData[0]['id']);
+test('name sort', function () {
+    $this->user->name = 'AAA';
+    $this->user->update();
 
-        $responseDataTwo = $this->actingAs($this->user, 'sanctum')
-            ->json('GET', "$this->url?sort=-id")
-            ->json('data');
+    $responseData = $this->json('GET', route('users.index', ['sort' => 'name']))
+        ->json('data');
 
-        $this->assertEquals(5, $responseDataTwo[0]['id']);
-    }
+    $this->assertEquals('AAA', $responseData[0]['name']);
 
-    public function test_name_sort(): void
-    {
-        $this->user->name = 'AAA';
-        $this->user->update();
+    $responseDataTwo = $this->json('GET', route('users.index', ['sort' => '-name']))
+        ->json('data');
 
-        $responseData = $this->actingAs($this->user, 'sanctum')
-            ->json('GET', "$this->url?sort=name")
-            ->json('data');
-
-        $this->assertEquals('AAA', $responseData[0]['name']);
-
-        $responseDataTwo = $this->actingAs($this->user, 'sanctum')
-            ->json('GET', "$this->url?sort=-name")
-            ->json('data');
-
-        $this->assertEquals('AAA', $responseDataTwo[4]['name']);
-    }
-}
+    $this->assertEquals('AAA', $responseDataTwo[4]['name']);
+});

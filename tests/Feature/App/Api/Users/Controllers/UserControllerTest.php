@@ -3,59 +3,41 @@
 namespace Tests\Feature\App\Api\Users\Controllers;
 
 use Domain\Quotes\Factories\QuoteFactory;
-use Domain\Quotes\Models\Quote;
-use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class UserControllerTest extends TestCase
-{
-    use RefreshDatabase;
+beforeEach(function () {
+    $this->user = User::factory()->create();
+    (new QuoteFactory)->withUser($this->user)->create();
+});
 
-    private string $url = '/api/v1/users';
+test('guest unauthorized', function () {
+    $this->json('GET', route('users.index'))
+        ->assertUnauthorized();
 
-    private array $fields = ['id', 'name', 'email', 'created_at'];
+    $this->json('GET', route('users.index', [
+        'user' => $this->user->id,
+    ]))->assertUnauthorized();
+});
 
-    private User $user;
+test('index', function () {
+    $this->actingAs($this->user, 'sanctum')
+        ->json('GET', route('users.index'))
+        ->assertJsonStructure([
+            'data' => ['*' => ['id', 'name', 'email', 'created_at']],
+        ])->assertOk();
+});
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+test('show 404', function () {
+    $this->actingAs($this->user, 'sanctum')
+        ->json('GET', route('users.show', [
+            'user' => 100000,
+        ]))->assertNotFound();
+});
 
-        $this->user = User::factory()->create();
-        (new QuoteFactory)->withUser($this->user)->create();
-    }
-
-    public function test_guest_unauthorized(): void
-    {
-        $this->json('GET', "$this->url")
-            ->assertUnauthorized();                  // index
-        $this->json('GET', "$this->url/{$this->user->id}")
-            ->assertUnauthorized();        // show
-    }
-
-    public function test_index(): void
-    {
-        $this->actingAs($this->user, 'sanctum')
-            ->json('GET', $this->url)
-            ->assertJsonStructure([
-                'data' => ['*' => $this->fields],
-            ])->assertOk();
-    }
-
-    public function test_show_404(): void
-    {
-        $this->actingAs($this->user, 'sanctum')
-            ->json('GET', "$this->url/100000")
-            ->assertNotFound();
-    }
-
-    public function test_show(): void
-    {
-        $this->actingAs($this->user, 'sanctum')
-            ->json('GET', "$this->url/{$this->user->id}")
-        ->assertSee([$this->user->id, $this->user->name])
-            ->assertOk();
-    }
-}
+test('show', function () {
+    $this->actingAs($this->user, 'sanctum')
+        ->json('GET', route('users.index', [
+            'user' => $this->user->id,
+        ]))->assertSee([$this->user->id, $this->user->name])
+        ->assertOk();
+});

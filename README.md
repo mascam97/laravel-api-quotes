@@ -40,7 +40,6 @@ _Main project - My guinea pig - Community to share and rate quotes_
 ### TODOS
 
 - Implement an external API, tested with Mocks
-- Improve testing with [PEST PHP](https://pestphp.com/)
 - Reach a 100% coverage (test jobs and missing features)
 - Database optimization (avoid unnecessary queries)
 
@@ -198,6 +197,7 @@ Note: Remember in production the better command is `queue:work`, [explanation](h
 -   [Laravel Query Builder v4](https://spatie.be/docs/laravel-query-builder/v4/introduction) - PHP package that allows you to filter, sort and include eloquent relations based on a request.
 -   [Laravel Model State](https://spatie.be/docs/laravel-model-states/v2/01-introduction) - Advanced state support for Laravel models
 -   [Laravel Enums](https://spatie.be/docs/enum/v3/usage/100-laravel) - Strongly typed enums.
+-   [PEST PHP](https://pestphp.com/) - An elegant PHP Testing Framework
 
 ### Authors
 

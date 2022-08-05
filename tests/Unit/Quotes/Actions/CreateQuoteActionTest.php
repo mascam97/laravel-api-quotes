@@ -6,59 +6,37 @@ use Domain\Quotes\Actions\CreateQuoteAction;
 use Domain\Quotes\DTO\QuoteData;
 use Domain\Quotes\States\Drafted;
 use Domain\Quotes\States\Published;
-use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 
-class CreateQuoteActionTest extends TestCase
-{
-    use RefreshDatabase, WithFaker;
+beforeEach(function () {
+    $this->user = User::factory()->create();
+});
 
-    private User $user;
+test('quote is created', function () {
+    $quoteData = new QuoteData(
+        title: 'Title', content: 'Content'
+    );
+    $createQuoteAction = new CreateQuoteAction();
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+    $quote = $createQuoteAction->__invoke($quoteData, $this->user);
 
-        $this->user = User::factory()->create();
-    }
+    $this->assertTrue($quote->user()->is($this->user));
+    $this->assertEquals($quote->title, $quoteData->title);
+    $this->assertEquals($quote->content, $quoteData->content);
+    $this->assertEquals(Drafted::class, $quote->state);
+});
 
-    /**
-     * @throws \Spatie\ModelStates\Exceptions\CouldNotPerformTransition
-     */
-    public function test_quote_is_created(): void
-    {
-        $quoteData = new QuoteData(
-            title: 'Title', content: 'Content'
-        );
-        $createQuoteAction = new CreateQuoteAction();
+test('quote can be published', function () {
+    $quoteData = new QuoteData(
+        title: 'Title', content: 'Content', published: true
+    );
 
-        $quote = $createQuoteAction->__invoke($quoteData, $this->user);
+    $createQuoteAction = new CreateQuoteAction();
 
-        $this->assertTrue($quote->user()->is($this->user));
-        $this->assertEquals($quote->title, $quoteData->title);
-        $this->assertEquals($quote->content, $quoteData->content);
-        $this->assertEquals(Drafted::class, $quote->state);
-    }
+    $quote = $createQuoteAction->__invoke($quoteData, $this->user);
 
-    /**
-     * @throws \Spatie\ModelStates\Exceptions\CouldNotPerformTransition
-     */
-    public function test_quote_can_be_published(): void
-    {
-        $quoteData = new QuoteData(
-            title: 'Title', content: 'Content', published: true
-        );
-
-        $createQuoteAction = new CreateQuoteAction();
-
-        $quote = $createQuoteAction->__invoke($quoteData, $this->user);
-
-        $this->assertTrue($quote->user()->is($this->user));
-        $this->assertEquals($quote->title, $quoteData->title);
-        $this->assertEquals($quote->content, $quoteData->content);
-        $this->assertEquals(Published::class, $quote->state);
-    }
-}
+    $this->assertTrue($quote->user()->is($this->user));
+    $this->assertEquals($quote->title, $quoteData->title);
+    $this->assertEquals($quote->content, $quoteData->content);
+    $this->assertEquals(Published::class, $quote->state);
+});

@@ -10,5 +10,7 @@ parameters:
     level: 8
 
     ignoreErrors:
+        - '#Undefined variable: \$this#'
+        - '#Call to an undefined method Pest\\Expectation|Pest\\Support\\.*#'
 
     checkMissingIterableValueType: false
