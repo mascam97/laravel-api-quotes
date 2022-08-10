@@ -4,8 +4,5 @@ namespace Domain\Quotes\States;
 
 class Published extends QuoteState
 {
-    public function name(): string
-    {
-        return 'PUBLISHED';
-    }
+    public static string $name = 'PUBLISHED';
 }

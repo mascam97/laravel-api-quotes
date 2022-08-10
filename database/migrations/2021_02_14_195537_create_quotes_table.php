@@ -20,7 +20,7 @@ class CreateQuotesTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->enum('state', [Drafted::class, Published::class, Banned::class]);
+            $table->enum('state', [Drafted::$name, Published::$name, Banned::$name]);
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });

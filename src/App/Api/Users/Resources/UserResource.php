@@ -20,9 +20,9 @@ class UserResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id' => (int) $this->id,
-            'name' => (string) $this->name,
-            'email' => (string) $this->email,
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
             'quotes'=> QuoteResource::collection($this->whenLoaded('quotes')),
             'quotesCount'=> $this->when($this->quotes_count !== null, $this->quotes_count),
             'created_at' => (string) $this->created_at,

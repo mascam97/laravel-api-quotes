@@ -34,8 +34,6 @@ trait CanRate
 
     /**
      * @param Quote $model
-     * @param int|null $score
-     * @return bool
      * @throws InvalidScore
      */
     public function rate(Model $model, int|null $score): bool

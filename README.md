@@ -1,6 +1,6 @@
 # Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.1.1-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
 
-_Main project - My guinea pig - Community to share and rate quotes_
+_Main project - Community to share and rate quotes_
 
 ## Project goal :goal_net:
 

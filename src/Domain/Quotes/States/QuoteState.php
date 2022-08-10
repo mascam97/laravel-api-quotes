@@ -8,7 +8,7 @@ use Spatie\ModelStates\StateConfig;
 
 abstract class QuoteState extends State
 {
-    abstract public function name(): string;
+    public static string $name;
 
     /**
      * @throws InvalidConfig

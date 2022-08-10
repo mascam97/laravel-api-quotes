@@ -20,11 +20,11 @@ class QuoteResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id' => (int) $this->id,
-            'title' => (string) $this->title,
-            'excerpt' => (string) $this->excerpt,
-            'content' => (string) $this->content,
-            'state' => (string) $this->state->name(),
+            'id' => $this->id,
+            'title' => $this->title,
+            'excerpt' => $this->excerpt,
+            'content' => $this->content,
+            'state' => $this->state,
             'user' => UserResource::make($this->whenLoaded('user')),
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,

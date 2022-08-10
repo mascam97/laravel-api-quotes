@@ -23,7 +23,7 @@ test('quote is created', function () {
     $this->assertTrue($quote->user()->is($this->user));
     $this->assertEquals($quote->title, $quoteData->title);
     $this->assertEquals($quote->content, $quoteData->content);
-    $this->assertEquals(Drafted::class, $quote->state);
+    $this->assertEquals(Drafted::$name, $quote->state);
 });
 
 test('quote can be published', function () {
@@ -38,5 +38,5 @@ test('quote can be published', function () {
     $this->assertTrue($quote->user()->is($this->user));
     $this->assertEquals($quote->title, $quoteData->title);
     $this->assertEquals($quote->content, $quoteData->content);
-    $this->assertEquals(Published::class, $quote->state);
+    $this->assertEquals(Published::$name, $quote->state);
 });

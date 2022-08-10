@@ -41,7 +41,6 @@ class Quote extends Model
         'state' => QuoteState::class,
     ];
 
-    // TODO: Add some enums for a field called topic
     /**
      * Create a new factory instance for the model.
      */

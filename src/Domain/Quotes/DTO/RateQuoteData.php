@@ -5,7 +5,6 @@ namespace Domain\Quotes\DTO;
 class RateQuoteData
 {
     public function __construct(
-//        TODO: Add a possible comment
         public int $score,
     ) {
     }
