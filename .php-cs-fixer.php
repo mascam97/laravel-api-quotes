@@ -8,7 +8,6 @@ $finder = Finder::create()
         $project_path . '/src',
         $project_path . '/config',
         $project_path . '/database',
-        $project_path . '/resources',
         $project_path . '/routes',
         $project_path . '/tests',
     ])
