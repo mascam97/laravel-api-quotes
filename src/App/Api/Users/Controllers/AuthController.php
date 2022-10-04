@@ -4,20 +4,19 @@ namespace App\Api\Users\Controllers;
 
 use App\Api\Users\Requests\LoginRequest;
 use App\Api\Users\Requests\UserRequest;
+use App\Controller;
 use App\Jobs\Users\SendWelcomeEmail;
 use Domain\Users\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Support\App\Api\Controller;
 
 class AuthController extends Controller
 {
     public function api_token_auth(LoginRequest $request): JsonResponse
     {
         if (Auth::attempt($request->only('email', 'password'))) {
-
             /** @var User $authUser */
             $authUser = $request->user();
 

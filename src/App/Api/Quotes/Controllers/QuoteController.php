@@ -7,6 +7,7 @@ use App\Api\Quotes\Requests\RateQuoteRequest;
 use App\Api\Quotes\Requests\StoreQuoteRequest;
 use App\Api\Quotes\Requests\UpdateQuoteRequest;
 use App\Api\Quotes\Resources\QuoteResource;
+use App\Controller;
 use Domain\Quotes\Actions\CreateQuoteAction;
 use Domain\Quotes\Actions\RateQuoteAction;
 use Domain\Quotes\Actions\UpdateQuoteAction;
@@ -20,7 +21,6 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
-use Support\App\Api\Controller;
 
 class QuoteController extends Controller
 {

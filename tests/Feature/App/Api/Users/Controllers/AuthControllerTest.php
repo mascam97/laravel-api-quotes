@@ -104,7 +104,7 @@ test('register_password_hashed', function () {
     $user = User::query()->where('email', 'user@mail.com')->first();
 
     $this->assertTrue(Hash::check(
-            'userPassword',
-            $user->password,
-        ));
+        'userPassword',
+        $user->password,
+    ));
 });

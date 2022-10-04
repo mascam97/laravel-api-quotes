@@ -4,10 +4,10 @@ namespace App\Api\Users\Controllers;
 
 use App\Api\Users\Queries\UserIndexQuery;
 use App\Api\Users\Resources\UserResource;
+use App\Controller;
 use Domain\Users\Models\User;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
-use Support\App\Api\Controller;
 
 class UserController extends Controller
 {

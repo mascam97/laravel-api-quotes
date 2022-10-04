@@ -2,9 +2,9 @@
 
 namespace App\Web\Quotes\Controllers;
 
+use App\Controller;
 use App\Web\Quotes\Queries\QuoteIndexQuery;
 use Illuminate\Contracts\View\View;
-use Support\App\Api\Controller;
 
 class QuoteController extends Controller
 {
