@@ -1,7 +1,5 @@
 <?php
 
-namespace Tests\Unit\Quotes\Actions;
-
 use Domain\Quotes\Actions\UpdateQuoteAction;
 use Domain\Quotes\DTO\UpdateQuoteData;
 use Domain\Quotes\Factories\QuoteFactory;

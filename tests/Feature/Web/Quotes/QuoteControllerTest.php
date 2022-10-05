@@ -1,7 +1,5 @@
 <?php
 
-namespace Tests\Feature\App\Web\Quotes\Controllers;
-
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Users\Models\User;
 

@@ -1,7 +1,5 @@
 <?php
 
-namespace Tests\Unit\Quotes\Actions;
-
 use Domain\Quotes\Actions\CreateQuoteAction;
 use Domain\Quotes\DTO\QuoteData;
 use Domain\Quotes\States\Drafted;

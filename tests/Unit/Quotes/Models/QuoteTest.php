@@ -1,7 +1,5 @@
 <?php
 
-namespace Tests\Unit\Quotes\Models;
-
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
 use Domain\Users\Models\User;

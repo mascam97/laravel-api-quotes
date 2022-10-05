@@ -1,7 +1,5 @@
 <?php
 
-namespace Tests\Unit\Rating;
-
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
 use Domain\Rating\Models\Rating;
