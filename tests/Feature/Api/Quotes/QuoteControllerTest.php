@@ -5,7 +5,7 @@ use Domain\Users\Models\User;
 
 beforeEach(function () {
     $this->fillable = ['title', 'content'];
-    $this->fields = ['id', 'title', 'content', 'state', 'excerpt', 'created_at', 'updated_at'];
+    $this->fields = ['id', 'title', 'content', 'state', 'average_rating', 'excerpt', 'created_at', 'updated_at'];
     $this->table = 'quotes';
 
     $this->user = User::factory()->create();

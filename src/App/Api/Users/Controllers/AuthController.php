@@ -52,6 +52,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => trans('message.created', ['attribute' => 'user']),
+            'data' => UserResource::make($user),
         ]);
     }
 

@@ -60,6 +60,11 @@ class Quote extends Model implements IsRated
         return Str::limit($this->content, 75);
     }
 
+    public function getAverageScore(): float
+    {
+        return $this->averageRating(User::class);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
