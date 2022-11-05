@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function index(UserIndexQuery $userQuery): AnonymousResourceCollection
     {
-        $users = $userQuery->get();
+        $users = $userQuery->paginate();
 
         return UserResource::collection($users);
     }

@@ -26,7 +26,7 @@ class QuoteController extends Controller
 {
     public function index(QuoteIndexQuery $quoteQuery): AnonymousResourceCollection
     {
-        $quotes = $quoteQuery->get();
+        $quotes = $quoteQuery->paginate();
 
         return QuoteResource::collection($quotes);
     }
@@ -51,8 +51,8 @@ class QuoteController extends Controller
         }
 
         return response()->json([
-            'data' => QuoteResource::make($quote),
             'message' => trans('message.created', ['attribute' => 'quote']),
+            'data' => QuoteResource::make($quote),
         ], 201);
     }
 

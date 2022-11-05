@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Domain\Users\Models\User;
 use Domain\Users\Notifications\NewsletterNotification;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Command\Command as CommandExitCode;
 
 class SendNewsletterCommand extends Command
 {
@@ -14,7 +15,7 @@ class SendNewsletterCommand extends Command
      * @var string
      */
     protected $signature = 'send:newsletter
-    {emails?*} : Email address to send directly
+    {emails?*} : Email address of users to send the newsletter
     {--s|schedule} : If the command is executed directly';
 
     /**
@@ -22,36 +23,42 @@ class SendNewsletterCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Send an email';
+    protected $description = 'Send an newsletter to verified users';
 
     /**
      * Execute the console command.
      */
-    public function handle(): void
+    public function handle(): int
     {
-        $emails = $this->argument('emails');
-        $builder = User::query();
+        $emails = (array) $this->argument('emails');
         $schedule = $this->option('schedule');
 
-        if ($emails) {
-            $builder->whereIn('email', $emails); /* @phpstan-ignore-line */
+        $builder = User::query()->whereEmailIsVerified();
+
+        if ($emails !== []) {
+            $builder->whereEmailIn($emails);
         }
 
-        $count = $builder->count(); /* @phpstan-ignore-line */
-        if ($count &&
-            ($this->confirm("Are you sure to send an email to $count users?") || $schedule)
+        $countUsers = $builder->count(); /* @phpstan-ignore-line */
+
+        if ($countUsers &&
+            ($this->confirm("Are you sure to send an email to $countUsers users?") || $schedule)
         ) {
-            $this->output->progressStart($count);
-            // TODO: whereNotNull("email_verified_at") should work
+            $this->output->progressStart($countUsers);
+
             $builder->each(function (User $user) {
                 $user->notify(new NewsletterNotification());
                 $this->output->progressAdvance();
             });
-            $this->output->progressFinish();
-            $this->info(" $count emails were sent.");
 
-            return;
+            $this->output->progressFinish();
+            $this->info("$countUsers emails were sent.");
+
+            return CommandExitCode::SUCCESS;
         }
-        $this->info(' 0 emails were sent.');
+
+        $this->info('0 emails were sent.');
+
+        return CommandExitCode::SUCCESS;
     }
 }

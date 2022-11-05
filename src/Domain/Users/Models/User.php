@@ -7,6 +7,7 @@ use Domain\Quotes\Models\Quote;
 use Domain\Rating\Utils\CanRate;
 use Domain\Users\Enums\SexEnum;
 use Domain\Users\QueryBuilders\UserQueryBuilder;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,6 +21,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $name
  * @property string $email
  * @property string $password
+ * @property ?Carbon $email_verified_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property ?int $quotes_count
@@ -28,7 +30,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static DBUserFactory factory(...$parameters)
  * @method static UserQueryBuilder query()
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, HasApiTokens, CanRate;
 

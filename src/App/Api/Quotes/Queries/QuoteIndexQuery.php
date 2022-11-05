@@ -16,6 +16,6 @@ class QuoteIndexQuery extends QueryBuilder
 
         $this->allowedFilters(['title', 'content', 'user_id'])
             ->allowedIncludes('user')
-            ->allowedSorts('id', 'title');
+            ->allowedSorts('id', 'title', 'created_at');
     }
 }

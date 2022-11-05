@@ -4,6 +4,7 @@ namespace App\Api\Users\Controllers;
 
 use App\Api\Users\Requests\LoginRequest;
 use App\Api\Users\Requests\UserRequest;
+use App\Api\Users\Resources\UserResource;
 use App\Controller;
 use App\Jobs\Users\SendWelcomeEmail;
 use Domain\Users\Models\User;
@@ -22,12 +23,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'data' => [
-                    'user' => [
-                        //                        TODO: Use a resource and move to /me
-                        'id' => $authUser->getKey(),
-                        'name' => $authUser->name,
-                        'email' => $authUser->email,
-                    ],
+                    'user' => UserResource::make($authUser)
                 ],
                 'token' => $authUser->createToken($request->string('device_name'))->plainTextToken,
                 'message' => trans('message.success'),

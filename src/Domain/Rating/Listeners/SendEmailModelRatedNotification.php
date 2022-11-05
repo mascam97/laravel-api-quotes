@@ -6,8 +6,6 @@ use Domain\Quotes\Models\Quote;
 use Domain\Rating\Events\ModelRated;
 use Domain\Rating\Notifications\ModelRatedNotification;
 use Domain\Users\Models\User;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class SendEmailModelRatedNotification
 {
