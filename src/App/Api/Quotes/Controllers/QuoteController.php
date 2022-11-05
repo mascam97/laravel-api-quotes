@@ -3,19 +3,15 @@
 namespace App\Api\Quotes\Controllers;
 
 use App\Api\Quotes\Queries\QuoteIndexQuery;
-use App\Api\Quotes\Requests\RateQuoteRequest;
 use App\Api\Quotes\Requests\StoreQuoteRequest;
 use App\Api\Quotes\Requests\UpdateQuoteRequest;
 use App\Api\Quotes\Resources\QuoteResource;
 use App\Controller;
 use Domain\Quotes\Actions\CreateQuoteAction;
-use Domain\Quotes\Actions\RateQuoteAction;
 use Domain\Quotes\Actions\UpdateQuoteAction;
 use Domain\Quotes\DTO\QuoteData;
-use Domain\Quotes\DTO\RateQuoteData;
 use Domain\Quotes\DTO\UpdateQuoteData;
 use Domain\Quotes\Models\Quote;
-use Domain\Rating\Exceptions\InvalidScore;
 use Domain\Users\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
@@ -109,37 +105,6 @@ class QuoteController extends Controller
 
         return response()->json([
             'message' => trans('message.deleted', ['attribute' => 'quote']),
-        ]);
-    }
-
-    /**
-     * @throws InvalidScore
-     */
-    public function rate(Quote $quote, RateQuoteRequest $request, RateQuoteAction $rateQuoteAction): JsonResponse
-    {
-        $rateQuoteData = new RateQuoteData(score: $request->input('score')); /* @phpstan-ignore-line */
-        /** @var User $authUser */
-        $authUser = $request->user();
-
-        $rateQuoteAction->__invoke($rateQuoteData, $quote, $authUser);
-
-        if ($rateQuoteData->quoteIsUnrated()) {
-            return response()->json([
-                'data' => QuoteResource::make($quote),
-                'message' => trans('message.rating.unrated', [
-                    'attribute' => 'quote',
-                    'id' => $quote->getKey(),
-                ]),
-            ]);
-        }
-
-        return response()->json([
-            'data' => QuoteResource::make($quote),
-            'message' => trans('message.rating.rated', [
-                'attribute' => 'quote',
-                'id' => $quote->id,
-                'score' => $rateQuoteData->score,
-            ]),
         ]);
     }
 }

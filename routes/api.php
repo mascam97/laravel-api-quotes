@@ -30,8 +30,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('ratings/quotes/{quote}', [RatingController::class, 'store'])
             ->name('ratings.quotes.store');
         // Route::post('ratings/CanBeRated/{model}', [RatingController::class, 'store'])->name('...')
-
-        Route::post('quotes/{quote}/rate', [QuoteController::class, 'rate']);
     });
 });
 
