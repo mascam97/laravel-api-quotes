@@ -2,13 +2,11 @@
 
 ## Goal
 
-Define the business logic about the project to justify the API logic, tools, functionalities, etc.
+Define the business logic about the project to justify the API logic, tools and functionalities.
 
 ## Client requirements
 
-In the community "SocialMediaQuotes" the members share quotes about books, each member rates the quotes that was shared by a member.  
-
-There is not an order about the quotes that belongs to a specific member, they use like a chat to publish it, and every member gives a like.
+In the community "SocialMediaQuotes" the members share quotes about books, each member rates the quotes with a like.  
 
 So, this community needs a system that allow the members upload "quotes", in order to other member can rate it with a qualification from 1-5
 
@@ -16,9 +14,9 @@ The community hires a company to develop the mobile or website, and this company
 
 1. Basic Register and Login system
 2. Each user can create quotes
-3. Each user can rate any quote (owned are not included)
+3. Each user can rate any quote
 4. Each user can update and delete its quotes and rates
-5. Each user can get other quotes and list users
+5. Each user can see other quotes and users
 6. When a quote is rated, the owner is notifiable
 
 ### Extra features

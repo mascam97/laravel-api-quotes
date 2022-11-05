@@ -60,7 +60,7 @@ class Quote extends Model implements IsRated
         return Str::limit($this->content, 75);
     }
 
-    public function getAverageScore(): float
+    public function getAverageUserScore(): float
     {
         return $this->averageRating(User::class);
     }

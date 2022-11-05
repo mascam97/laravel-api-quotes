@@ -57,7 +57,7 @@ it('can use rateable include', function () {
     $this->assertEquals($this->quote->excerpt, $responseData[0]['rateable']['excerpt']);
     $this->assertEquals($this->quote->content, $responseData[0]['rateable']['content']);
     $this->assertEquals($this->quote->state, $responseData[0]['rateable']['state']);
-    $this->assertEquals($this->quote->averageRating(), $responseData[0]['rateable']['average_rating']);
+    $this->assertEquals($this->quote->getAverageUserScore(), $responseData[0]['rateable']['average_rating']);
     $this->assertEquals($this->quote->created_at, $responseData[0]['rateable']['created_at']);
     $this->assertEquals($this->quote->updated_at, $responseData[0]['rateable']['updated_at']);
 });
