@@ -23,7 +23,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'data' => [
-                    'user' => UserResource::make($authUser)
+                    'user' => UserResource::make($authUser),
                 ],
                 'token' => $authUser->createToken($request->string('device_name'))->plainTextToken,
                 'message' => trans('message.success'),

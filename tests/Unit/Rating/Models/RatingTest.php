@@ -5,8 +5,11 @@ use Domain\Quotes\Models\Quote;
 use Domain\Rating\Models\Rating;
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Queue;
 
 beforeEach(function () {
+    Queue::fake();
+
     $this->user = User::factory()->create();
     $this->quote = (new QuoteFactory)->withUser($this->user)->create();  /* @phpstan-ignore-line */
 });

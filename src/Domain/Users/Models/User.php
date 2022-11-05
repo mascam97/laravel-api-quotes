@@ -4,6 +4,7 @@ namespace Domain\Users\Models;
 
 use Database\Factories\DBUserFactory;
 use Domain\Quotes\Models\Quote;
+use Domain\Rating\Contracts\Rates;
 use Domain\Rating\Utils\CanRate;
 use Domain\Users\Enums\SexEnum;
 use Domain\Users\QueryBuilders\UserQueryBuilder;
@@ -30,7 +31,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static DBUserFactory factory(...$parameters)
  * @method static UserQueryBuilder query()
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements Rates, MustVerifyEmail
 {
     use HasFactory, Notifiable, HasApiTokens, CanRate;
 

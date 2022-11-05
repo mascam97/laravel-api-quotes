@@ -1,6 +1,7 @@
 <?php
 
 use App\Api\Quotes\Controllers\QuoteController;
+use App\Api\Ratings\Controllers\RatingController;
 use App\Api\Users\Controllers\AuthController;
 use App\Api\Users\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::apiResource('users', UserController::class)
             ->only(['index', 'show']);
+
+        Route::apiResource('ratings', RatingController::class)
+            ->only(['index', 'show', 'update', 'destroy']);
+
+        Route::post('ratings/quotes/{quote}', [RatingController::class, 'store'])
+            ->name('ratings.quotes.store');
+        // Route::post('ratings/CanBeRated/{model}', [RatingController::class, 'store'])->name('...')
 
         Route::post('quotes/{quote}/rate', [QuoteController::class, 'rate']);
     });

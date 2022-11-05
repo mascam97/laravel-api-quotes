@@ -2,8 +2,11 @@
 
 use Domain\Users\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Queue;
 
 beforeEach(function () {
+    Queue::fake();
+
     $this->url_login = 'api/api-token-auth';
     $this->fillable_login = ['device_name', 'email', 'password'];
     $this->url_register = 'api/register';

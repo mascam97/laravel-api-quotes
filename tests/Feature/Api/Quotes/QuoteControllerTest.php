@@ -56,7 +56,6 @@ test('store', function () {
         ->assertSee('The quote was created successfully')
         ->assertJsonStructure(['data' => $this->fields])
         ->assertJson(['data' => $data])
-        ->assertSee([$this->user->name, $this->user->email])
         ->assertCreated();
 
     $this->assertDatabaseHas($this->table, $data);

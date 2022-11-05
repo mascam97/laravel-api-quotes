@@ -5,8 +5,11 @@ use Domain\Quotes\DTO\RateQuoteData;
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
 use Domain\Users\Models\User;
+use Illuminate\Support\Facades\Queue;
 
 beforeEach(function () {
+    Queue::fake();
+
     $this->user = User::factory()->create();
 });
 

@@ -5,6 +5,7 @@ namespace Domain\Quotes\Models;
 use Database\Factories\DBQuoteFactory;
 use Domain\Quotes\QueryBuilders\QuoteQueryBuilder;
 use Domain\Quotes\States\QuoteState;
+use Domain\Rating\Contracts\IsRated;
 use Domain\Rating\Utils\CanBeRated;
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -29,7 +30,7 @@ use Spatie\ModelStates\HasStates;
  * @method static DBQuoteFactory factory(...$parameters)
  * @method static QuoteQueryBuilder query()
  */
-class Quote extends Model
+class Quote extends Model implements IsRated
 {
     use HasFactory, CanBeRated, HasStates;
 

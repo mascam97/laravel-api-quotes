@@ -64,12 +64,12 @@ test('id sort', function () {
     $responseData = $this->json('GET', route('users.index', ['sort' => 'id']))
         ->json('data');
 
-    $this->assertEquals(1, $responseData[0]['id']);
+    $this->assertLessThan($responseData[4]['id'], $responseData[0]['id']);
 
     $responseDataTwo = $this->json('GET', route('users.index', ['sort' => '-id']))
         ->json('data');
 
-    $this->assertEquals(5, $responseDataTwo[0]['id']);
+    $this->assertLessThan($responseDataTwo[0]['id'], $responseDataTwo[4]['id']);
 });
 
 test('name sort', function () {
