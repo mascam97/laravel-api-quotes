@@ -29,6 +29,7 @@ _Main personal project - Community to share and rate quotes_
 - Implemented **PHP CS Fixer** to fix code standard
 - Implemented **PHPStan** for a static analysis in the code
 - Implemented **rector** for handle automated refactorings
+- Implemented **PHP Insights** to check code quality
 - Implemented **State pattern and Enums**
 - Upgraded to **PHP 8.0** and **Laravel 9**
 - Refactoring all the code (setUps implementation in test, use of Actions, DTOs, type hinting, etc.)
@@ -152,6 +153,16 @@ This is not a required step, it is an extra improving by rector.php.
 
 ---
 
+### Analyze the code quality
+
+There are some rules in `config/insights.php` to check the code quality.
+
+```
+sail artisan insights
+```
+
+---
+
 ## Advanced features
 
 ### Running Artisan Commands
@@ -194,6 +205,7 @@ Note: Remember in production the better command is `queue:work`, [explanation](h
 -   [Larastan](https://github.com/nunomaduro/larastan) - PHP tool to find errors in your code.
 -   [PHP Code Standards Fixer](https://cs.symfony.com/) - PHP tool to fixe your code to follow standards.
 -   [Rector](https://getrector.org/) - Instant Upgrades and Automated Refactoring of any PHP 5.3+ code.
+-   [PHP Insights](https://phpinsights.com/) - The perfect starting point to analyze the code quality of your PHP projects.
 -   [Data transfer objects with batteries included](https://github.com/spatie/data-transfer-object)
 -   [Laravel Query Builder v4](https://spatie.be/docs/laravel-query-builder/v4/introduction) - PHP package that allows you to filter, sort and include eloquent relations based on a request.
 -   [Laravel Model State](https://spatie.be/docs/laravel-model-states/v2/01-introduction) - Advanced state support for Laravel models

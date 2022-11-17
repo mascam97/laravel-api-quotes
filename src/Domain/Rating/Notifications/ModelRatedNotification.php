@@ -27,6 +27,7 @@ class ModelRatedNotification extends Notification implements ShouldQueue
      * Get the notification's delivery channels.
      *
      * @param  mixed  $notifiable
+     *
      * @return array
      */
     public function via($notifiable)
@@ -41,7 +42,7 @@ class ModelRatedNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->greeting(trans('mail.greeting.quote_rated'))
             ->line(trans('mail.notification.quote_rated', [
                 'qualifier' => $this->qualifierName,
@@ -60,7 +61,7 @@ class ModelRatedNotification extends Notification implements ShouldQueue
     public function toArray($notifiable): array
     {
         return [
-            //
+
         ];
     }
 }

@@ -17,7 +17,7 @@ class QuotePolicy
             return true;
         }
 
-        Log::channel('daily')->warning("User $user->id tried to delete or update the quote $quote->id");
+        Log::channel('daily')->warning("User {$user->id} tried to delete or update the quote {$quote->id}");
 
         return false;
     }

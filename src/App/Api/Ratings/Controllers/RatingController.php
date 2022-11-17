@@ -51,7 +51,8 @@ class RatingController extends Controller
         $rating = (new UpdateOrCreateRatingAction())->__invoke(
             qualifier: $authUser,
             rateable: $quote,
-            data: $rateData);
+            data: $rateData
+        );
 
         $rating->load('rateable');
 

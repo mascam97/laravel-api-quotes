@@ -9,6 +9,6 @@ use Spatie\Enum\Laravel\Enum;
  * @method static self FEMININE()
  * @method static self NOT_APPLICABLE()
  */
-final class SexEnum extends Enum
+class SexEnum extends Enum
 {
 }

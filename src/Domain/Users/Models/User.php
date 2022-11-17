@@ -19,6 +19,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @property-read int $id
+ *
  * @property string $name
  * @property string $email
  * @property string $password
@@ -26,6 +27,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property ?int $quotes_count
+ *
  * @property-read HasMany $quotes
  *
  * @method static DBUserFactory factory(...$parameters)
@@ -56,14 +58,6 @@ class User extends Authenticatable implements Rates, MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     * Create a new factory instance for the model.
-     */
-    protected static function newFactory(): Factory
-    {
-        return DBUserFactory::new();
-    }
-
     public function newEloquentBuilder($query): UserQueryBuilder
     {
         return new UserQueryBuilder($query);
@@ -72,5 +66,13 @@ class User extends Authenticatable implements Rates, MustVerifyEmail
     public function quotes(): HasMany
     {
         return $this->hasMany(Quote::class);
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): Factory
+    {
+        return DBUserFactory::new();
     }
 }

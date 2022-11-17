@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
-    public function api_token_auth(LoginRequest $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse
     {
         if (Auth::attempt($request->only('email', 'password'))) {
             /** @var User $authUser */

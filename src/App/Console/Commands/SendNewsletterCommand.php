@@ -32,7 +32,6 @@ class SendNewsletterCommand extends Command
     {
         $emails = (array) $this->argument('emails');
         $schedule = $this->option('schedule');
-
         $builder = User::query()->whereEmailIsVerified();
 
         if ($emails !== []) {
@@ -42,7 +41,7 @@ class SendNewsletterCommand extends Command
         $countUsers = $builder->count(); /* @phpstan-ignore-line */
 
         if ($countUsers &&
-            ($this->confirm("Are you sure to send an email to $countUsers users?") || $schedule)
+            ($this->confirm("Are you sure to send an email to {$countUsers} users?") || $schedule)
         ) {
             $this->output->progressStart($countUsers);
 
@@ -52,7 +51,7 @@ class SendNewsletterCommand extends Command
             });
 
             $this->output->progressFinish();
-            $this->info("$countUsers emails were sent.");
+            $this->info("{$countUsers} emails were sent.");
 
             return CommandExitCode::SUCCESS;
         }

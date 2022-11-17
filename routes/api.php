@@ -33,7 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
-Route::post('api-token-auth', [AuthController::class, 'api_token_auth'])
+Route::post('api-token-auth', [AuthController::class, 'login'])
     ->name('api-token-auth');
 
 Route::post('register', [AuthController::class, 'register'])

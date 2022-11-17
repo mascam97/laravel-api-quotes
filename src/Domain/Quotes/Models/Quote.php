@@ -18,13 +18,16 @@ use Spatie\ModelStates\HasStates;
 
 /**
  * @property-read int $id
+ *
  * @property string $title
  * @property string $content
  * @property QuoteState $state
  * @property int $user_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ *
  * @property-read string $excerpt
+ *
  * @property User $user
  *
  * @method static DBQuoteFactory factory(...$parameters)
@@ -41,14 +44,6 @@ class Quote extends Model implements IsRated
     protected $casts = [
         'state' => QuoteState::class,
     ];
-
-    /**
-     * Create a new factory instance for the model.
-     */
-    protected static function newFactory(): Factory
-    {
-        return DBQuoteFactory::new();
-    }
 
     public function newEloquentBuilder($query): QuoteQueryBuilder
     {
@@ -68,5 +63,13 @@ class Quote extends Model implements IsRated
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): Factory
+    {
+        return DBQuoteFactory::new();
     }
 }

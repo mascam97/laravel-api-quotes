@@ -25,7 +25,7 @@ class NewsletterNotification extends Notification
      */
     public function toMail(User $notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->greeting(trans('mail.greeting.newsletter'))
             ->line(trans('mail.notification.newsletter', [
                 'user' => $notifiable->name,
@@ -42,7 +42,7 @@ class NewsletterNotification extends Notification
     public function toArray(User $notifiable): array
     {
         return [
-            //
+
         ];
     }
 }

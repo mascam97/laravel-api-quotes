@@ -12,6 +12,6 @@ class QuoteController extends Controller
     {
         $quotes = $quoteQuery->get();
 
-        return view('welcome/index', ['quotes' =>$quotes]);
+        return view('welcome/index', ['quotes' => $quotes]);
     }
 }

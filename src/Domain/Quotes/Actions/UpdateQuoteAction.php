@@ -2,7 +2,6 @@
 
 namespace Domain\Quotes\Actions;
 
-use Domain\Quotes\DTO\QuoteData;
 use Domain\Quotes\DTO\UpdateQuoteData;
 use Domain\Quotes\Models\Quote;
 

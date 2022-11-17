@@ -18,7 +18,7 @@ class RatingPolicy
         }
 
         Log::channel('daily')->warning(
-            "User {$qualifier->getKey()} tried to delete the rating $rating->id" /* @phpstan-ignore-line */
+            "User {$qualifier->getKey()} tried to delete the rating {$rating->id}" /* @phpstan-ignore-line */
         );
 
         return false;

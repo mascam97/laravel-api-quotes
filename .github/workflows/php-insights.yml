@@ -1,0 +1,15 @@
+name: PHP Insights
+
+on: [push]
+
+jobs:
+  phpinsights:
+    runs-on: ubuntu-latest
+    name: PHP Insights checks
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+      - run: composer install --prefer-dist --no-progress --no-suggest
+      - run: vendor/bin/phpinsights --min-quality=85 --min-complexity=90 --min-architecture=80 --min-style=95 -n --ansi --format=github-action
