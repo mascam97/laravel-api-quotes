@@ -38,6 +38,7 @@ _Main personal project - Community to share and rate quotes_
 - Implemented some **recommendations to build large-than-average web applications**
 - Reached the highest level in PHPStan, level 9 for src and level 8 for tests
 - **Redefined business logic in ratings for a better scalability**
+- Improved test suit with advanced practices (test command, jobs, middleware, etc.)
 
 ### TODOS
 
@@ -226,6 +227,7 @@ This project is licensed under the [MIT License](https://choosealicense.com/lice
 
 ### References :books:
 
+- [Laravel Testing](https://testing-laravel.com/)
 - [Laravel Beyond CRUD](https://laravel-beyond-crud.com/)
 - [Laravel Advanced Course](https://platzi.com/clases/laravel-avanzado/)
 - [Postman Course](https://platzi.com/clases/postman/)

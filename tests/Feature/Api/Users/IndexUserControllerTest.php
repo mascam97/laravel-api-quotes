@@ -3,44 +3,49 @@
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
+use function Pest\Laravel\getJson;
+use function PHPUnit\Framework\assertArrayHasKey;
+use function PHPUnit\Framework\assertCount;
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertLessThan;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
 
     (new UserFactory)->setAmount(4)->create();
 
-    $this->actingAs($this->user, 'sanctum');
+    login($this->user);
 });
 
-test('id filter', function () {
+it('can filter by id', function () {
     /** @var User $newUser */
     $newUser = User::factory()->create();
 
-    $responseData = $this->json('GET', route('users.index', ['filter[id]' => $newUser->id]))
+    $responseData = getJson(route('users.index', ['filter[id]' => $newUser->id]))
         ->json('data');
 
-    $this->assertCount(1, $responseData);
-    $this->assertEquals($newUser->getKey(), $responseData[0]['id']);
+    assertCount(1, $responseData);
+    assertEquals($newUser->getKey(), $responseData[0]['id']);
 });
 
-test('name filter', function () {
+it('can filter by name', function () {
     $newUser = User::factory()->create([
         'name' => 'Shakespeare',
     ]);
 
-    $responseData = $this->json('GET', route('users.index', ['filter[name]' => 'shakespeare']))
+    $responseData = getJson(route('users.index', ['filter[name]' => 'shakespeare']))
         ->json('data');
 
-    $this->assertCount(1, $responseData);
-    $this->assertEquals($newUser->getKey(), $responseData[0]['id']);
+    assertCount(1, $responseData);
+    assertEquals($newUser->getKey(), $responseData[0]['id']);
 });
 
-test('quotes include', function () {
-    $responseData = $this->json('GET', route('users.index', ['include' => 'quotes']))
+it('can include quotes', function () {
+    $responseData = getJson(route('users.index', ['include' => 'quotes']))
         ->json('data');
 
-    $this->assertCount(5, $responseData);
-    $this->assertArrayHasKey('quotes', $responseData[0]);
+    assertCount(5, $responseData);
+    assertArrayHasKey('quotes', $responseData[0]);
 
     $newUser = User::factory()->create([
         'name' => 'User with quote',
@@ -49,40 +54,40 @@ test('quotes include', function () {
     /** @var User $quote */
     $quote = (new QuoteFactory)->withUser($newUser)->create();
 
-    $responseDataTwo = $this->json('GET', route('users.index', [
+    $responseDataTwo = getJson(route('users.index', [
         'filter[name]' => 'User with quote',
         'include' => 'quotes',
     ]))
         ->json('data');
 
-    $this->assertCount(1, $responseDataTwo);
-    $this->assertCount(1, $responseDataTwo[0]['quotes']);
-    $this->assertEquals($quote->getKey(), $responseDataTwo[0]['quotes'][0]['id']);
+    assertCount(1, $responseDataTwo);
+    assertCount(1, $responseDataTwo[0]['quotes']);
+    assertEquals($quote->getKey(), $responseDataTwo[0]['quotes'][0]['id']);
 });
 
-test('id sort', function () {
-    $responseData = $this->json('GET', route('users.index', ['sort' => 'id']))
+it('can sort by id', function () {
+    $responseData = getJson(route('users.index', ['sort' => 'id']))
         ->json('data');
 
-    $this->assertLessThan($responseData[4]['id'], $responseData[0]['id']);
+    assertLessThan($responseData[4]['id'], $responseData[0]['id']);
 
-    $responseDataTwo = $this->json('GET', route('users.index', ['sort' => '-id']))
+    $responseDataTwo = getJson(route('users.index', ['sort' => '-id']))
         ->json('data');
 
-    $this->assertLessThan($responseDataTwo[0]['id'], $responseDataTwo[4]['id']);
+    assertLessThan($responseDataTwo[0]['id'], $responseDataTwo[4]['id']);
 });
 
-test('name sort', function () {
+it('can sort by name', function () {
     $this->user->name = 'AAA';
     $this->user->update();
 
-    $responseData = $this->json('GET', route('users.index', ['sort' => 'name']))
+    $responseData = getJson(route('users.index', ['sort' => 'name']))
         ->json('data');
 
-    $this->assertEquals('AAA', $responseData[0]['name']);
+    assertEquals('AAA', $responseData[0]['name']);
 
-    $responseDataTwo = $this->json('GET', route('users.index', ['sort' => '-name']))
+    $responseDataTwo = getJson(route('users.index', ['sort' => '-name']))
         ->json('data');
 
-    $this->assertEquals('AAA', $responseDataTwo[4]['name']);
+    assertEquals('AAA', $responseDataTwo[4]['name']);
 });

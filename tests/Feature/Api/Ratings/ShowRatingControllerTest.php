@@ -3,6 +3,7 @@
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Rating\Models\Rating;
 use Domain\Users\Models\User;
+use function Pest\Laravel\getJson;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -14,35 +15,35 @@ beforeEach(function () {
     $this->rating->score = 5;
     $this->rating->save();
 
-    $this->actingAs($this->user, 'sanctum');
+    login($this->user);
 });
 
-it('can use qualifier include', function () {
-    $responseData = $this->json('GET', route('ratings.show', [
+it('can include qualifier', function () {
+    $responseData = getJson(route('ratings.show', [
         'rating' => $this->rating->getKey(),
         'include' => 'qualifier',
     ]))->json('data');
 
-    $this->assertArrayHasKey('qualifier', $responseData);
-    $this->assertEquals($this->user->getKey(), $responseData['qualifier']['id']);
-    $this->assertEquals($this->user->name, $responseData['qualifier']['name']);
-    $this->assertEquals($this->user->email, $responseData['qualifier']['email']);
-    $this->assertEquals($this->user->created_at, $responseData['qualifier']['created_at']);
+    expect($responseData['qualifier'])
+        ->id->toEqual($this->user->getKey())
+        ->name->toEqual($this->user->name)
+        ->email->toEqual($this->user->email)
+        ->created_at->toEqual($this->user->created_at);
 });
 
-it('can use rateable include', function () {
-    $responseData = $this->json('GET', route('ratings.show', [
+it('can include rateable', function () {
+    $responseData = getJson(route('ratings.show', [
         'rating' => $this->rating->getKey(),
         'include' => 'rateable',
     ]))->json('data');
 
-    $this->assertArrayHasKey('rateable', $responseData);
-    $this->assertEquals($this->quote->getKey(), $responseData['rateable']['id']);
-    $this->assertEquals($this->quote->title, $responseData['rateable']['title']);
-    $this->assertEquals($this->quote->excerpt, $responseData['rateable']['excerpt']);
-    $this->assertEquals($this->quote->content, $responseData['rateable']['content']);
-    $this->assertEquals($this->quote->state, $responseData['rateable']['state']);
-    $this->assertEquals($this->quote->getAverageUserScore(), $responseData['rateable']['average_rating']);
-    $this->assertEquals($this->quote->created_at, $responseData['rateable']['created_at']);
-    $this->assertEquals($this->quote->updated_at, $responseData['rateable']['updated_at']);
+    expect($responseData['rateable'])
+        ->id->toEqual($this->quote->getKey())
+        ->title->toEqual($this->quote->title)
+        ->excerpt->toEqual($this->quote->excerpt)
+        ->content->toEqual($this->quote->content)
+        ->state->toEqual($this->quote->state)
+        ->average_rating->toEqual($this->quote->getAverageUserScore())
+        ->created_at->toEqual($this->quote->created_at)
+        ->updated_at->toEqual($this->quote->updated_at);
 });

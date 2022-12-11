@@ -44,6 +44,7 @@ class AuthController extends Controller
         $user->name = $request->string('name');
         $user->email = $request->string('email');
         $user->password = Hash::make($request->string('password'));
+        $user->locale = app()->getLocale();
         $user->save();
 
         Log::channel('daily')->info('New user was created.', ['email' => $user->email]);
@@ -51,7 +52,9 @@ class AuthController extends Controller
         dispatch(new SendWelcomeEmail($user->email));
 
         return response()->json([
-            'message' => trans('message.created', ['attribute' => 'user']),
+            'message' => trans('message.created', [
+                'attribute' => trans('validation.attributes.user'),
+            ]),
             'data' => UserResource::make($user),
         ]);
     }

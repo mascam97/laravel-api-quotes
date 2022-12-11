@@ -5,36 +5,35 @@ use Domain\Quotes\DTO\QuoteData;
 use Domain\Quotes\States\Drafted;
 use Domain\Quotes\States\Published;
 use Domain\Users\Models\User;
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertTrue;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
 });
 
-test('quote is created', function () {
+it('can create a quote', function () {
     $quoteData = new QuoteData(
         title: 'Title', content: 'Content'
     );
-    $createQuoteAction = new CreateQuoteAction();
+    $quote = (new CreateQuoteAction())->__invoke($quoteData, $this->user);
 
-    $quote = $createQuoteAction->__invoke($quoteData, $this->user);
-
-    $this->assertTrue($quote->user()->is($this->user));
-    $this->assertEquals($quote->title, $quoteData->title);
-    $this->assertEquals($quote->content, $quoteData->content);
-    $this->assertEquals(Drafted::$name, $quote->state);
+    assertTrue($quote->user()->is($this->user));
+    assertEquals($quote->title, $quoteData->title);
+    assertEquals($quote->content, $quoteData->content);
+    assertEquals(Drafted::$name, $quote->state);
 });
 
-test('quote can be published', function () {
+it('can create a quote as published', function () {
     $quoteData = new QuoteData(
         title: 'Title', content: 'Content', published: true
     );
 
-    $createQuoteAction = new CreateQuoteAction();
+    $quote = (new CreateQuoteAction())->__invoke($quoteData, $this->user);
 
-    $quote = $createQuoteAction->__invoke($quoteData, $this->user);
-
-    $this->assertTrue($quote->user()->is($this->user));
-    $this->assertEquals($quote->title, $quoteData->title);
-    $this->assertEquals($quote->content, $quoteData->content);
-    $this->assertEquals(Published::$name, $quote->state);
+    expect($quote)
+        ->user->toEqual($this->user)
+        ->title->toEqual($quoteData->title)
+        ->content->toEqual($quoteData->content)
+        ->state->toEqual(Published::$name);
 });

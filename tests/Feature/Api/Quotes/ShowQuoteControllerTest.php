@@ -2,6 +2,9 @@
 
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Users\Models\User;
+use function Pest\Laravel\getJson;
+use function PHPUnit\Framework\assertArrayHasKey;
+use function PHPUnit\Framework\assertEquals;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -9,15 +12,15 @@ beforeEach(function () {
 
     (new QuoteFactory)->setAmount(3)->withUser($this->user)->create();
 
-    $this->actingAs($this->user, 'sanctum');
+    login($this->user);
 });
 
-test('user include', function () {
-    $responseData = $this->json('GET', route('quotes.show', [
+it('can include user', function () {
+    $responseData = getJson(route('quotes.show', [
         'quote' => $this->quote->getKey(),
         'include' => 'user',
     ]))->json('data');
 
-    $this->assertArrayHasKey('user', $responseData);
-    $this->assertEquals($this->user->getKey(), $responseData['user']['id']);
+    assertArrayHasKey('user', $responseData);
+    assertEquals($this->user->getKey(), $responseData['user']['id']);
 });

@@ -183,7 +183,7 @@ return [
         'terms' => 'términos',
         'time' => 'hora',
         'title' => 'título',
-        'username' => 'usuario',
+        'user' => 'usuario',
         'year' => 'año',
     ],
 ];

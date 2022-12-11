@@ -1,0 +1,64 @@
+<?php
+
+namespace Tests\Factories;
+
+use Domain\Users\Models\User;
+use Illuminate\Foundation\Testing\WithFaker;
+
+class RegisterRequestDataFactory
+{
+    use withFaker;
+
+    protected string $name = 'user name';
+
+    protected string $email = 'user@mail.com';
+
+    protected string $password = 'password';
+
+    protected string $deviceName = 'device name';
+
+    public static function new(): self
+    {
+        return new self();
+    }
+
+    public function withName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function withEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function withPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function withUser(User $user): self
+    {
+        $this->name = $user->name;
+        $this->email = $user->email;
+        $this->password = $user->password;
+
+        return $this;
+    }
+
+    public function create(array $extra = []): array
+    {
+        return $extra + [
+            'name' => $this->name,
+            'email' => $this->email,
+            'password' => $this->password,
+            'device_name' => $this->deviceName,
+        ];
+    }
+}

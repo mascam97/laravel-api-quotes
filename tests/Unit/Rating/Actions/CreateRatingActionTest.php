@@ -6,12 +6,14 @@ use Domain\Rating\Actions\UpdateOrCreateRatingAction;
 use Domain\Rating\DTO\RatingData;
 use Domain\Rating\Models\Rating;
 use Domain\Users\Models\User;
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertTrue;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
 });
 
-test('quote is created', function () {
+it('can create a rating to a quote', function () {
     /** @var Quote $quote */
     $quote = (new QuoteFactory)->withUser($this->user)->create();
     $rateData = new RatingData(
@@ -20,12 +22,12 @@ test('quote is created', function () {
 
     $rating = (new UpdateOrCreateRatingAction())->__invoke($this->user, $quote, $rateData);
 
-    $this->assertTrue($rating->qualifier()->is($this->user));
-    $this->assertTrue($rating->rateable()->is($quote));
-    $this->assertEquals($rating->score, 5);
+    assertTrue($rating->qualifier()->is($this->user));
+    assertTrue($rating->rateable()->is($quote));
+    assertEquals($rating->score, 5);
 });
 
-test('quote is updated if it exists', function () {
+it('can update an existed quote', function () {
     $quote = (new QuoteFactory)->withUser($this->user)->create();
 
     $rating = new Rating();
@@ -41,9 +43,9 @@ test('quote is updated if it exists', function () {
 
     $updatedRating = (new UpdateOrCreateRatingAction())->__invoke($this->user, $quote, $rateData);
 
-    $this->assertTrue($updatedRating->is($rating));
-    $this->assertEquals($updatedRating->created_at, $rating->created_at);
-    $this->assertTrue($updatedRating->qualifier()->is($this->user));
-    $this->assertTrue($updatedRating->rateable()->is($quote));
-    $this->assertEquals($updatedRating->score, 1);
+    assertTrue($updatedRating->is($rating));
+    assertEquals($updatedRating->created_at, $rating->created_at);
+    assertTrue($updatedRating->qualifier()->is($this->user));
+    assertTrue($updatedRating->rateable()->is($quote));
+    assertEquals($updatedRating->score, 1);
 });

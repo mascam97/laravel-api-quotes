@@ -14,24 +14,32 @@ beforeEach(function () {
     $this->quote = (new QuoteFactory)->withUser($this->user)->create();  /* @phpstan-ignore-line */
 });
 
-test('users rate quotes', function () {
+it('can rate quotes by users', function () {
     $this->user->rate($this->quote, 5);
 
-    expect($this->user->ratings(Quote::class)->get())->toBeInstanceOf(Collection::class);
-    expect($this->quote->qualifiers(User::class)->get())->toBeInstanceOf(Collection::class);
+    expect($this->user->ratings(Quote::class)->get())
+        ->toBeInstanceOf(Collection::class);
+    expect($this->quote->qualifiers(User::class)->get())
+        ->toBeInstanceOf(Collection::class);
 });
 
-test('calculate average rating', function () {
-    /** @var User $anotherUser */
-    $anotherUser = User::factory()->create();
+it('can calculate average rating', function (array $scores, float $averageScore) {
+    foreach ($scores as $score) {
+        /** @var User $user */
+        $user = User::factory()->create();
 
-    $this->user->rate($this->quote, 5);
-    $anotherUser->rate($this->quote, 3);
+        $user->rate($this->quote, $score);
+    }
 
-    expect($this->quote->averageRating(User::class))->toBe((float) 4.0);
-});
+    expect($this->quote->averageRating(User::class))
+        ->toBe((float) $averageScore);
+})->with([
+    [[], 0.0],
+    [[4], 4.0],
+    [[1, 4, 3], 2.7],
+]);
 
-test('rating model', function () {
+it('can rate a model', function () {
     $this->user->rate($this->quote, 5);
 
     /** @var Rating $rating */

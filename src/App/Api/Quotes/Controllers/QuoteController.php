@@ -27,7 +27,7 @@ class QuoteController extends Controller
         return QuoteResource::collection($quotes);
     }
 
-    public function store(StoreQuoteRequest $request, CreateQuoteAction $createQuoteAction): JsonResponse
+    public function store(StoreQuoteRequest $request): JsonResponse
     {
         try {
             $quoteData = new QuoteData(
@@ -37,7 +37,7 @@ class QuoteController extends Controller
             /** @var User $authUser */
             $authUser = $request->user();
 
-            $quote = $createQuoteAction->__invoke($quoteData, $authUser);
+            $quote = (new CreateQuoteAction())->__invoke($quoteData, $authUser);
         } catch (\Exception $exception) {
             report($exception);
 
@@ -67,7 +67,7 @@ class QuoteController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function update(UpdateQuoteRequest $request, Quote $quote, UpdateQuoteAction $updateQuoteAction): JsonResponse
+    public function update(UpdateQuoteRequest $request, Quote $quote): JsonResponse
     {
         // user can update a quote if he is the owner
         $this->authorize('pass', $quote);
@@ -78,7 +78,7 @@ class QuoteController extends Controller
                 content: $request->string('content')
             );
 
-            $quote = $updateQuoteAction->__invoke($updateQuoteData, $quote);
+            $quote = (new UpdateQuoteAction())->__invoke($updateQuoteData, $quote);
         } catch (\Exception $exception) {
             report($exception);
 

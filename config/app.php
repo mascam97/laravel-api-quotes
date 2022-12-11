@@ -97,6 +97,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Available Locales
+    |--------------------------------------------------------------------------
+    |
+    | The application available locales determines the locales that can be used
+    | by the translation service provider. Locales will fallback to those
+    | that are available. You may set the local at request time by using
+    | the 'Accept-Language' header.
+    |
+    */
+
+    'available_locales' => ['en', 'en_US', 'es', 'es_MX'],
+
+    /*
+    |--------------------------------------------------------------------------
     | Faker Locale
     |--------------------------------------------------------------------------
     |

@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->enum('sex', SexEnum::toArray())->nullable();
             $table->string('email')->unique();
+            $table->string('locale', 5);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

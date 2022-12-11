@@ -1,154 +1,161 @@
 <?php
 
 use Domain\Quotes\Factories\QuoteFactory;
+use Domain\Quotes\Models\Quote;
 use Domain\Users\Models\User;
+use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\assertDatabaseMissing;
+use function Pest\Laravel\deleteJson;
+use function Pest\Laravel\getJson;
+use function Pest\Laravel\postJson;
+use function Pest\Laravel\putJson;
 
 beforeEach(function () {
-    $this->fillable = ['title', 'content'];
-    $this->fields = ['id', 'title', 'content', 'state', 'average_rating', 'excerpt', 'created_at', 'updated_at'];
-    $this->table = 'quotes';
-
     $this->user = User::factory()->create();
     $this->quote = (new QuoteFactory)->withUser($this->user)->create(); /* @phpstan-ignore-line */
 });
 
-test('guest unauthorized', function () {
-    $this->json('GET', route('quotes.index'))
-        ->assertUnauthorized();                // index
-    $this->json('GET', route('quotes.show', [
-        'quote' => $this->quote->id,
-    ]))->assertUnauthorized();     // show
-    $this->json('POST', route('quotes.index'))
-        ->assertUnauthorized();           // store
-    $this->json('PUT', route('quotes.show', [
-        'quote' => $this->quote->id,
-    ]))->assertUnauthorized(); // update
-    $this->json('DELETE', route('quotes.show', [
-        'quote' => $this->quote->id,
-    ]))->assertUnauthorized();  // destroy
+it('cannot authorize guest', function () {
+    getJson(route('quotes.index'))
+        ->assertUnauthorized();
+
+    getJson(route('quotes.show', ['quote' => $this->quote->id]))
+        ->assertUnauthorized();
+
+    postJson(route('quotes.store'))
+        ->assertUnauthorized();
+
+    putJson(route('quotes.update', ['quote' => $this->quote->id]))
+        ->assertUnauthorized();
+
+    deleteJson(route('quotes.destroy', ['quote' => $this->quote->id]))
+        ->assertUnauthorized();
 });
 
-test('index', function () {
-    $this->actingAs($this->user, 'sanctum')
-        ->json('GET', route('quotes.index'))
+it('can index', function () {
+    login();
+
+    getJson(route('quotes.index'))
         ->assertJsonStructure([
-            'data' => ['*' => $this->fields],
+            'data' => [
+                '*' => ['id', 'title', 'content', 'state', 'average_rating', 'excerpt', 'created_at', 'updated_at'], ],
         ])->assertOk();
 });
 
-test('store validate', function () {
-    $this->actingAs($this->user, 'sanctum')
-        ->json('POST', route('quotes.index'), [
-            'title' => '',
-            'content' => '',
-        ])->assertJsonValidationErrors($this->fillable);
+it('cannot store invalid data', function () {
+    login();
+
+    postJson(route('quotes.index'), [
+        'title' => '',
+        'content' => '',
+    ])->assertJsonValidationErrors(['title', 'content']);
 });
 
-test('store', function () {
+it('can store', function () {
     $data = [
         'title' => $this->faker->sentence,
         'content' => $this->faker->text(500),
     ];
 
-    $this->actingAs($this->user, 'sanctum')
-        ->json('POST', route('quotes.index'), $data)
-        ->assertJsonMissingValidationErrors($this->fillable)
+    login();
+
+    postJson(route('quotes.index'), $data)
+        ->assertJsonMissingValidationErrors(['title', 'content'])
         ->assertSee('The quote was created successfully')
-        ->assertJsonStructure(['data' => $this->fields])
+        ->assertJsonStructure([
+            'data' => ['id', 'title', 'content', 'state', 'average_rating', 'excerpt', 'created_at', 'updated_at'], ])
         ->assertJson(['data' => $data])
         ->assertCreated();
 
-    $this->assertDatabaseHas($this->table, $data);
+    assertDatabaseHas(Quote::class, $data);
 });
 
-test('show 404', function () {
-    $this->actingAs($this->user, 'sanctum')
-        ->json('GET', route('quotes.show', [
-            'quote' => 100000,
-        ]))->assertNotFound();
+it('cannot show undefined data', function () {
+    login();
+
+    getJson(route('quotes.show', ['quote' => 100000]))
+        ->assertNotFound();
 });
 
-test('show', function () {
-    $responseData = $this->actingAs($this->user, 'sanctum')
-        ->json('GET', route('quotes.show', [
-            'quote' => $this->quote->id,
-        ]))->assertJsonStructure(['data' => $this->fields])
-        ->assertOk()
+it('can show', function () {
+    login();
+
+    $responseData = getJson(route('quotes.show', ['quote' => $this->quote->id]))
+        ->assertJsonStructure([
+            'data' => ['id', 'title', 'content', 'state', 'average_rating', 'excerpt', 'created_at', 'updated_at'],
+        ])->assertOk()
         ->json('data');
 
-    $this->assertEquals($this->quote->id, $responseData['id']);
-    $this->assertEquals($this->quote->content, $responseData['content']);
+    expect($responseData)
+        ->id->toBe($this->quote->id)
+        ->content->toBe($this->quote->content);
 });
 
-test('update policy', function () {
-    /** @var User $userNotOwner */
+it('cannot update data from not owner', function () {
     $userNotOwner = User::factory()->create();
-    // just the owner $this->user can delete his quote
+    login($userNotOwner);
 
-    $this->actingAs($userNotOwner)
-        ->put(route('quotes.show', [
-            'quote' => $this->quote->id,
-        ]), [
-            'title' => 'new title not allowed',
-            'content' => 'new content not allowed',
-        ])->assertForbidden();
+    putJson(route('quotes.update', ['quote' => $this->quote->id]), [
+        'title' => 'new title not allowed',
+        'content' => 'new content not allowed',
+    ])->assertForbidden();
 
-    $this->assertDatabaseHas($this->table, [
+    assertDatabaseHas(Quote::class, [
         'title' => $this->quote->title,
         'content' => $this->quote->content,
     ]);
-    $this->assertDatabaseMissing($this->table, [
+    assertDatabaseMissing(Quote::class, [
         'title' => 'new title not allowed',
         'content' => 'new content not allowed',
     ]);
 });
 
-test('update', function () {
-    $new_data = [
+it('can update', function () {
+    $newData = [
         'title' => 'new title',
         'content' => 'new content',
     ];
 
-    $this->actingAs($this->user, 'sanctum')
-        ->json('PUT', route('quotes.show', [
-            'quote' => $this->quote->id,
-        ]), $new_data)->assertJsonMissingValidationErrors($this->fillable)
+    login($this->user);
+
+    putJson(route('quotes.update', ['quote' => $this->quote->id]), $newData)
+        ->assertJsonMissingValidationErrors(['title', 'content'])
         ->assertSee('The quote was updated successfully')
-        ->assertJsonStructure(['data' => $this->fields])
-        ->assertJson(['data' => $new_data])
+        ->assertJsonStructure([
+            'data' => ['id', 'title', 'content', 'state', 'average_rating', 'excerpt', 'created_at', 'updated_at'],
+        ])->assertJson(['data' => $newData])
         ->assertOk();
 
-    $this->assertDatabaseMissing($this->table, ['id' => $this->quote->id, 'title' => $this->quote->title]);
-    $this->assertDatabaseHas($this->table, ['id' => $this->quote->id, 'title' => 'new title']);
+    assertDatabaseMissing(Quote::class, ['id' => $this->quote->id, 'title' => $this->quote->title]);
+    assertDatabaseHas(Quote::class, ['id' => $this->quote->id, 'title' => 'new title']);
 });
 
-test('destroy policy', function () {
+it('cannot destroy data from not owner', function () {
     /** @var User $UserNotOwner */
     $UserNotOwner = User::factory()->create();
+    login($UserNotOwner);
 
-    $this->actingAs($UserNotOwner)
-        ->delete(route('quotes.show', [
-            'quote' => $this->quote->id,
-        ]))->assertForbidden();
+    deleteJson(route('quotes.destroy', ['quote' => $this->quote->id]))
+        ->assertForbidden();
 
-    $this->assertDatabaseHas($this->table, [
+    assertDatabaseHas(Quote::class, [
         'title' => $this->quote->title,
         'content' => $this->quote->content,
     ]);
 });
 
-test('delete 404', function () {
-    $this->actingAs($this->user, 'sanctum')
-        ->json('DELETE', route('quotes.show', [
-            'quote' => 100000,
-        ]))->assertSee([])->assertNotFound();
+it('cannot delete undefined data', function () {
+    login();
+
+    deleteJson(route('quotes.destroy', ['quote' => 100000]))
+        ->assertSee([])->assertNotFound();
 });
 
-test('delete', function () {
-    $this->actingAs($this->user, 'sanctum')
-        ->json('DELETE', route('quotes.show', [
-            'quote' => $this->quote->id,
-        ]))->assertSee('The quote was deleted successfully')->assertOk();
+it('can delete', function () {
+    login($this->user);
 
-    $this->assertDatabaseMissing($this->table, ['id' => $this->quote->id]);
+    deleteJson(route('quotes.destroy', ['quote' => $this->quote->id]))
+        ->assertSee('The quote was deleted successfully')->assertOk();
+
+    assertDatabaseMissing(Quote::class, ['id' => $this->quote->id]);
 });

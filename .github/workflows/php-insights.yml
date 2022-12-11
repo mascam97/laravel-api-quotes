@@ -12,4 +12,4 @@ jobs:
         with:
           php-version: 8.0
       - run: composer install --prefer-dist --no-progress --no-suggest
-      - run: vendor/bin/phpinsights --min-quality=85 --min-complexity=90 --min-architecture=80 --min-style=95 -n --ansi --format=github-action
+      - run: vendor/bin/phpinsights --min-quality=85 --min-complexity=85 --min-architecture=80 --min-style=95 -n --ansi --format=github-action

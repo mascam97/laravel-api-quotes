@@ -3,61 +3,93 @@
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
 use Domain\Users\Models\User;
+use Illuminate\Testing\Fluent\AssertableJson;
+use function Pest\Laravel\getJson;
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertLessThan;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
 
     (new QuoteFactory)->setAmount(5)->withUser($this->user)->create();
 
-    $this->actingAs($this->user, 'sanctum');
+    login($this->user);
 });
 
-test('title filter', function () {
+it('can filter by title', function () {
     /** @var Quote $quote */
     $quote = (new QuoteFactory)->withUser($this->user)->create([
         'title' => 'Hamlet',
     ]);
 
-    $responseData = $this->json('GET', route('quotes.index', ['filter[title]' => 'hamlet']))
-        ->json('data');
-
-    $this->assertCount(1, $responseData);
-    $this->assertEquals($quote->getKey(), $responseData[0]['id']);
+    getJson(route('quotes.index', ['filter[title]' => 'hamlet']))
+        ->assertJson(function (AssertableJson $json) use ($quote) {
+            $json->has('data', 1)
+                ->has('data.0', function (AssertableJson $data) use ($quote) {
+                    $data->where('id', $quote->getKey())
+                        ->where('title', 'Hamlet')
+                        ->whereAllType([
+                            'id' => 'integer',
+                            'title' => 'string',
+                        ])
+                        ->etc();
+                })->etc();
+        });
 });
 
-test('content filter', function () {
+it('can filter by content', function () {
     /** @var Quote $quote */
     $quote = (new QuoteFactory)->withUser($this->user)->create([
         'content' => 'Some text about something',
     ]);
 
-    $responseData = $this->json('GET', route('quotes.index', ['filter[content]' => 'Some text about something']))
-        ->json('data');
-
-    $this->assertCount(1, $responseData);
-    $this->assertEquals($quote->getKey(), $responseData[0]['id']);
+    getJson(route('quotes.index', ['filter[content]' => 'Some text about something']))
+        ->assertSuccessful()
+        ->assertJson(function (AssertableJson $json) use ($quote) {
+            $json->has('data', 1)
+                ->has('data.0', function (AssertableJson $data) use ($quote) {
+                    $data->where('id', $quote->getKey())
+                        ->where('content', 'Some text about something')
+                        ->whereAllType([
+                            'id' => 'integer',
+                            'content' => 'string',
+                        ])
+                        ->etc();
+                })->etc();
+        });
 });
 
-test('user id filter', function () {
+it('can filter by user id', function () {
     /** @var User $newUser */
     $newUser = User::factory()->create();
 
     /** @var Quote $quote */
     $quote = (new QuoteFactory)->withUser($newUser)->create();
 
-    $responseData = $this->json('GET', route('quotes.index', ['filter[user_id]' => $newUser->id]))
-        ->json('data');
-
-    $this->assertCount(1, $responseData);
-    $this->assertEquals($quote->getKey(), $responseData[0]['id']);
+    getJson(route('quotes.index', ['filter[user_id]' => $newUser->id]))
+        ->assertJson(function (AssertableJson $json) use ($quote) {
+            $json->has('data', 1)
+                ->has('data.0', function (AssertableJson $data) use ($quote) {
+                    $data->where('id', $quote->getKey())
+                        ->whereAllType([
+                            'id' => 'integer',
+                        ])
+                        ->etc();
+                })->etc();
+        });
 });
 
-test('user include', function () {
-    $responseData = $this->json('GET', route('quotes.index', ['include' => 'user']))
-        ->json('data');
-
-    $this->assertCount(5, $responseData);
-    $this->assertArrayHasKey('user', $responseData[0]);
+it('can include user', function () {
+    getJson(route('quotes.index', ['include' => 'user']))
+        ->assertJson(function (AssertableJson $json) {
+            $json->has('data', 5)
+                ->has('data.0', function (AssertableJson $data) {
+                    $data->has('user')
+                        ->whereAllType([
+                            'user' => 'array',
+                        ])->etc();
+                })->etc();
+        });
 
     $newUser = User::factory()->create();
 
@@ -66,41 +98,46 @@ test('user include', function () {
         'title' => 'Some text about something',
     ]);
 
-    $responseDataTwo = $this->json('GET', route('quotes.index', [
+    getJson(route('quotes.index', [
         'filter[title]' => 'Some text about something',
         'include' => 'user',
-    ]))
-        ->json('data');
-
-    $this->assertCount(1, $responseDataTwo);
-    $this->assertEquals($quote->getKey(), $responseDataTwo[0]['id']);
-    $this->assertEquals($newUser->getKey(), $responseDataTwo[0]['user']['id']);
+    ]))->assertJson(function (AssertableJson $json) use ($quote, $newUser) {
+        $json->has('data', 1)
+            ->has('data.0', function (AssertableJson $data) use ($quote, $newUser) {
+                $data->has('user')
+                    ->where('id', $quote->getKey())
+                    ->where('user.id', $newUser->getKey())
+                    ->whereAllType([
+                        'user' => 'array',
+                    ])->etc();
+            })->etc();
+    });
 });
 
-test('id sort', function () {
-    $responseData = $this->json('GET', route('quotes.index', ['sort' => 'id']))
+it('can sort by id', function () {
+    $responseData = getJson(route('quotes.index', ['sort' => 'id']))
         ->json('data');
 
-    $this->assertLessThan($responseData[4]['id'], $responseData[0]['id']);
+    assertLessThan($responseData[4]['id'], $responseData[0]['id']);
 
-    $responseDataTwo = $this->json('GET', route('quotes.index', ['sort' => '-id']))
+    $responseDataTwo = getJson(route('quotes.index', ['sort' => '-id']))
         ->json('data');
 
-    $this->assertLessThan($responseDataTwo[0]['id'], $responseDataTwo[4]['id']);
+    assertLessThan($responseDataTwo[0]['id'], $responseDataTwo[4]['id']);
 });
 
-test('title sort', function () {
+it('can sort by title', function () {
     (new QuoteFactory)->withUser($this->user)->create([
         'title' => 'AAA',
     ]);
 
-    $responseData = $this->json('GET', route('quotes.index', ['sort' => 'title']))
+    $responseData = getJson(route('quotes.index', ['sort' => 'title']))
         ->json('data');
 
-    $this->assertEquals('AAA', $responseData[0]['title']);
+    assertEquals('AAA', $responseData[0]['title']);
 
-    $responseDataTwo = $this->json('GET', route('quotes.index', ['sort' => '-title']))
+    $responseDataTwo = getJson(route('quotes.index', ['sort' => '-title']))
         ->json('data');
 
-    $this->assertEquals('AAA', $responseDataTwo[5]['title']);
+    assertEquals('AAA', $responseDataTwo[5]['title']);
 });

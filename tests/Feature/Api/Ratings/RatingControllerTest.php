@@ -3,11 +3,14 @@
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Rating\Models\Rating;
 use Domain\Users\Models\User;
+use function Pest\Laravel\assertDatabaseMissing;
+use function Pest\Laravel\deleteJson;
+use function Pest\Laravel\getJson;
+use function Pest\Laravel\postJson;
+use function PHPUnit\Framework\assertEquals;
 
 beforeEach(function () {
-    $this->fillable = ['score'];
     $this->fields = ['id', 'score', 'qualifier_id', 'qualifier_type', 'rateable_id', 'rateable_type', 'created_at', 'updated_at'];
-    $this->table = 'ratings';
 
     $this->user = User::factory()->create();
     $this->quote = (new QuoteFactory)->withUser($this->user)->create(); /* @phpstan-ignore-line */
@@ -19,98 +22,110 @@ beforeEach(function () {
     $this->rating->save();
 });
 
-test('guest unauthorized', function () {
-    $this->json('GET', route('ratings.index'))
+it('cannot authorize guest', function () {
+    getJson(route('ratings.index'))
         ->assertUnauthorized();
-    $this->json('GET', route('ratings.show', [
+
+    getJson(route('ratings.show', [
         'rating' => $this->rating->id,
     ]))->assertUnauthorized();
-    $this->json('POST', route('ratings.quotes.store', [
+
+    postJson(route('ratings.quotes.store', [
         'quote' => $this->quote->id,
         'rating' => $this->rating->id,
     ]))->assertUnauthorized();
 });
 
-test('index', function () {
-    $this->actingAs($this->user, 'sanctum')
-        ->json('GET', route('ratings.index'))
+it('can index', function () {
+    login($this->user);
+
+    getJson(route('ratings.index'))
         ->assertJsonStructure([
             'data' => ['*' => $this->fields],
         ])->assertOk();
 });
 
-test('store validate', function () {
-    $this->actingAs($this->user, 'sanctum')
-        ->json('POST', route('ratings.quotes.store', ['quote' => $this->quote->getKey()]), [
-            'score' => '',
-        ])->assertJsonValidationErrors($this->fillable);
+it('cannot store invalid data', function () {
+    login($this->user);
+
+    postJson(route('ratings.quotes.store', ['quote' => $this->quote->getKey()]), [
+        'score' => '',
+    ])->assertJsonValidationErrors(['score']);
 });
 
-test('store', function () {
-    $responseData = $this->actingAs($this->user, 'sanctum')
-         ->json('POST', route('ratings.quotes.store', ['quote' => $this->quote->getKey()]), [
-             'score' => 4,
-         ])->assertJsonMissingValidationErrors($this->fillable)
+it('can store', function () {
+    login($this->user);
+
+    $responseData = postJson(
+        route('ratings.quotes.store', ['quote' => $this->quote->getKey()]),
+        ['score' => 4]
+    )->assertJsonMissingValidationErrors(['score'])
          ->assertSee('The rating was created successfully')
          ->assertJsonStructure(['data' => $this->fields])
          ->assertCreated()
          ->json('data');
 
-    $this->assertEquals($this->user->getKey(), $responseData['qualifier_id']);
-    $this->assertEquals($this->user->getMorphClass(), $responseData['qualifier_type']);
-    $this->assertEquals($this->quote->getKey(), $responseData['rateable_id']);
-    $this->assertEquals($this->quote->getMorphClass(), $responseData['rateable_type']);
-    $this->assertEquals(4, $responseData['score']);
+    expect($responseData)
+        ->qualifier_id->toEqual($this->user->getKey())
+        ->qualifier_type->toBe($this->user->getMorphClass())
+        ->rateable_id->toEqual($this->quote->getKey())
+        ->rateable_type->toBe($this->quote->getMorphClass())
+        ->score->toBe(4);
 });
 
-test('show 404', function () {
-    $this->actingAs($this->user, 'sanctum')
-        ->json('GET', route('ratings.show', [
-            'rating' => 100000,
-        ]))->assertNotFound();
+it('cannot show undefined data', function () {
+    login($this->user);
+
+    getJson(route('ratings.show', [
+        'rating' => 100000,
+    ]))->assertNotFound();
 });
 
-test('show', function () {
-    $responseData = $this->actingAs($this->user, 'sanctum')
-        ->json('GET', route('ratings.show', [
-            'rating' => $this->rating->id,
-        ]))->assertJsonStructure(['data' => $this->fields])
+it('can show', function () {
+    login($this->user);
+
+    $responseData = getJson(route('ratings.show', [
+        'rating' => $this->rating->id,
+    ]))->assertJsonStructure(['data' => $this->fields])
         ->assertOk()
         ->json('data');
 
-    $this->assertEquals($this->rating->id, $responseData['id']);
+    assertEquals($this->rating->id, $responseData['id']);
 });
 
-test('destroy policy', function () {
+it('cannot destroy data by not owner', function () {
     $ratingNotOwned = new Rating();
     $ratingNotOwned->qualifier()->associate(User::factory()->create());
     $ratingNotOwned->rateable()->associate($this->quote);
     $ratingNotOwned->score = 5;
     $ratingNotOwned->save();
 
-    $this->actingAs($this->user)
-        ->delete(route('ratings.destroy', [
-            'rating' => $ratingNotOwned->getKey(),
-        ]), ['score' => 3])->assertForbidden();
+    login($this->user);
 
-    $this->assertDatabaseHas($this->table, [
+    deleteJson(route('ratings.destroy', [
+        'rating' => $ratingNotOwned->getKey(),
+    ]), ['score' => 3])->assertForbidden();
+
+    $this->assertDatabaseHas(Rating::class, [
         'id' => $ratingNotOwned->getKey(),
         'score' => 5,
     ]);
 });
 
-test('delete 404', function () {
-    $this->actingAs($this->user, 'sanctum')
-        ->json('DELETE', route('ratings.destroy', [
-            'rating' => 100000,
-        ]))->assertSee([])->assertNotFound();
+it('cannot delete undefined data', function () {
+    login($this->user);
+
+    deleteJson(route('ratings.destroy', ['rating' => 100000]))
+        ->assertSee([])
+        ->assertNotFound();
 });
 
-test('delete', function () {
-    $this->actingAs($this->user, 'sanctum')
-        ->json('DELETE', route('ratings.destroy', [
-            'rating' => $this->rating->id,
-        ]))->assertSee('The rating was deleted successfully')->assertOk();
+it('can delete', function () {
+    login($this->user);
 
-    $this->assertDatabaseMissing($this->table, ['id' => $this->rating->id]);
+    deleteJson(route('ratings.destroy', ['rating' => $this->rating->id]))
+        ->assertSee('The rating was deleted successfully')
+        ->assertOk();
+
+    assertDatabaseMissing(Rating::class, ['id' => $this->rating->id]);
 });

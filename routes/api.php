@@ -17,24 +17,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::prefix('v1')->group(function () {
-        Route::apiResource('quotes', QuoteController::class);
+Route::middleware('set.locale')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::prefix('v1')->group(function () {
+            Route::apiResource('quotes', QuoteController::class);
 
-        Route::apiResource('users', UserController::class)
-            ->only(['index', 'show']);
+            Route::apiResource('users', UserController::class)
+                ->only(['index', 'show']);
 
-        Route::apiResource('ratings', RatingController::class)
-            ->only(['index', 'show', 'update', 'destroy']);
+            Route::apiResource('ratings', RatingController::class)
+                ->only(['index', 'show', 'update', 'destroy']);
 
-        Route::post('ratings/quotes/{quote}', [RatingController::class, 'store'])
-            ->name('ratings.quotes.store');
-        // Route::post('ratings/CanBeRated/{model}', [RatingController::class, 'store'])->name('...')
+            Route::post('ratings/quotes/{quote}', [RatingController::class, 'store'])
+                ->name('ratings.quotes.store');
+            // Route::post('ratings/CanBeRated/{model}', [RatingController::class, 'store'])->name('...')
+        });
     });
+
+    Route::post('api-token-auth', [AuthController::class, 'login'])
+        ->name('api-token-auth');
+
+    Route::post('register', [AuthController::class, 'register'])
+        ->name('register');
 });
-
-Route::post('api-token-auth', [AuthController::class, 'login'])
-    ->name('api-token-auth');
-
-Route::post('register', [AuthController::class, 'register'])
-    ->name('register');
