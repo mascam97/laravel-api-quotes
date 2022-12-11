@@ -19,9 +19,9 @@ class ModelRated
      * @return void
      */
     public function __construct(
-        private Model $qualifier,
-        private Model $rateable,
-        private ?int $score
+        private readonly Model $qualifier,
+        private readonly Model $rateable,
+        private readonly ?int $score
     ) {
     }
 

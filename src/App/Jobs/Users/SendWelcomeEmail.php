@@ -19,7 +19,7 @@ class SendWelcomeEmail implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(private string $userEmail)
+    public function __construct(private readonly string $userEmail)
     {
     }
 

@@ -8,8 +8,8 @@ use Illuminate\Http\JsonResponse;
 class InvalidScore extends Exception
 {
     public function __construct(
-        private int $min,
-        private int $max
+        private readonly int $min,
+        private readonly int $max
     ) {
     }
 

@@ -4,6 +4,7 @@ namespace App\Api\Users\Requests;
 
 use Domain\Users\Enums\SexEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class UserRequest extends FormRequest
 {
@@ -22,7 +23,7 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'sex' => 'enum:'.SexEnum::class,
+            'sex' => new Enum(SexEnum::class),
             'email' => 'required|email|unique:users',
             'password' => 'required',
         ];

@@ -1,4 +1,4 @@
-# Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.2.0-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
+# Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.3.0-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
 
 _Main personal project - Community to share and rate quotes_
 
@@ -31,7 +31,7 @@ _Main personal project - Community to share and rate quotes_
 - Implemented **rector** for handle automated refactorings
 - Implemented **PHP Insights** to check code quality
 - Implemented **State pattern and Enums**
-- Upgraded to **PHP 8.0** and **Laravel 9**
+- Upgraded to **PHP 8.1** and **Laravel 9**
 - Refactoring all the code (setUps implementation in test, use of Actions, DTOs, type hinting, etc.)
 - Implemented a **QueryBuilder library** and improve the **API logic** (delete unnecessary API versioning)
 - Implemented **Sonar Cloud to reduce Technical Debt** (duplications, smells code, etc.)
