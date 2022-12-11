@@ -1,12 +1,12 @@
-# Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.3.0-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
+# Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.3.1-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
 
-_Main personal project - Community to share and rate quotes_
+_Main portfolio as PHP Backend Developer - Community to rate quotes_
 
 ## Project goal
 
-**2021**: Personal project to apply my knowledge about API REST and learn more about Laravel.
+**2021**: Personal project to apply knowledge about API REST and learn more about Laravel.
 
-**2022**: Personal project to apply some experience like defining business logic, applying best practices, integrating some tools and packages.
+**2022**: Main portfolio to apply some experience as define business logic, apply best practices, integrate packages and try out tools.
 
 ### Achievements 2021 :star2:
 
@@ -25,6 +25,7 @@ _Main personal project - Community to share and rate quotes_
 ### Achievements 2022 :star2:
 
 - Created a **[Project definition](./project-definition.md)** file to define the main business logic
+- Implemented **Localization and Middleware** to define language user
 - Implemented **Continuous Integration** with **GitHub Actions**
 - Implemented **PHP CS Fixer** to fix code standard
 - Implemented **PHPStan** for a static analysis in the code
@@ -39,12 +40,6 @@ _Main personal project - Community to share and rate quotes_
 - Reached the highest level in PHPStan, level 9 for src and level 8 for tests
 - **Redefined business logic in ratings for a better scalability**
 - Improved test suit with advanced practices (test command, jobs, middleware, etc.)
-
-### TODOS
-
-- Implement an external API, tested with Mocks
-- Database optimization (avoid unnecessary queries)
-- Improve business logic document with agile methodologies terminology
 
 ---
 
@@ -210,7 +205,6 @@ Note: Remember in production the better command is `queue:work`, [explanation](h
 -   [Data transfer objects with batteries included](https://github.com/spatie/data-transfer-object)
 -   [Laravel Query Builder v4](https://spatie.be/docs/laravel-query-builder/v4/introduction) - PHP package that allows you to filter, sort and include eloquent relations based on a request.
 -   [Laravel Model State](https://spatie.be/docs/laravel-model-states/v2/01-introduction) - Advanced state support for Laravel models
--   [Laravel Enums](https://spatie.be/docs/enum/v3/usage/100-laravel) - Strongly typed enums.
 -   [PEST PHP](https://pestphp.com/) - An elegant PHP Testing Framework
 
 ### Authors
