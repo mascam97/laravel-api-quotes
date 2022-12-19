@@ -202,7 +202,7 @@ Note: Remember in production the better command is `queue:work`, [explanation](h
 -   [PHP Code Standards Fixer](https://cs.symfony.com/) - PHP tool to fixe your code to follow standards.
 -   [Rector](https://getrector.org/) - Instant Upgrades and Automated Refactoring of any PHP 5.3+ code.
 -   [PHP Insights](https://phpinsights.com/) - The perfect starting point to analyze the code quality of your PHP projects.
--   [Data transfer objects with batteries included](https://github.com/spatie/data-transfer-object)
+-   [Laravel Data](https://spatie.be/docs/laravel-data/v2/introduction) - Powerful data objects for Laravel
 -   [Laravel Query Builder v4](https://spatie.be/docs/laravel-query-builder/v4/introduction) - PHP package that allows you to filter, sort and include eloquent relations based on a request.
 -   [Laravel Model State](https://spatie.be/docs/laravel-model-states/v2/01-introduction) - Advanced state support for Laravel models
 -   [PEST PHP](https://pestphp.com/) - An elegant PHP Testing Framework

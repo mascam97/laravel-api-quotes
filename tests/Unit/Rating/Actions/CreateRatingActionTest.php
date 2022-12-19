@@ -3,7 +3,7 @@
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
 use Domain\Rating\Actions\UpdateOrCreateRatingAction;
-use Domain\Rating\DTO\RatingData;
+use Domain\Rating\Data\RatingData;
 use Domain\Rating\Models\Rating;
 use Domain\Users\Models\User;
 use function PHPUnit\Framework\assertEquals;

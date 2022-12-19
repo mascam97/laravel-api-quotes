@@ -2,7 +2,7 @@
 
 namespace Domain\Rating\Actions;
 
-use Domain\Rating\DTO\RatingData;
+use Domain\Rating\Data\RatingData;
 use Domain\Rating\Models\Rating;
 use Illuminate\Database\Eloquent\Model;
 

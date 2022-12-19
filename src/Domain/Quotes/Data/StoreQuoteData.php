@@ -1,8 +1,10 @@
 <?php
 
-namespace Domain\Quotes\DTO;
+namespace Domain\Quotes\Data;
 
-class QuoteData
+use Spatie\LaravelData\Data;
+
+class StoreQuoteData extends Data
 {
     public function __construct(
         public string $title,

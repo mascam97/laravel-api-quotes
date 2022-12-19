@@ -3,19 +3,18 @@
 namespace App\Api\Quotes\Controllers;
 
 use App\Api\Quotes\Queries\QuoteIndexQuery;
-use App\Api\Quotes\Requests\StoreQuoteRequest;
-use App\Api\Quotes\Requests\UpdateQuoteRequest;
 use App\Api\Quotes\Resources\QuoteResource;
 use App\Controller;
-use Domain\Quotes\Actions\CreateQuoteAction;
+use Domain\Quotes\Actions\StoreQuoteAction;
 use Domain\Quotes\Actions\UpdateQuoteAction;
-use Domain\Quotes\DTO\QuoteData;
-use Domain\Quotes\DTO\UpdateQuoteData;
+use Domain\Quotes\Data\StoreQuoteData;
+use Domain\Quotes\Data\UpdateQuoteData;
 use Domain\Quotes\Models\Quote;
 use Domain\Users\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Spatie\ModelStates\Exceptions\CouldNotPerformTransition;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class QuoteController extends Controller
@@ -27,24 +26,15 @@ class QuoteController extends Controller
         return QuoteResource::collection($quotes);
     }
 
-    public function store(StoreQuoteRequest $request): JsonResponse
+    /**
+     * @throws CouldNotPerformTransition
+     */
+    public function store(StoreQuoteData $data): JsonResponse
     {
-        try {
-            $quoteData = new QuoteData(
-                title: $request->string('title'),
-                content: (string) $request->string('content')
-            );
-            /** @var User $authUser */
-            $authUser = $request->user();
+        /** @var User $authUser */
+        $authUser = auth()->user();
 
-            $quote = (new CreateQuoteAction())->__invoke($quoteData, $authUser);
-        } catch (\Exception $exception) {
-            report($exception);
-
-            return response()->json([
-                'message' => 'Server error',
-            ], 422);
-        }
+        $quote = (new StoreQuoteAction())->__invoke($data, $authUser);
 
         return response()->json([
             'message' => trans('message.created', ['attribute' => 'quote']),
@@ -67,25 +57,12 @@ class QuoteController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function update(UpdateQuoteRequest $request, Quote $quote): JsonResponse
+    public function update(UpdateQuoteData $data, Quote $quote): JsonResponse
     {
         // user can update a quote if he is the owner
         $this->authorize('pass', $quote);
 
-        try {
-            $updateQuoteData = new UpdateQuoteData(
-                title: $request->string('title'),
-                content: $request->string('content')
-            );
-
-            $quote = (new UpdateQuoteAction())->__invoke($updateQuoteData, $quote);
-        } catch (\Exception $exception) {
-            report($exception);
-
-            return response()->json([
-                'message' => 'Server error',
-            ], 422);
-        }
+        $quote = (new UpdateQuoteAction())->__invoke($data, $quote);
 
         return response()->json([
             'data' => QuoteResource::make($quote),

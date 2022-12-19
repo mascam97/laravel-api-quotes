@@ -2,18 +2,18 @@
 
 namespace Domain\Quotes\Actions;
 
-use Domain\Quotes\DTO\QuoteData;
+use Domain\Quotes\Data\StoreQuoteData;
 use Domain\Quotes\Models\Quote;
 use Domain\Quotes\States\Published;
 use Domain\Users\Models\User;
 use Spatie\ModelStates\Exceptions\CouldNotPerformTransition;
 
-class CreateQuoteAction
+class StoreQuoteAction
 {
     /**
      * @throws CouldNotPerformTransition
      */
-    public function __invoke(QuoteData $data, User $user): Quote
+    public function __invoke(StoreQuoteData $data, User $user): Quote
     {
         $quote = new Quote();
         $quote->title = $data->title;

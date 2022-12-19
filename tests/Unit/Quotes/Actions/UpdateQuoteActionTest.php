@@ -1,7 +1,7 @@
 <?php
 
 use Domain\Quotes\Actions\UpdateQuoteAction;
-use Domain\Quotes\DTO\UpdateQuoteData;
+use Domain\Quotes\Data\UpdateQuoteData;
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
 use Domain\Users\Models\User;

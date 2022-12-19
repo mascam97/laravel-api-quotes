@@ -3,12 +3,11 @@
 namespace App\Api\Ratings\Controllers;
 
 use App\Api\Ratings\Queries\RatingIndexQuery;
-use App\Api\Ratings\Requests\StoreRatingRequest;
 use App\Api\Ratings\Resources\RatingResource;
 use App\Controller;
 use Domain\Quotes\Models\Quote;
 use Domain\Rating\Actions\UpdateOrCreateRatingAction;
-use Domain\Rating\DTO\RatingData;
+use Domain\Rating\Data\RatingData;
 use Domain\Rating\Models\Rating;
 use Domain\Users\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -39,19 +38,15 @@ class RatingController extends Controller
 
     public function store(
         Quote $quote,
-        StoreRatingRequest $request,
+        RatingData $data,
     ): JsonResponse {
         /** @var User $authUser */
-        $authUser = $request->user();
-
-        $rateData = new RatingData(
-            score: (int) $request->input('score') /* @phpstan-ignore-line */
-        );
+        $authUser = auth()->user();
 
         $rating = (new UpdateOrCreateRatingAction())->__invoke(
             qualifier: $authUser,
             rateable: $quote,
-            data: $rateData
+            data: $data
         );
 
         $rating->load('rateable');
