@@ -204,6 +204,7 @@ Note: Remember in production the better command is `queue:work`, [explanation](h
 -   [PHP Insights](https://phpinsights.com/) - The perfect starting point to analyze the code quality of your PHP projects.
 -   [Laravel Data](https://spatie.be/docs/laravel-data/v2/introduction) - Powerful data objects for Laravel
 -   [Laravel Query Builder v4](https://spatie.be/docs/laravel-query-builder/v4/introduction) - PHP package that allows you to filter, sort and include eloquent relations based on a request.
+-   [Queueable actions in Laravel](https://github.com/spatie/laravel-queueable-action)
 -   [Laravel Model State](https://spatie.be/docs/laravel-model-states/v2/01-introduction) - Advanced state support for Laravel models
 -   [PEST PHP](https://pestphp.com/) - An elegant PHP Testing Framework
 

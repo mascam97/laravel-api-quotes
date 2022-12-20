@@ -1,6 +1,6 @@
 <?php
 
-use App\Jobs\Users\SendWelcomeEmail;
+use Domain\Users\Actions\SendWelcomeEmailAction;
 use Domain\Users\Mail\WelcomeEmail;
 use Domain\Users\Models\User;
 use Illuminate\Support\Facades\Mail;
@@ -13,7 +13,7 @@ it('will send a mail to user', function () {
     /** @var User $user */
     $user = User::factory()->create();
 
-    (new SendWelcomeEmail($user->email))->handle();
+    (new SendWelcomeEmailAction())->execute($user);
 
     Mail::assertSent(function (WelcomeEmail $mail) use ($user) {
         return $mail->to[0]['address'] === $user->email;

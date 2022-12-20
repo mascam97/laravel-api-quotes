@@ -1,17 +1,16 @@
 <?php
 
-use App\Jobs\Users\SendWelcomeEmail;
+use Domain\Users\Actions\SendWelcomeEmailAction;
 use Domain\Users\Models\User;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Queue;
 use function Pest\Laravel\postJson;
 use function PHPUnit\Framework\assertTrue;
+use Spatie\QueueableAction\Testing\QueueableActionFake;
 use Tests\Factories\RegisterRequestDataFactory;
 
 beforeEach(function () {
     Queue::fake();
-    Bus::fake();
 
     $this->requestData = RegisterRequestDataFactory::new();
 });
@@ -79,10 +78,10 @@ it('hashes password', function () {
 it('processes a job to send a welcome email', function () {
     postJson(route('register'))->assertUnprocessable();
 
-    Bus::assertNotDispatched(SendWelcomeEmail::class);
+    QueueableActionFake::assertNotPushed(SendWelcomeEmailAction::class);
 
     postJson(route('register'), $this->requestData->create())
         ->assertOk();
 
-    Bus::assertDispatched(SendWelcomeEmail::class);
+    QueueableActionFake::assertPushed(SendWelcomeEmailAction::class);
 });

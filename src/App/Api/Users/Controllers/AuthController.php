@@ -6,7 +6,7 @@ use App\Api\Users\Requests\LoginRequest;
 use App\Api\Users\Requests\UserRequest;
 use App\Api\Users\Resources\UserResource;
 use App\Controller;
-use App\Jobs\Users\SendWelcomeEmail;
+use Domain\Users\Actions\SendWelcomeEmailAction;
 use Domain\Users\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -49,7 +49,7 @@ class AuthController extends Controller
 
         Log::channel('daily')->info('New user was created.', ['email' => $user->email]);
 
-        dispatch(new SendWelcomeEmail($user->email));
+        (new SendWelcomeEmailAction())->onQueue()->execute($user);
 
         return response()->json([
             'message' => trans('message.created', [
