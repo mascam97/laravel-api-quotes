@@ -13,8 +13,6 @@ class ModelRatedNotification extends Notification implements ShouldQueue
 
     /**
      * Create a new notification instance.
-     *
-     * @return void
      */
     public function __construct(
         private readonly string $qualifierName,
@@ -40,8 +38,8 @@ class ModelRatedNotification extends Notification implements ShouldQueue
     public function toMail(mixed $notifiable): MailMessage
     {
         return (new MailMessage())
-            ->greeting(trans('mail.greeting.quote_rated'))
-            ->line(trans('mail.notification.quote_rated', [
+            ->greeting(trans('mail.greeting.quote_rated')) /* @phpstan-ignore-line */
+            ->line(trans('mail.notification.quote_rated', [/* @phpstan-ignore-line */
                 'qualifier' => $this->qualifierName,
                 'quote' => $this->rateableName,
                 'score' => $this->score,

@@ -26,7 +26,7 @@ class NewsletterNotification extends Notification
     public function toMail(User $notifiable): MailMessage
     {
         return (new MailMessage())
-            ->greeting(trans('mail.greeting.newsletter'))
+            ->greeting(trans('mail.greeting.newsletter')) /* @phpstan-ignore-line */
             ->line(trans('mail.notification.newsletter', [
                 'user' => $notifiable->name,
                 'user_count' => count(User::All()),

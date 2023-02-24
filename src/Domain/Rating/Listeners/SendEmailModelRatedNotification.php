@@ -11,10 +11,8 @@ class SendEmailModelRatedNotification
 {
     /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle(ModelRated $event)
+    public function handle(ModelRated $event): void
     {
         $rateable = $event->getRateable();
         if ($rateable instanceof Quote) {

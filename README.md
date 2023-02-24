@@ -1,4 +1,4 @@
-# Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.3.1-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
+# Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.3.2-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
 
 _Main portfolio as PHP Backend Developer - Community to rate quotes_
 
@@ -40,6 +40,11 @@ _Main portfolio as PHP Backend Developer - Community to rate quotes_
 - Reached the highest level in PHPStan, level 9 for src and level 8 for tests
 - **Redefined business logic in ratings for a better scalability**
 - Improved test suit with advanced practices (test command, jobs, middleware, etc.)
+
+### Achievements 2023 :star2:
+
+- Upgraded to **Laravel 10**
+- TODO: Upgrade to PHPUnit 10
 
 ---
 
@@ -195,9 +200,9 @@ Note: Remember in production the better command is `queue:work`, [explanation](h
 
 ### Built With 🛠️
 
--   [Laravel 9](https://laravel.com/docs/9.x/releases/) - PHP framework.
--   [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum) - Authentication system.
--   [Laravel Sail](https://laravel.com/docs/8.x/sail) - Docker development environment.
+-   [Laravel 10](https://laravel.com/docs/10.x/releases/) - PHP framework.
+-   [Laravel Sanctum](https://laravel.com/docs/10.x/sanctum) - Authentication system.
+-   [Laravel Sail](https://laravel.com/docs/10.x/sail) - Docker development environment.
 -   [Larastan](https://github.com/nunomaduro/larastan) - PHP tool to find errors in your code.
 -   [PHP Code Standards Fixer](https://cs.symfony.com/) - PHP tool to fixe your code to follow standards.
 -   [Rector](https://getrector.org/) - Instant Upgrades and Automated Refactoring of any PHP 5.3+ code.

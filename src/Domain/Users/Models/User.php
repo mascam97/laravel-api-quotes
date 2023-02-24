@@ -45,7 +45,7 @@ class User extends Authenticatable implements Rates, MustVerifyEmail
         'password',
     ];
 
-    protected $hidden = [
+    protected $hidden = [/* @phpstan-ignore-line */
         'password',
         'remember_token',
         'sex' => SexEnum::class.':nullable',
@@ -53,8 +53,6 @@ class User extends Authenticatable implements Rates, MustVerifyEmail
 
     /**
      * The attributes that should be cast to native types.
-     *
-     * @var array
      */
     protected $casts = [
         'email_verified_at' => 'datetime',

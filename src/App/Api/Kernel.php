@@ -10,13 +10,11 @@ class Kernel extends HttpKernel
      * The application's global HTTP middleware stack.
      *
      * These middleware are run during every request to your application.
-     *
-     * @var array
      */
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
         \Support\Middleware\TrustProxies::class,
-        \Fruitcake\Cors\HandleCors::class,
+        \Illuminate\Http\Middleware\HandleCors::class,
         \Support\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \Support\Middleware\TrimStrings::class,
@@ -25,8 +23,6 @@ class Kernel extends HttpKernel
 
     /**
      * The application's route middleware groups.
-     *
-     * @var array
      */
     protected $middlewareGroups = [
         'web' => [
@@ -40,19 +36,17 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:api',
+            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
 
     /**
-     * The application's route middleware.
+     * The application's middleware aliases.
      *
-     * These middleware may be assigned to groups or used individually.
-     *
-     * @var array
+     * Aliases may be used to conveniently assign middleware to routes and groups.
      */
-    protected $routeMiddleware = [
+    protected $middlewareAliases = [
         'auth' => \Support\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
