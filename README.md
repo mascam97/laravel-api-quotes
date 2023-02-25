@@ -8,7 +8,7 @@ _Main portfolio as PHP Backend Developer - Community to rate quotes_
 
 **2022**: Project to apply some experience as define business logic, apply best practices, integrate packages and try out tools.
 
-**2023**: Main portfolio to apply some advance functionalities and practices.
+**2023**: Main portfolio to apply some advanced functionalities and practices.
 
 ### Achievements 2021 :star2:
 
@@ -50,6 +50,7 @@ _Main portfolio as PHP Backend Developer - Community to rate quotes_
 - Implemented an **Administrator domain**
 - Implemented **Roles and Permissions** for administrator domain
 - Implemented **User administration** for administrator domain
+- Implemented **Activities** in user deletion for administrator domain
 
 ---
 
@@ -208,7 +209,8 @@ Note: Remember in production the better command is `queue:work`, [explanation](h
 -   [Laravel 10](https://laravel.com/docs/10.x/releases/) - PHP framework.
 -   [Laravel Sanctum](https://laravel.com/docs/10.x/sanctum) - Authentication system.
 -   [Laravel Sail](https://laravel.com/docs/10.x/sail) - Docker development environment.
--   [Laravel Permission](https://spatie.be/docs/laravel-permission/v5/introduction) - Associate users with roles and permissions
+-   [Laravel Permission](https://spatie.be/docs/laravel-permission/v5/introduction) - Associate users with roles and permissions.
+-   [Laravel Activitylog](https://spatie.be/docs/laravel-activitylog/v4/introduction) - Log the activities of your users.
 -   [Larastan](https://github.com/nunomaduro/larastan) - PHP tool to find errors in your code.
 -   [PHP Code Standards Fixer](https://cs.symfony.com/) - PHP tool to fixe your code to follow standards.
 -   [Rector](https://getrector.org/) - Instant Upgrades and Automated Refactoring of any PHP 5.3+ code.

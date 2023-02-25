@@ -11,26 +11,22 @@ use Spatie\Activitylog\Models\Activity;
 beforeEach(function () {
     $this->user = User::factory()->create();
 
-    (new UserFactory)->setAmount(4)->create();
-
-    giveRoleWithPermission($this->user, 'delete users');
+    giveRoleWithPermission($this->user, 'delete activities');
 
     login($this->user);
 });
 
-it('can delete an user', function () {
-    $user = User::factory()->create();
-
-    deleteJson(route('admin.users.show', ['user' => $user->id]))
-        ->assertSuccessful();
+it('can delete an activity', function () {
+    activity()
+        ->causedBy($this->user)
+        ->performedOn($this->user)
+        ->log('deleted');
 
     /** @var Activity $activity */
     $activity = Activity::query()->first();
 
-    assertTrue($activity->causer()->is($this->user));
-    assertTrue($activity->subject()->is($user));
-    assertEquals('deleted', $activity->description);
-    assertEquals('default', $activity->log_name);
+    deleteJson(route('admin.activities.show', ['activity' => $activity->id]))
+        ->assertSuccessful();
 
-    $user->refresh();
+    $activity->refresh();
 })->throws(ModelNotFoundException::class);

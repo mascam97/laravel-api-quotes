@@ -18,8 +18,13 @@ class PermissionsAndRolesSeeder extends Seeder
         Permission::create(['name' => 'view users']);
         Permission::create(['name' => 'delete users']);
 
+        Permission::create(['name' => 'view any activities']);
+        Permission::create(['name' => 'view activities']);
+        Permission::create(['name' => 'delete activities']);
+
         /** @var Role $role */
-        $role = Role::create(['name' => 'User administrator']);
+        $role = Role::create(['name' => 'Administrator']);
         $role->givePermissionTo(['view any users', 'view users', 'delete users']);
+        $role->givePermissionTo(['view any activities', 'view activities', 'delete activities']);
     }
 }

@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
 
         /** @var User $admin */
         $admin = User::factory()->create(['name' => 'admin']);
-        $admin->assignRole('User administrator');
+        $admin->assignRole('Administrator');
 
         User::factory(9)->create();
         (new QuoteFactory)->setAmount(120)->create();

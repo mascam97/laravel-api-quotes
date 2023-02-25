@@ -9,6 +9,7 @@ use Domain\Users\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
@@ -50,8 +51,16 @@ class UserController extends Controller
     {
         $this->authorize('delete', $user);
 
+        /** @var User $authUser */
+        $authUser = Auth::user();
+
         // TODO: Move deletion to an action and delete its related data as quotes
         $user->delete();
+
+        activity()
+            ->causedBy($authUser)
+            ->performedOn($user) // TODO: Validate if soft delete is required for this activity
+            ->log('deleted');
 
         return response()->json([
             'message' => trans('message.deleted', ['attribute' => 'user']),

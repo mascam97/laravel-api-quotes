@@ -70,6 +70,8 @@ As User from Latam, I can change the language to spanish to have a better experi
 
 As an Administrator I can see and delete users. Each operation requires a role with the proper permissions.
 
-**TODO (Activities)**: As an Administrator I can see some activities about whom deletes a user.
+As an Administrator I can see some activities about whom deletes any user.
+
+**TODO (Laravel Excel)**: As Administrator I can export activities to a datasets file.
 
 **TODO**: As Administrator I can associate permissions to roles and roles to users.
