@@ -11,13 +11,24 @@ class QuotePolicy
 {
     use HandlesAuthorization;
 
-    public function pass(User $user, Quote $quote): bool
+    public function update(User $user, Quote $quote): bool
     {
         if ($quote->user()->is($user)) {
             return true;
         }
 
-        Log::channel('daily')->warning("User {$user->id} tried to delete or update the quote {$quote->id}");
+        Log::channel('daily')->warning("User {$user->id} tried to update the quote {$quote->id}");
+
+        return false;
+    }
+
+    public function delete(User $user, Quote $quote): bool
+    {
+        if ($quote->user()->is($user)) {
+            return true;
+        }
+
+        Log::channel('daily')->warning("User {$user->id} tried to delete the quote {$quote->id}");
 
         return false;
     }

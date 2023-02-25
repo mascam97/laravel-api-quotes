@@ -16,6 +16,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @property-read int $id
@@ -29,6 +30,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property ?int $quotes_count
+ * @property ?int $permissions_count
+ * @property ?int $roles_count
  *
  * @property-read HasMany $quotes
  *
@@ -37,7 +40,7 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class User extends Authenticatable implements Rates, MustVerifyEmail
 {
-    use HasFactory, Notifiable, HasApiTokens, CanRate;
+    use HasFactory, HasRoles, Notifiable, HasApiTokens, CanRate;
 
     protected $fillable = [
         'name',

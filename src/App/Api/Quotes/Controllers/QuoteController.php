@@ -60,7 +60,7 @@ class QuoteController extends Controller
     public function update(UpdateQuoteData $data, Quote $quote): JsonResponse
     {
         // user can update a quote if he is the owner
-        $this->authorize('pass', $quote);
+        $this->authorize('update', $quote);
 
         $quote = (new UpdateQuoteAction())->__invoke($data, $quote);
 
@@ -76,7 +76,7 @@ class QuoteController extends Controller
     public function destroy(Quote $quote): JsonResponse
     {
         // user can delete a quote if he is the owner
-        $this->authorize('pass', $quote);
+        $this->authorize('delete', $quote);
 
         $quote->delete();
 

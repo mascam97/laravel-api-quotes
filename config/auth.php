@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'web', // TODO: Verify if it should be 'api'
         'passwords' => 'users',
     ],
 

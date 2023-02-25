@@ -24,7 +24,6 @@ class ModelRatedNotification extends Notification implements ShouldQueue
     /**
      * Get the notification's delivery channels.
      *
-     *
      * @return array
      */
     public function via(mixed $notifiable)

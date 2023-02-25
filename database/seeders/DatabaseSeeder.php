@@ -13,7 +13,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
+        $this->call(PermissionsAndRolesSeeder::class);
+
+        /** @var User $admin */
+        $admin = User::factory()->create(['name' => 'admin']);
+        $admin->assignRole('User administrator');
+
+        User::factory(9)->create();
         (new QuoteFactory)->setAmount(120)->create();
 
         $this->call(RatingUserQuoteSeeder::class);

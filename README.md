@@ -1,4 +1,4 @@
-# Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.3.2-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
+# Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.4.0-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
 
 _Main portfolio as PHP Backend Developer - Community to rate quotes_
 
@@ -6,7 +6,9 @@ _Main portfolio as PHP Backend Developer - Community to rate quotes_
 
 **2021**: Personal project to apply knowledge about API REST and learn more about Laravel.
 
-**2022**: Main portfolio to apply some experience as define business logic, apply best practices, integrate packages and try out tools.
+**2022**: Project to apply some experience as define business logic, apply best practices, integrate packages and try out tools.
+
+**2023**: Main portfolio to apply some advance functionalities and practices.
 
 ### Achievements 2021 :star2:
 
@@ -45,6 +47,9 @@ _Main portfolio as PHP Backend Developer - Community to rate quotes_
 
 - Upgraded to **Laravel 10**
 - TODO: Upgrade to PHPUnit 10
+- Implemented an **Administrator domain**
+- Implemented **Roles and Permissions** for administrator domain
+- Implemented **User administration** for administrator domain
 
 ---
 
@@ -203,6 +208,7 @@ Note: Remember in production the better command is `queue:work`, [explanation](h
 -   [Laravel 10](https://laravel.com/docs/10.x/releases/) - PHP framework.
 -   [Laravel Sanctum](https://laravel.com/docs/10.x/sanctum) - Authentication system.
 -   [Laravel Sail](https://laravel.com/docs/10.x/sail) - Docker development environment.
+-   [Laravel Permission](https://spatie.be/docs/laravel-permission/v5/introduction) - Associate users with roles and permissions
 -   [Larastan](https://github.com/nunomaduro/larastan) - PHP tool to find errors in your code.
 -   [PHP Code Standards Fixer](https://cs.symfony.com/) - PHP tool to fixe your code to follow standards.
 -   [Rector](https://getrector.org/) - Instant Upgrades and Automated Refactoring of any PHP 5.3+ code.
