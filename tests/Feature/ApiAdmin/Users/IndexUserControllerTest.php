@@ -2,6 +2,7 @@
 
 use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
+use Illuminate\Support\Facades\DB;
 use function Pest\Laravel\getJson;
 use function PHPUnit\Framework\assertArrayHasKey;
 use function PHPUnit\Framework\assertCount;
@@ -102,4 +103,21 @@ it('can include roles', function () {
     assertCount(5, $responseData);
     assertArrayHasKey('roles', $responseData[0]);
     assertEquals('admin', $responseData[0]['roles'][0]['name']);
+});
+
+test('sql queries optimization test', function () {
+    DB::enableQueryLog();
+    getJson(route('admin.users.index'))->assertOk();
+
+    expect(formatQueries(DB::getQueryLog()))
+        ->toHaveCount(5)
+        ->sequence(
+            fn ($query) => $query->toBe('select * from `permissions`'),
+            fn ($query) => $query->toContain('select `roles`.*, `role_has_permissions`.`permission_id` as `pivot_permission_id`, `role_has_permissions`.`role_id` as `pivot_role_id` from `roles` inner join `role_has_permissions` on `roles`.`id` = `role_has_permissions`.`role_id` where `role_has_permissions`.`permission_id`'),
+            fn ($query) => $query->toBe('select `permissions`.*, `model_has_permissions`.`model_id` as `pivot_model_id`, `model_has_permissions`.`permission_id` as `pivot_permission_id`, `model_has_permissions`.`model_type` as `pivot_model_type` from `permissions` inner join `model_has_permissions` on `permissions`.`id` = `model_has_permissions`.`permission_id` where `model_has_permissions`.`model_id` = ? and `model_has_permissions`.`model_type` = ?'),
+            fn ($query) => $query->toBe('select count(*) as aggregate from `users`'),
+            fn ($query) => $query->toBe('select * from `users` limit 15 offset 0'),
+        );
+
+    DB::disableQueryLog();
 });

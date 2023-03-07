@@ -3,6 +3,7 @@
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
 use Domain\Users\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\Fluent\AssertableJson;
 use function Pest\Laravel\getJson;
 use function PHPUnit\Framework\assertEquals;
@@ -14,6 +15,14 @@ beforeEach(function () {
     (new QuoteFactory)->setAmount(5)->withUser($this->user)->create();
 
     login($this->user);
+});
+
+it('can index', function () {
+    getJson(route('quotes.index'))
+        ->assertJsonStructure([
+            'data' => [
+                '*' => ['id', 'title', 'content', 'state', 'average_rating', 'excerpt', 'created_at', 'updated_at'], ],
+        ])->assertOk();
 });
 
 it('can filter by title', function () {
@@ -140,4 +149,23 @@ it('can sort by title', function () {
         ->json('data');
 
     assertEquals('AAA', $responseDataTwo[5]['title']);
+});
+
+test('sql queries optimization test', function () {
+    DB::enableQueryLog();
+    getJson(route('quotes.index'))->assertOk();
+
+    expect(formatQueries(DB::getQueryLog()))
+        ->toHaveCount(7)
+        ->sequence(
+            fn ($query) => $query->toBe('select count(*) as aggregate from `quotes`'),
+            fn ($query) => $query->toBe('select * from `quotes` limit 15 offset 0'),
+            fn ($query) => $query->toBe('select avg(`score`) as aggregate from `users` inner join `ratings` on `users`.`id` = `ratings`.`qualifier_id` where `ratings`.`rateable_id` = ? and `ratings`.`rateable_type` = ? and `ratings`.`qualifier_type` = ? and `ratings`.`rateable_type` = ?'),
+            fn ($query) => $query->toBe('select avg(`score`) as aggregate from `users` inner join `ratings` on `users`.`id` = `ratings`.`qualifier_id` where `ratings`.`rateable_id` = ? and `ratings`.`rateable_type` = ? and `ratings`.`qualifier_type` = ? and `ratings`.`rateable_type` = ?'),
+            fn ($query) => $query->toBe('select avg(`score`) as aggregate from `users` inner join `ratings` on `users`.`id` = `ratings`.`qualifier_id` where `ratings`.`rateable_id` = ? and `ratings`.`rateable_type` = ? and `ratings`.`qualifier_type` = ? and `ratings`.`rateable_type` = ?'),
+            fn ($query) => $query->toBe('select avg(`score`) as aggregate from `users` inner join `ratings` on `users`.`id` = `ratings`.`qualifier_id` where `ratings`.`rateable_id` = ? and `ratings`.`rateable_type` = ? and `ratings`.`qualifier_type` = ? and `ratings`.`rateable_type` = ?'),
+            fn ($query) => $query->toBe('select avg(`score`) as aggregate from `users` inner join `ratings` on `users`.`id` = `ratings`.`qualifier_id` where `ratings`.`rateable_id` = ? and `ratings`.`rateable_type` = ? and `ratings`.`qualifier_type` = ? and `ratings`.`rateable_type` = ?'),
+        );
+
+    DB::disableQueryLog();
 });

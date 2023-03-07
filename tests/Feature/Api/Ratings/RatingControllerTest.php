@@ -36,15 +36,6 @@ it('cannot authorize guest', function () {
     ]))->assertUnauthorized();
 });
 
-it('can index', function () {
-    login($this->user);
-
-    getJson(route('ratings.index'))
-        ->assertJsonStructure([
-            'data' => ['*' => $this->fields],
-        ])->assertOk();
-});
-
 it('cannot store invalid data', function () {
     login($this->user);
 
@@ -79,18 +70,6 @@ it('cannot show undefined data', function () {
     getJson(route('ratings.show', [
         'rating' => 100000,
     ]))->assertNotFound();
-});
-
-it('can show', function () {
-    login($this->user);
-
-    $responseData = getJson(route('ratings.show', [
-        'rating' => $this->rating->id,
-    ]))->assertJsonStructure(['data' => $this->fields])
-        ->assertOk()
-        ->json('data');
-
-    assertEquals($this->rating->id, $responseData['id']);
 });
 
 it('cannot destroy data by not owner', function () {

@@ -32,16 +32,6 @@ it('cannot authorize guest', function () {
         ->assertUnauthorized();
 });
 
-it('can index', function () {
-    login();
-
-    getJson(route('quotes.index'))
-        ->assertJsonStructure([
-            'data' => [
-                '*' => ['id', 'title', 'content', 'state', 'average_rating', 'excerpt', 'created_at', 'updated_at'], ],
-        ])->assertOk();
-});
-
 it('cannot store invalid data', function () {
     login();
 
@@ -75,20 +65,6 @@ it('cannot show undefined data', function () {
 
     getJson(route('quotes.show', ['quote' => 100000]))
         ->assertNotFound();
-});
-
-it('can show', function () {
-    login();
-
-    $responseData = getJson(route('quotes.show', ['quote' => $this->quote->id]))
-        ->assertJsonStructure([
-            'data' => ['id', 'title', 'content', 'state', 'average_rating', 'excerpt', 'created_at', 'updated_at'],
-        ])->assertOk()
-        ->json('data');
-
-    expect($responseData)
-        ->id->toBe($this->quote->id)
-        ->content->toBe($this->quote->content);
 });
 
 it('cannot update data from not owner', function () {

@@ -26,3 +26,8 @@ function giveRoleWithPermission(User $user, string $permissionName): void
 
     $user->assignRole($role);
 }
+
+function formatQueries(array $queries): array
+{
+    return str_replace('"', '`', collect($queries)->pluck('query')->toArray());
+}

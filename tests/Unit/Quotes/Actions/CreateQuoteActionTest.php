@@ -5,6 +5,7 @@ use Domain\Quotes\Data\StoreQuoteData;
 use Domain\Quotes\States\Drafted;
 use Domain\Quotes\States\Published;
 use Domain\Users\Models\User;
+use Illuminate\Support\Facades\DB;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertTrue;
 
@@ -36,4 +37,18 @@ it('can create a quote as published', function () {
         ->title->toEqual($quoteData->title)
         ->content->toEqual($quoteData->content)
         ->state->toEqual(Published::$name);
+});
+
+test('sql queries optimization test', function () {
+    DB::enableQueryLog();
+
+    (new StoreQuoteAction())->__invoke(new StoreQuoteData(title: 'Title', content: 'Content'), $this->user);
+
+    expect(formatQueries(DB::getQueryLog()))
+        ->toHaveCount(1)
+        ->sequence(
+            fn ($query) => $query->toBe('insert into `quotes` (`state`, `title`, `content`, `user_id`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?)'),
+        );
+
+    DB::disableQueryLog();
 });

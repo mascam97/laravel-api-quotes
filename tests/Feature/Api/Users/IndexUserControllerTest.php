@@ -3,6 +3,7 @@
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
+use Illuminate\Support\Facades\DB;
 use function Pest\Laravel\getJson;
 use function PHPUnit\Framework\assertArrayHasKey;
 use function PHPUnit\Framework\assertCount;
@@ -15,6 +16,13 @@ beforeEach(function () {
     (new UserFactory)->setAmount(4)->create();
 
     login($this->user);
+});
+
+it('can index', function () {
+    getJson(route('users.index'))
+        ->assertJsonStructure([
+            'data' => ['*' => ['id', 'name', 'email', 'created_at']],
+        ])->assertOk();
 });
 
 it('can filter by id', function () {
@@ -90,4 +98,18 @@ it('can sort by name', function () {
         ->json('data');
 
     assertEquals('AAA', $responseDataTwo[4]['name']);
+});
+
+test('sql queries optimization test', function () {
+    DB::enableQueryLog();
+    getJson(route('users.index'))->assertOk();
+
+    expect(formatQueries(DB::getQueryLog()))
+        ->toHaveCount(2)
+        ->sequence(
+            fn ($query) => $query->toBe('select count(*) as aggregate from `users`'),
+            fn ($query) => $query->toBe('select * from `users` limit 15 offset 0'),
+        );
+
+    DB::disableQueryLog();
 });

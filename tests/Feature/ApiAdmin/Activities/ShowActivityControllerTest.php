@@ -9,19 +9,18 @@ beforeEach(function () {
 
     giveRoleWithPermission($this->user, 'view activities');
 
-    login($this->user);
-});
-
-it('can show', function () {
     activity()
         ->causedBy($this->user)
         ->performedOn($this->user)
         ->log('deleted');
 
-    /** @var Activity $activity */
-    $activity = Activity::query()->first();
+    $this->activity = Activity::query()->first();
 
-    getJson(route('admin.activities.show', ['activity' => $activity->id]))
+    login($this->user);
+});
+
+it('can show', function () {
+    getJson(route('admin.activities.show', ['activity' => $this->activity->id]))
         ->assertSuccessful()
         ->assertJsonStructure([
             'data' => [

@@ -17,26 +17,9 @@ it('cannot authorize guest', function () {
         ->assertUnauthorized();
 });
 
-it('can index', function () {
-    login($this->user);
-
-    getJson(route('users.index'))
-        ->assertJsonStructure([
-            'data' => ['*' => ['id', 'name', 'email', 'created_at']],
-        ])->assertOk();
-});
-
 it('cannot show undefined data', function () {
     login($this->user);
 
     getJson(route('users.show', ['user' => 100000]))
         ->assertNotFound();
-});
-
-it('can show', function () {
-    login($this->user);
-
-    getJson(route('users.show', ['user' => $this->user->id]))
-        ->assertSee([$this->user->id, $this->user->name])
-        ->assertOk();
 });

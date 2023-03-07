@@ -14,36 +14,32 @@ beforeEach(function () {
         ->performedOn($this->user)
         ->log('deleted');
 
+    $this->activity = Activity::query()->first();
+
     (new QuoteFactory)->withUser($this->user)->create();
 });
 
 it('cannot authorize guest', function () {
-    /** @var Activity $activity */
-    $activity = Activity::query()->first();
-
     getJson(route('admin.activities.index'))
         ->assertUnauthorized();
 
-    getJson(route('admin.activities.show', ['activity' => $activity->id]))
+    getJson(route('admin.activities.show', ['activity' => $this->activity->id]))
         ->assertUnauthorized();
 
-    deleteJson(route('admin.activities.show', ['activity' => $activity->id]))
+    deleteJson(route('admin.activities.show', ['activity' => $this->activity->id]))
         ->assertUnauthorized();
 });
 
 it('requires permission', function () {
     login($this->user);
 
-    /** @var Activity $activity */
-    $activity = Activity::query()->first();
-
     getJson(route('admin.activities.index'))
         ->assertForbidden();
 
-    getJson(route('admin.activities.show', ['activity' => $activity->id]))
+    getJson(route('admin.activities.show', ['activity' => $this->activity->id]))
         ->assertForbidden();
 
-    deleteJson(route('admin.activities.show', ['activity' => $activity->id]))
+    deleteJson(route('admin.activities.show', ['activity' => $this->activity->id]))
         ->assertForbidden();
 });
 

@@ -2,6 +2,7 @@
 
 use Domain\Users\Actions\SendWelcomeEmailAction;
 use Domain\Users\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Queue;
 use function Pest\Laravel\postJson;
@@ -84,4 +85,21 @@ it('processes a job to send a welcome email', function () {
         ->assertOk();
 
     QueueableActionFake::assertPushed(SendWelcomeEmailAction::class);
+});
+
+test('sql queries optimization test', function () {
+    DB::enableQueryLog();
+
+    postJson(route('register'),
+        $this->requestData->create()
+    )->assertOk();
+
+    expect(formatQueries(DB::getQueryLog()))
+        ->toHaveCount(2)
+        ->sequence(
+            fn ($query) => $query->toBe('select count(*) as aggregate from `users` where `email` = ?'),
+            fn ($query) => $query->toBe('insert into `users` (`name`, `email`, `password`, `locale`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?)'),
+        );
+
+    DB::disableQueryLog();
 });

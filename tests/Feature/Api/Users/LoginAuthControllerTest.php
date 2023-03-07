@@ -1,6 +1,7 @@
 <?php
 
 use Domain\Users\Models\User;
+use Illuminate\Support\Facades\DB;
 use function Pest\Laravel\postJson;
 
 it('cannot login with invalid data', function () {
@@ -37,4 +38,26 @@ it('can login', function () {
         'device_name' => $this->faker->userAgent,
     ])->assertUnauthorized()
         ->assertSee('The action was unauthorized');
+});
+
+test('sql queries optimization test', function () {
+    /** @var User $user */
+    $user = User::factory()->create();
+
+    DB::enableQueryLog();
+
+    postJson(route('api-token-auth'), [
+        'email' => $user->email,
+        'password' => 'password', // value by default in factory
+        'device_name' => $this->faker->userAgent,
+    ])->assertOk();
+
+    expect(formatQueries(DB::getQueryLog()))
+        ->toHaveCount(2)
+        ->sequence(
+            fn ($query) => $query->toBe('select * from `users` where `email` = ? limit 1'),
+            fn ($query) => $query->toBe('insert into `personal_access_tokens` (`name`, `token`, `abilities`, `expires_at`, `tokenable_id`, `tokenable_type`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?)'),
+        );
+
+    DB::disableQueryLog();
 });

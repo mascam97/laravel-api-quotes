@@ -3,7 +3,9 @@
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Rating\Models\Rating;
 use Domain\Users\Models\User;
+use Illuminate\Support\Facades\DB;
 use function Pest\Laravel\getJson;
+use function PHPUnit\Framework\assertEquals;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -16,6 +18,17 @@ beforeEach(function () {
     $this->rating->save();
 
     login($this->user);
+});
+
+it('can show', function () {
+    login($this->user);
+
+    $responseData = getJson(route('ratings.show', [
+        'rating' => $this->rating->id,
+    ]))->assertOk()
+        ->json('data');
+
+    assertEquals($this->rating->id, $responseData['id']);
 });
 
 it('can include qualifier', function () {
@@ -46,4 +59,17 @@ it('can include rateable', function () {
         ->average_rating->toEqual($this->quote->getAverageUserScore())
         ->created_at->toEqual($this->quote->created_at)
         ->updated_at->toEqual($this->quote->updated_at);
+});
+
+test('sql queries optimization test', function () {
+    DB::enableQueryLog();
+    getJson(route('ratings.show', ['rating' => $this->rating->getKey()]))->assertOk();
+
+    expect(formatQueries(DB::getQueryLog()))
+        ->toHaveCount(1)
+        ->sequence(
+            fn ($query) => $query->toBe('select * from `ratings` where `id` = ? limit 1'),
+        );
+
+    DB::disableQueryLog();
 });
