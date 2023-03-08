@@ -22,6 +22,8 @@ Route::name('admin.')->middleware('set.locale')->group(function () {
             ->only(['index', 'show', 'destroy']);
         Route::apiResource('activities', ActivityController::class)
             ->only(['index', 'show', 'destroy']);
+        Route::post('activities/export', [ActivityController::class, 'export'])
+            ->name('activities.export');
     });
 
     Route::post('api-token-auth', [AuthController::class, 'login'])

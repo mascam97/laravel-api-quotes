@@ -211,6 +211,7 @@ Note: Remember in production the better command is `queue:work`, [explanation](h
 -   [Laravel Sail](https://laravel.com/docs/10.x/sail) - Docker development environment.
 -   [Laravel Permission](https://spatie.be/docs/laravel-permission/v5/introduction) - Associate users with roles and permissions.
 -   [Laravel Activitylog](https://spatie.be/docs/laravel-activitylog/v4/introduction) - Log the activities of your users.
+-   [Laravel Excel](https://laravel-excel.com/) - Supercharged Excel exports and imports in Laravel.
 -   [Larastan](https://github.com/nunomaduro/larastan) - PHP tool to find errors in your code.
 -   [PHP Code Standards Fixer](https://cs.symfony.com/) - PHP tool to fixe your code to follow standards.
 -   [Rector](https://getrector.org/) - Instant Upgrades and Automated Refactoring of any PHP 5.3+ code.

@@ -4,6 +4,7 @@ use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Users\Models\User;
 use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\getJson;
+use function Pest\Laravel\postJson;
 use Spatie\Activitylog\Models\Activity;
 
 beforeEach(function () {
@@ -28,6 +29,9 @@ it('cannot authorize guest', function () {
 
     deleteJson(route('admin.activities.show', ['activity' => $this->activity->id]))
         ->assertUnauthorized();
+
+    postJson(route('admin.activities.export'))
+        ->assertUnauthorized();
 });
 
 it('requires permission', function () {
@@ -40,6 +44,9 @@ it('requires permission', function () {
         ->assertForbidden();
 
     deleteJson(route('admin.activities.show', ['activity' => $this->activity->id]))
+        ->assertForbidden();
+
+    postJson(route('admin.activities.export'))
         ->assertForbidden();
 });
 

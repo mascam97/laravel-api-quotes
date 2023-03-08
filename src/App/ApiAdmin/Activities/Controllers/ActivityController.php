@@ -5,11 +5,14 @@ namespace App\ApiAdmin\Activities\Controllers;
 use App\ApiAdmin\Activities\Queries\ActivityIndexQuery;
 use App\ApiAdmin\Activities\Resources\ActivityResource;
 use App\Controller;
+use Domain\Exports\ActivityExport;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Activitylog\Models\Activity;
 use Spatie\QueryBuilder\QueryBuilder;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ActivityController extends Controller
 {
@@ -55,5 +58,15 @@ class ActivityController extends Controller
         return response()->json([
             'message' => trans('message.deleted', ['attribute' => 'activity']),
         ]);
+    }
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function export(): BinaryFileResponse
+    {
+        $this->authorize('export', Activity::class);
+
+        return Excel::download(new ActivityExport(), 'activities.xlsx');
     }
 }

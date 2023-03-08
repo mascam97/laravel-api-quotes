@@ -23,4 +23,9 @@ class ActivityPolicy
     {
         return $authUser->can('delete activities');
     }
+
+    public function export(User $authUser): bool
+    {
+        return $authUser->can('export activities');
+    }
 }
