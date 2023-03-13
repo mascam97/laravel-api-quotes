@@ -18,11 +18,13 @@ class CreateQuotesTable extends Migration
     {
         Schema::create('quotes', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title', 80);
             $table->text('content');
             $table->enum('state', [Drafted::$name, Published::$name, Banned::$name]);
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
+
+            $table->index('title');
         });
     }
 

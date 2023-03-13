@@ -41,6 +41,7 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
         "beyondcode/laravel-dump-server": "^1.8",
+        "beyondcode/laravel-query-detector": "^1.7",
         "eduarguz/shift-php-cs": "^3.0",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.3",

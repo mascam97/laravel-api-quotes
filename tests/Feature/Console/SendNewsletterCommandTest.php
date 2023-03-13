@@ -3,6 +3,7 @@
 use App\Console\Commands\SendNewsletterCommand;
 use Domain\Users\Models\User;
 use Domain\Users\Notifications\NewsletterNotification;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Symfony\Component\Console\Command\Command as CommandExitCode;
 
@@ -71,3 +72,22 @@ it('sends newsletter to all users', function () {
 });
 
 // TODO: Test schedule option
+
+test('sql queries optimization test', function () {
+    User::factory()->create();
+
+    DB::enableQueryLog();
+
+    $this->artisan(SendNewsletterCommand::class)
+        ->expectsConfirmation('Are you sure to send an email to 1 users?', 'yes')
+        ->assertExitCode(CommandExitCode::SUCCESS);
+
+    expect(formatQueries(DB::getQueryLog()))
+        ->toHaveCount(2)
+        ->sequence(
+            fn ($query) => $query->toBe('select count(*) as aggregate from `users` where `email_verified_at` is not null'),
+            fn ($query) => $query->toBe('select * from `users` where `email_verified_at` is not null order by `id` asc limit 10'),
+        );
+
+    DB::disableQueryLog();
+});

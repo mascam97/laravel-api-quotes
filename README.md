@@ -1,4 +1,4 @@
-# Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.4.0-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
+# Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.4.1-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
 
 _Main portfolio as PHP Backend Developer - Community to rate quotes_
 
@@ -51,6 +51,7 @@ _Main portfolio as PHP Backend Developer - Community to rate quotes_
 - Implemented **Roles and Permissions** for administrator domain
 - Implemented **User administration** for administrator domain
 - Implemented **Activities** in user deletion for administrator domain
+- Optimized **Database Queries** with best practices and include queries in tests
 
 ---
 
@@ -212,6 +213,7 @@ Note: Remember in production the better command is `queue:work`, [explanation](h
 -   [Laravel Permission](https://spatie.be/docs/laravel-permission/v5/introduction) - Associate users with roles and permissions.
 -   [Laravel Activitylog](https://spatie.be/docs/laravel-activitylog/v4/introduction) - Log the activities of your users.
 -   [Laravel Excel](https://laravel-excel.com/) - Supercharged Excel exports and imports in Laravel.
+-   [Laravel Query Detector](https://beyondco.de/docs/laravel-query-detector/usage) - Laravel N+1 Query Detector.
 -   [Larastan](https://github.com/nunomaduro/larastan) - PHP tool to find errors in your code.
 -   [PHP Code Standards Fixer](https://cs.symfony.com/) - PHP tool to fixe your code to follow standards.
 -   [Rector](https://getrector.org/) - Instant Upgrades and Automated Refactoring of any PHP 5.3+ code.
@@ -236,6 +238,7 @@ This project is licensed under the [MIT License](https://choosealicense.com/lice
 
 ### References :books:
 
+- [18 Tips to optimize laravel database queries](https://dudi.dev/optimize-laravel-database-queries/)
 - [Laravel Testing](https://testing-laravel.com/)
 - [Laravel Beyond CRUD](https://laravel-beyond-crud.com/)
 - [Laravel Advanced Course](https://platzi.com/clases/laravel-avanzado/)

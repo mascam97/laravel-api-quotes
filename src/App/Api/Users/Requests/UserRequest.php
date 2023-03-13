@@ -22,7 +22,7 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
+            'name' => 'required|max:80',
             'sex' => new Enum(SexEnum::class),
             'email' => 'required|email|unique:users',
             'password' => 'required',

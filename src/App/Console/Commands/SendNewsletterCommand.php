@@ -38,16 +38,18 @@ class SendNewsletterCommand extends Command
             $builder->whereEmailIn($emails);
         }
 
-        $countUsers = $builder->count(); /* @phpstan-ignore-line */
+        $countUsers = $builder->count();
 
         if ($countUsers &&
             ($this->confirm("Are you sure to send an email to {$countUsers} users?") || $schedule)
         ) {
             $this->output->progressStart($countUsers);
 
-            $builder->each(function (User $user) {
-                $user->notify(new NewsletterNotification());
-                $this->output->progressAdvance();
+            $builder->chunkById(10, function ($users) {
+                foreach ($users as $user) {
+                    $user->notify(new NewsletterNotification());
+                    $this->output->progressAdvance();
+                }
             });
 
             $this->output->progressFinish();

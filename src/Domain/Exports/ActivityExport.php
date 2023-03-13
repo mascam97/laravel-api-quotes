@@ -31,6 +31,6 @@ class ActivityExport implements FromCollection
     public function collection(): Collection|array|\Illuminate\Support\Collection
     {
         // TODO: Validate performance when there are many data
-        return Activity::all();
+        return Activity::query()->select($this->headers)->get();
     }
 }

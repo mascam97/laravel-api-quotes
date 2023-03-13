@@ -10,7 +10,11 @@ class QuoteIndexQuery extends QueryBuilder
 {
     public function __construct(Request $request)
     {
-        $query = Quote::query();
+        $query = Quote::query()->select([
+            'title',
+            'content',
+            'created_at',
+        ]);
 
         parent::__construct($query, $request);
 

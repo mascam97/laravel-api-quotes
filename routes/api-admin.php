@@ -20,8 +20,10 @@ Route::name('admin.')->middleware('set.locale')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('users', UserController::class)
             ->only(['index', 'show', 'destroy']);
+
         Route::apiResource('activities', ActivityController::class)
             ->only(['index', 'show', 'destroy']);
+
         Route::post('activities/export', [ActivityController::class, 'export'])
             ->name('activities.export');
     });

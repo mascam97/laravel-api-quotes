@@ -72,6 +72,6 @@ As an Administrator I can see and delete users. Each operation requires a role w
 
 As an Administrator I can see some activities about whom deletes any user.
 
-**TODO (Laravel Excel)**: As Administrator I can export activities to a datasets file.
+As Administrator I can export activities to a datasets file.
 
 **TODO**: As Administrator I can associate permissions to roles and roles to users.

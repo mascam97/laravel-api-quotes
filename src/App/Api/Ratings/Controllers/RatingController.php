@@ -27,6 +27,18 @@ class RatingController extends Controller
     public function show(int $ratingId): RatingResource
     {
         $query = Rating::query()
+            ->select([
+                'id',
+                'score',
+                'qualifier_id',
+                'qualifier_type',
+                'qualifier',
+                'rateable_id',
+                'rateable_type',
+                'rateable',
+                'created_at',
+                'updated_at',
+            ])
             ->whereId($ratingId);
 
         $rating = QueryBuilder::for($query)

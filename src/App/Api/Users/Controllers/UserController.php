@@ -21,6 +21,12 @@ class UserController extends Controller
     public function show(int $userId): UserResource
     {
         $query = User::query()
+            ->select([
+                'id',
+                'name',
+                'email',
+                'created_at',
+            ])
             ->whereId($userId);
 
         $user = QueryBuilder::for($query)

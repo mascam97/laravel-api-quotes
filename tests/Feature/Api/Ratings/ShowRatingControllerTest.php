@@ -68,7 +68,7 @@ test('sql queries optimization test', function () {
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(1)
         ->sequence(
-            fn ($query) => $query->toBe('select * from `ratings` where `id` = ? limit 1'),
+            fn ($query) => $query->toBe('select `id`, `score`, `qualifier_id`, `qualifier_type`, `qualifier`, `rateable_id`, `rateable_type`, `rateable`, `created_at`, `updated_at` from `ratings` where `id` = ? limit 1'),
         );
 
     DB::disableQueryLog();

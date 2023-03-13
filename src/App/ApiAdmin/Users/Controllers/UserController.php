@@ -34,6 +34,13 @@ class UserController extends Controller
         $this->authorize('view', User::class);
 
         $query = User::query()
+            ->select([
+                'id',
+                'name',
+                'email',
+                'created_at',
+                'updated_at',
+            ])
             ->whereId($userId);
 
         $user = QueryBuilder::for($query)

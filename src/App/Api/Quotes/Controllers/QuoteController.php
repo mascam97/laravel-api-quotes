@@ -45,6 +45,16 @@ class QuoteController extends Controller
     public function show(int $quoteId): QuoteResource
     {
         $query = Quote::query()
+            ->select([
+                'id',
+                'title',
+                'excerpt',
+                'content',
+                'state',
+                'user_id',
+                'created_at',
+                'updated_at',
+            ])
             ->whereId($quoteId);
 
         $quote = QueryBuilder::for($query)

@@ -10,7 +10,13 @@ class UserIndexQuery extends QueryBuilder
 {
     public function __construct(Request $request)
     {
-        $query = User::query();
+        $query = User::query()->select([
+            'id',
+            'name',
+            'email',
+            'created_at',
+            'updated_at',
+        ]);
 
         parent::__construct($query, $request);
 

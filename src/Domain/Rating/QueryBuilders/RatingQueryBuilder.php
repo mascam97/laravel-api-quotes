@@ -5,6 +5,9 @@ namespace Domain\Rating\QueryBuilders;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method select($columns = ['*'])
+ */
 class RatingQueryBuilder extends Builder
 {
     public function whereId(int $id): self

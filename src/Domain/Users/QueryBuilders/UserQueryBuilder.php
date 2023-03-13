@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @method User find($columns = ['*'])
+ * @method select($columns = ['*'])
+ * @method count()
  */
 class UserQueryBuilder extends Builder
 {

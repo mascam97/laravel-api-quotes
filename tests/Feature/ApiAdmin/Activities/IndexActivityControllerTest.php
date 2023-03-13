@@ -63,7 +63,6 @@ it('can include causer', function () {
 test('sql queries optimization test', function () {
     DB::enableQueryLog();
     getJson(route('admin.activities.index'))->assertOk();
-    // TODO: Validate cache in roles and permissions
     getJson(route('admin.activities.index'))->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
@@ -73,9 +72,10 @@ test('sql queries optimization test', function () {
             fn ($query) => $query->toContain('select `roles`.*, `role_has_permissions`.`permission_id` as `pivot_permission_id`, `role_has_permissions`.`role_id` as `pivot_role_id` from `roles` inner join `role_has_permissions` on `roles`.`id` = `role_has_permissions`.`role_id` where `role_has_permissions`.`permission_id`'),
             fn ($query) => $query->toBe('select `permissions`.*, `model_has_permissions`.`model_id` as `pivot_model_id`, `model_has_permissions`.`permission_id` as `pivot_permission_id`, `model_has_permissions`.`model_type` as `pivot_model_type` from `permissions` inner join `model_has_permissions` on `permissions`.`id` = `model_has_permissions`.`permission_id` where `model_has_permissions`.`model_id` = ? and `model_has_permissions`.`model_type` = ?'),
             fn ($query) => $query->toBe('select count(*) as aggregate from `activity_log`'),
-            fn ($query) => $query->toBe('select * from `activity_log` limit 15 offset 0'),
+            fn ($query) => $query->toBe('select `id`, `log_name`, `description`, `subject_type`, `subject_id`, `subject`, `causer_type`, `causer_id`, `causer`, `event`, `created_at`, `updated_at` from `activity_log` limit 15 offset 0'),
+            // TODO: Validate cache in roles and permissions
             fn ($query) => $query->toBe('select count(*) as aggregate from `activity_log`'),
-            fn ($query) => $query->toBe('select * from `activity_log` limit 15 offset 0'),
+            fn ($query) => $query->toBe('select `id`, `log_name`, `description`, `subject_type`, `subject_id`, `subject`, `causer_type`, `causer_id`, `causer`, `event`, `created_at`, `updated_at` from `activity_log` limit 15 offset 0'),
         );
 
     DB::disableQueryLog();

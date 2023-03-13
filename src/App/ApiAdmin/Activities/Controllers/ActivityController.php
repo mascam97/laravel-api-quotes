@@ -36,7 +36,20 @@ class ActivityController extends Controller
         $this->authorize('view', Activity::class);
 
         $query = Activity::query()
-            // TODO: Validate there is no many queries to get the activity (by route model binding and query())
+            ->select([
+                'id',
+                'log_name',
+                'description',
+                'subject_type',
+                'subject_id',
+                'subject',
+                'causer_type',
+                'causer_id',
+                'causer',
+                'event',
+                'created_at',
+                'updated_at',
+            ])
             ->where('id', $activityId);
 
         $activity = QueryBuilder::for($query)

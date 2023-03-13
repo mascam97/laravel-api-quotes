@@ -29,8 +29,8 @@ class NewsletterNotification extends Notification
             ->greeting(trans('mail.greeting.newsletter')) /* @phpstan-ignore-line */
             ->line(trans('mail.notification.newsletter', [
                 'user' => $notifiable->name,
-                'user_count' => count(User::All()),
-                'quote_count' => count(Quote::All()),
+                'user_count' => User::query()->count(),
+                'quote_count' => Quote::query()->count(),
             ]))
             ->action(trans('mail.link.website'), env('APP_URL', 'http://localhost'))   /* @phpstan-ignore-line */
             ->line(trans('mail.gratitude'));

@@ -10,7 +10,20 @@ class ActivityIndexQuery extends QueryBuilder
 {
     public function __construct(Request $request)
     {
-        $query = Activity::query();
+        $query = Activity::query()->select([
+            'id',
+            'log_name',
+            'description',
+            'subject_type',
+            'subject_id',
+            'subject',
+            'causer_type',
+            'causer_id',
+            'causer',
+            'event',
+            'created_at',
+            'updated_at',
+        ]);
 
         parent::__construct($query, $request);
 
