@@ -1,4 +1,4 @@
-# Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.4.1-blue) ![Status](https://img.shields.io/badge/status-passing-green) ![Passing](https://img.shields.io/badge/build-passing-green) ![Docker build](https://img.shields.io/badge/docker_build-passing-green)  ![Tests](https://img.shields.io/badge/tests-100%25-green) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=martin-stepwolf_laravel8-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=martin-stepwolf_laravel8-api-quotes)
+# Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.4.1-blue) ![Status](https://img.shields.io/badge/status-passing-green)  [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=mascam97_laravel-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=mascam97_laravel-api-quotes)  [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=mascam97_laravel-api-quotes&metric=coverage)](https://sonarcloud.io/summary/new_code?id=mascam97_laravel-api-quotes)
 
 _Main portfolio as PHP Backend Developer - Community to rate quotes_
 

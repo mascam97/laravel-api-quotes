@@ -8,6 +8,7 @@
 .env.backup
 .php-cs-fixer.cache
 .phpunit.result.cache
+coverage.xml
 docker-compose.override.yml
 Homestead.json
 Homestead.yaml

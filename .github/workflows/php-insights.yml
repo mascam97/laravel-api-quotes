@@ -1,6 +1,11 @@
 name: PHP Insights
 
-on: [push]
+on:
+  push:
+    paths:
+      - '**.php'
+      - '.github/workflows/php-insights.yml'
+      - 'composer.lock'
 
 jobs:
   phpinsights:

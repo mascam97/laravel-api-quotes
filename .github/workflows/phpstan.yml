@@ -5,6 +5,8 @@ on:
     paths:
       - '**.php'
       - 'phpstan.neon'
+      - '.github/workflows/phpstan.yml'
+      - 'composer.lock'
 
 jobs:
   phpstan:

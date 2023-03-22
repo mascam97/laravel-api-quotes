@@ -1,6 +1,11 @@
 name: Check & fix styling
 
-on: [push]
+on:
+  push:
+    paths:
+      - '**.php'
+      - '.github/workflows/php-cs-fixer.yml'
+      - 'composer.lock'
 
 jobs:
   phpstan:
