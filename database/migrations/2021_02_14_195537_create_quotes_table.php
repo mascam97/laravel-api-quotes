@@ -20,6 +20,7 @@ class CreateQuotesTable extends Migration
             $table->id();
             $table->string('title', 80);
             $table->text('content');
+            $table->float('average_score')->nullable();
             $table->enum('state', [Drafted::$name, Published::$name, Banned::$name]);
             $table->foreignId('user_id')->constrained();
             $table->timestamps();

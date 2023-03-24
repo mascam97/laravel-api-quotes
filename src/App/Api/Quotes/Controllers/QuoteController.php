@@ -51,6 +51,7 @@ class QuoteController extends Controller
                 'excerpt',
                 'content',
                 'state',
+                'average_score',
                 'user_id',
                 'created_at',
                 'updated_at',

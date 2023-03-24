@@ -47,7 +47,7 @@ test('sql queries optimization test', function () {
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(1)
         ->sequence(
-            fn ($query) => $query->toBe('insert into `quotes` (`state`, `title`, `content`, `user_id`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?)'),
+            fn ($query) => $query->toBe('insert into `quotes` (`state`, `title`, `content`, `average_score`, `user_id`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?)'),
         );
 
     DB::disableQueryLog();

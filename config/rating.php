@@ -6,6 +6,6 @@ return [
     'models' => [
         'rating' => Rating::class,
     ],
-    'min' => 1,
+    'min' => 0,
     'max' => 5,
 ];

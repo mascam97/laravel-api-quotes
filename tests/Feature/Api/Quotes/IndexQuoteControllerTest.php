@@ -156,16 +156,10 @@ test('sql queries optimization test', function () {
     getJson(route('quotes.index'))->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
-        ->toHaveCount(7)
+        ->toHaveCount(2)
         ->sequence(
             fn ($query) => $query->toBe('select count(*) as aggregate from `quotes`'),
-            fn ($query) => $query->toBe('select `id`, `title`, `excerpt`, `content`, `state`, `user_id`, `created_at`, `updated_at` from `quotes` limit 15 offset 0'),
-            // TODO: Solve N + 1 queries
-            fn ($query) => $query->toBe('select avg(`score`) as aggregate from `users` inner join `ratings` on `users`.`id` = `ratings`.`qualifier_id` where `ratings`.`rateable_id` = ? and `ratings`.`rateable_type` = ? and `ratings`.`qualifier_type` = ? and `ratings`.`rateable_type` = ?'),
-            fn ($query) => $query->toBe('select avg(`score`) as aggregate from `users` inner join `ratings` on `users`.`id` = `ratings`.`qualifier_id` where `ratings`.`rateable_id` = ? and `ratings`.`rateable_type` = ? and `ratings`.`qualifier_type` = ? and `ratings`.`rateable_type` = ?'),
-            fn ($query) => $query->toBe('select avg(`score`) as aggregate from `users` inner join `ratings` on `users`.`id` = `ratings`.`qualifier_id` where `ratings`.`rateable_id` = ? and `ratings`.`rateable_type` = ? and `ratings`.`qualifier_type` = ? and `ratings`.`rateable_type` = ?'),
-            fn ($query) => $query->toBe('select avg(`score`) as aggregate from `users` inner join `ratings` on `users`.`id` = `ratings`.`qualifier_id` where `ratings`.`rateable_id` = ? and `ratings`.`rateable_type` = ? and `ratings`.`qualifier_type` = ? and `ratings`.`rateable_type` = ?'),
-            fn ($query) => $query->toBe('select avg(`score`) as aggregate from `users` inner join `ratings` on `users`.`id` = `ratings`.`qualifier_id` where `ratings`.`rateable_id` = ? and `ratings`.`rateable_type` = ? and `ratings`.`qualifier_type` = ? and `ratings`.`rateable_type` = ?'),
+            fn ($query) => $query->toBe('select `id`, `title`, `excerpt`, `content`, `state`, `average_score`, `user_id`, `created_at`, `updated_at` from `quotes` limit 15 offset 0'),
         );
 
     DB::disableQueryLog();

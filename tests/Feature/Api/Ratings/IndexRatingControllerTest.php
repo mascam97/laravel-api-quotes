@@ -68,7 +68,7 @@ it('can include rateable', function () {
         ->excerpt->toEqual($this->quote->excerpt)
         ->content->toEqual($this->quote->content)
         ->state->toEqual($this->quote->state)
-        ->average_rating->toEqual($this->quote->getAverageUserScore())
+        ->average_score->toEqual($this->quote->average_score)
         ->created_at->toEqual($this->quote->created_at)
         ->updated_at->toEqual($this->quote->updated_at);
 });

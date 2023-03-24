@@ -5,6 +5,7 @@ namespace App\Api\Ratings\Controllers;
 use App\Api\Ratings\Queries\RatingIndexQuery;
 use App\Api\Ratings\Resources\RatingResource;
 use App\Controller;
+use Domain\Quotes\Actions\RefreshQuoteAverageScoreAction;
 use Domain\Quotes\Models\Quote;
 use Domain\Rating\Actions\UpdateOrCreateRatingAction;
 use Domain\Rating\Data\RatingData;
@@ -61,6 +62,8 @@ class RatingController extends Controller
             data: $data
         );
 
+        (new RefreshQuoteAverageScoreAction())->__invoke(quote: $quote);
+
         $rating->load('rateable');
 
         return response()->json([
@@ -76,7 +79,11 @@ class RatingController extends Controller
     {
         $this->authorize('pass', $rating);
 
+        $quote = $rating->rateable;
+
         $rating->delete();
+
+        (new RefreshQuoteAverageScoreAction())->__invoke(quote: $quote);
 
         return response()->json([
             'message' => trans('message.deleted', ['attribute' => 'rating']),

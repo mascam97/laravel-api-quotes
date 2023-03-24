@@ -16,10 +16,14 @@ trait CanBeRated
             ->wherePivot('rateable_type', $this->getMorphClass());
     }
 
-    public function averageRating(?string $model = null): float
+    public function averageRating(?string $model = null): ?float
     {
         $modelScore = $this->qualifiers($model)->avg('score');
 
-        return round($modelScore, 1) ?: 0.0; /* @phpstan-ignore-line */
+        if ($modelScore === 0.0) {
+            return 0.0;
+        }
+
+        return round($modelScore, 1) ?: null; /* @phpstan-ignore-line */
     }
 }

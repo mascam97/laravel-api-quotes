@@ -26,6 +26,7 @@ class DBQuoteFactory extends Factory
             'user_id' => random_int(1, 10),
             'title' => $this->faker->sentence,
             'content' => $this->faker->text(500),
+            'average_score' => null,
         ];
     }
 }

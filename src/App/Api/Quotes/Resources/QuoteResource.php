@@ -25,7 +25,7 @@ class QuoteResource extends JsonResource
             'excerpt' => $this->excerpt,
             'content' => $this->content,
             'state' => $this->state,
-            'average_rating' => $this->getAverageUserScore(),
+            'average_rating' => $this->average_score,
             'user' => UserResource::make($this->whenLoaded('user')),
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,

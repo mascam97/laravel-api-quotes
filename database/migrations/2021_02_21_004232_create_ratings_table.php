@@ -15,7 +15,7 @@ class CreateRatingsTable extends Migration
     {
         Schema::create('ratings', function (Blueprint $table) {
             $table->id();
-            $table->float('score');
+            $table->tinyInteger('score');
             $table->morphs('rateable');
             $table->morphs('qualifier');
             $table->timestamps();

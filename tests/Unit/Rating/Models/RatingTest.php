@@ -23,7 +23,7 @@ it('can rate quotes by users', function () {
         ->toBeInstanceOf(Collection::class);
 });
 
-it('can calculate average rating', function (array $scores, float $averageScore) {
+it('can calculate average rating', function (array $scores, ?float $averageScore) {
     foreach ($scores as $score) {
         /** @var User $user */
         $user = User::factory()->create();
@@ -32,10 +32,13 @@ it('can calculate average rating', function (array $scores, float $averageScore)
     }
 
     expect($this->quote->averageRating(User::class))
-        ->toBe((float) $averageScore);
+        ->toBe($averageScore);
 })->with([
-    [[], 0.0],
+    [[], null],
+    [[0], 0.0],
+    [[0, 0], 0.0],
     [[4], 4.0],
+    [[4, 0], 2.0],
     [[1, 4, 3], 2.7],
 ]);
 

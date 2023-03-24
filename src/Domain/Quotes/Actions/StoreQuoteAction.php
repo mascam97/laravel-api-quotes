@@ -18,6 +18,7 @@ class StoreQuoteAction
         $quote = new Quote();
         $quote->title = $data->title;
         $quote->content = $data->content;
+        $quote->average_score = null;
         $quote->user()->associate($user);
         $quote->save();
 

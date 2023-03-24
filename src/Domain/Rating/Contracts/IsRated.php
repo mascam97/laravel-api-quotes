@@ -9,5 +9,5 @@ interface IsRated
 {
     public function qualifiers(): MorphToMany;
 
-    public function averageRating(): float;
+    public function averageRating(): ?float;
 }
