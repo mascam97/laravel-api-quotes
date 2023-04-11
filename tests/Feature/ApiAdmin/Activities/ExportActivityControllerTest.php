@@ -42,7 +42,7 @@ test('sql queries optimization test', function () {
     postJson(route('admin.activities.export'))->assertSuccessful();
 
     Excel::assertDownloaded('activities.xlsx', function (ActivityExport $export) {
-        expect($export->collection())->toHaveCount(3); /* @phpstan-ignore-line */
+        expect($export->collection())->toHaveCount(3);
 
         return true;
     });

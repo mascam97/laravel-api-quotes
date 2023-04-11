@@ -18,12 +18,13 @@ trait CanBeRated
 
     public function averageRating(?string $model = null): ?float
     {
+        /** @var int|float $modelScore */
         $modelScore = $this->qualifiers($model)->avg('score');
 
         if ($modelScore === 0.0) {
             return 0.0;
         }
 
-        return round($modelScore, 1) ?: null; /* @phpstan-ignore-line */
+        return round($modelScore, 1) ?: null;
     }
 }

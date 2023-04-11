@@ -32,7 +32,7 @@ it('can create a quote as published', function () {
 
     $quote = (new StoreQuoteAction())->__invoke($quoteData, $this->user);
 
-    expect($quote)
+    expect($quote) /* @phpstan-ignore-line */
         ->user->toEqual($this->user)
         ->title->toEqual($quoteData->title)
         ->content->toEqual($quoteData->content)

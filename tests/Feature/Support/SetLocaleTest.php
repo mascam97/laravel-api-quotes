@@ -17,7 +17,7 @@ it('set default locale when locale from header is invalid', function (?string $h
     get('/test-locale-route', ['Accept-Language' => $headerLocale])->assertOk();
 
     assertEquals($defaultLocale, app()->getLocale());
-})->with([
+})->with([/* @phpstan-ignore-line */
     null, // undefined locale
     'de', // unsupported locale
     'invalidLocale', // invalid locale
