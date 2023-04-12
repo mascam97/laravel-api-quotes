@@ -16,18 +16,18 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next)
     {
-        $locale = $request->getPreferredLanguage(config('app.available_locales')); /* @phpstan-ignore-line */
-
         /** @var ?User $authUser */
         $authUser = $request->user();
 
-        if ($locale && $authUser) {
-            $authUser->locale = $locale;
-            $authUser->update();
-        }
+        if ($request->hasHeader('Accept-Language')) {
+            $locale = $request->getPreferredLanguage(config('app.available_locales')); /* @phpstan-ignore-line */
 
-        if (! $locale && $authUser) {
-            $locale = $authUser->locale;
+            if ($locale && $authUser) {
+                $authUser->locale = $locale;
+                $authUser->update();
+            }
+        } else {
+            $locale = $authUser?->locale;
         }
 
         if ($locale) {

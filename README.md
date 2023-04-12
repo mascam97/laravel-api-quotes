@@ -52,6 +52,7 @@ _Main portfolio as PHP Backend Developer - Community to rate quotes_
 - Implemented **User administration** for administrator domain
 - Implemented **Activities** in user deletion for administrator domain
 - Optimized **Database Queries** with best practices and include queries in tests
+- Increased **Coverage** to 95%
 
 ---
 

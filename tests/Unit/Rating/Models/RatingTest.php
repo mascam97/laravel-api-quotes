@@ -42,6 +42,24 @@ it('can calculate average rating', function (array $scores, ?float $averageScore
     [[1, 4, 3], 2.7],
 ]);
 
+it('cannot rate with invalid max score', function () {
+    config()->set('rating.min', 0);
+    config()->set('rating.max', 10);
+    /** @var User $user */
+    $user = User::factory()->create();
+
+    $user->rate($this->quote, 100);
+})->throws(\Domain\Rating\Exceptions\InvalidScore::class);
+
+it('cannot rate with invalid min score', function () {
+    config()->set('rating.min', 1);
+    config()->set('rating.max', 10);
+    /** @var User $user */
+    $user = User::factory()->create();
+
+    $user->rate($this->quote, 0);
+})->throws(\Domain\Rating\Exceptions\InvalidScore::class);
+
 it('can rate a model', function () {
     $this->user->rate($this->quote, 5);
 
