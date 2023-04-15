@@ -30,7 +30,7 @@ As User, I cannot update and delete data that is not mine for security reasons
 
 As User, I can create, read, update and delete quotes to show them in the community
 
-**TODO (External API)**: As User, I want to see quotes from famous people to inspire me
+As User, I want to see quotes from famous people to inspire me
 
 ### State pattern
 

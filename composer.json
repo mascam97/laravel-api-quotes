@@ -22,7 +22,7 @@
     ],
     "require": {
         "php": "^8.1",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^7.5",
         "laravel-lang/lang": "~8.0",
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.2",
@@ -74,6 +74,7 @@
             "App\\": "src/App/",
             "Domain\\": "src/Domain/",
             "Support\\": "src/Support/",
+            "Services\\": "src/Services/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }

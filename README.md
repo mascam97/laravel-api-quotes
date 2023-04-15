@@ -53,6 +53,7 @@ _Main portfolio as PHP Backend Developer - Community to rate quotes_
 - Implemented **Activities** in user deletion for administrator domain
 - Optimized **Database Queries** with best practices and include queries in tests
 - Increased **Coverage** to 95%
+- Implemented an **External API** to get data
 
 ---
 
@@ -239,6 +240,7 @@ This project is licensed under the [MIT License](https://choosealicense.com/lice
 
 ### References :books:
 
+- [Steve McDougall: How to do API integrations in Laravel](https://www.youtube.com/live/0Rq-yHAwYjQ?feature=share&t=22323)
 - [18 Tips to optimize laravel database queries](https://dudi.dev/optimize-laravel-database-queries/)
 - [Laravel Testing](https://testing-laravel.com/)
 - [Laravel Beyond CRUD](https://laravel-beyond-crud.com/)

@@ -1,0 +1,19 @@
+{
+    "data": [
+        {
+            "id": 10,
+            "author": "Antoine de Saint-Exupéry",
+            "content": "It is only with the heart that one can see rightly; what is essential is invisible to the eye."
+        },
+        {
+            "id": 11,
+            "author": "Miguel de Cervantes Saavedra",
+            "content": "Too much sanity may be madness — and maddest of all: to see life as it is, and not as it should be!"
+        },
+        {
+            "id": 12,
+            "author": "Emily Brontë",
+            "content": "Whatever our souls are made of, his and mine are the same"
+        }
+    ]
+}

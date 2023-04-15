@@ -31,3 +31,21 @@ function formatQueries(array $queries): array
 {
     return str_replace('"', '`', collect($queries)->pluck('query')->toArray());
 }
+
+function fixture(string $name): array
+{
+    $file = file_get_contents(
+        filename: base_path("tests/Fixtures/$name.json"),
+    );
+
+    if (! $file) {
+        throw new InvalidArgumentException(
+            message: "Cannot find fixture: [$name] at tests/Fixtures/$name.json",
+        );
+    }
+
+    return json_decode(
+        json: $file,
+        associative: true,
+    );
+}

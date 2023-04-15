@@ -29,5 +29,15 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'external-api' => [
+        'uri' => env('EXTERNAL_API_URI', 'https://example.com'),
+        'key' => env('EXTERNAL_API_KEY', 'key'),
+        'timeout' => env('EXTERNAL_API_TIMEOUT', 10),
+        'retry' => [
+            'times' => env('EXTERNAL_API_RETRY_TIMES', null),
+            'sleep' => env('EXTERNAL_API_RETRY_SLEEP', null),
+
+        ],
+    ],
 
 ];
