@@ -1,6 +1,7 @@
 <?php
 
 use Domain\Quotes\Factories\QuoteFactory;
+use Domain\Quotes\States\Published;
 use Domain\Users\Models\User;
 use Illuminate\Support\Facades\DB;
 use function Pest\Laravel\getJson;
@@ -9,9 +10,9 @@ use function PHPUnit\Framework\assertEquals;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
-    $this->quote = (new QuoteFactory)->withUser($this->user)->create();  /* @phpstan-ignore-line */
+    $this->quote = (new QuoteFactory)->withUser($this->user)->withState(Published::$name)->create();
 
-    (new QuoteFactory)->setAmount(3)->withUser($this->user)->create();
+    (new QuoteFactory)->setAmount(3)->withUser($this->user)->withState(Published::$name)->create();
 
     login($this->user);
 });
@@ -45,7 +46,7 @@ test('sql queries optimization test', function () {
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(1)
         ->sequence(
-            fn ($query) => $query->toBe('select `id`, `title`, `excerpt`, `content`, `state`, `average_score`, `user_id`, `created_at`, `updated_at` from `quotes` where `id` = ? limit 1'),
+            fn ($query) => $query->toBe('select `id`, `title`, `content`, `state`, `average_score`, `user_id`, `created_at`, `updated_at` from `quotes` where `state` = ? and `id` = ? limit 1'),
         );
 
     DB::disableQueryLog();

@@ -2,6 +2,7 @@
 
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\Models\Quote;
+use Domain\Quotes\States\Published;
 use Domain\Users\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -12,22 +13,23 @@ use function PHPUnit\Framework\assertLessThan;
 beforeEach(function () {
     $this->user = User::factory()->create();
 
-    (new QuoteFactory)->setAmount(5)->withUser($this->user)->create();
+    (new QuoteFactory)->setAmount(5)->withUser($this->user)->withState(Published::$name)->create();
 
     login($this->user);
 });
 
 it('can index', function () {
     getJson(route('quotes.index'))
+        ->assertOk()
         ->assertJsonStructure([
             'data' => [
                 '*' => ['id', 'title', 'content', 'state', 'average_rating', 'excerpt', 'created_at', 'updated_at'], ],
-        ])->assertOk();
+        ]);
 });
 
 it('can filter by title', function () {
     /** @var Quote $quote */
-    $quote = (new QuoteFactory)->withUser($this->user)->create([
+    $quote = (new QuoteFactory)->withUser($this->user)->withState(Published::$name)->create([
         'title' => 'Hamlet',
     ]);
 
@@ -48,7 +50,7 @@ it('can filter by title', function () {
 
 it('can filter by content', function () {
     /** @var Quote $quote */
-    $quote = (new QuoteFactory)->withUser($this->user)->create([
+    $quote = (new QuoteFactory)->withUser($this->user)->withState(Published::$name)->create([
         'content' => 'Some text about something',
     ]);
 
@@ -73,7 +75,7 @@ it('can filter by user id', function () {
     $newUser = User::factory()->create();
 
     /** @var Quote $quote */
-    $quote = (new QuoteFactory)->withUser($newUser)->create();
+    $quote = (new QuoteFactory)->withUser($newUser)->withState(Published::$name)->create();
 
     getJson(route('quotes.index', ['filter[user_id]' => $newUser->id]))
         ->assertJson(function (AssertableJson $json) use ($quote) {
@@ -103,7 +105,7 @@ it('can include user', function () {
     $newUser = User::factory()->create();
 
     /** @var Quote $quote */
-    $quote = (new QuoteFactory)->withUser($newUser)->create([
+    $quote = (new QuoteFactory)->withUser($newUser)->withState(Published::$name)->create([
         'title' => 'Some text about something',
     ]);
 
@@ -136,7 +138,7 @@ it('can sort by id', function () {
 });
 
 it('can sort by title', function () {
-    (new QuoteFactory)->withUser($this->user)->create([
+    (new QuoteFactory)->withUser($this->user)->withState(Published::$name)->create([
         'title' => 'AAA',
     ]);
 
@@ -158,8 +160,8 @@ test('sql queries optimization test', function () {
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(2)
         ->sequence(
-            fn ($query) => $query->toBe('select count(*) as aggregate from `quotes`'),
-            fn ($query) => $query->toBe('select `id`, `title`, `excerpt`, `content`, `state`, `average_score`, `user_id`, `created_at`, `updated_at` from `quotes` limit 15 offset 0'),
+            fn ($query) => $query->toBe('select count(*) as aggregate from `quotes` where `state` = ?'),
+            fn ($query) => $query->toBe('select `id`, `title`, `content`, `state`, `average_score`, `user_id`, `created_at`, `updated_at` from `quotes` where `state` = ? limit 15 offset 0'),
         );
 
     DB::disableQueryLog();

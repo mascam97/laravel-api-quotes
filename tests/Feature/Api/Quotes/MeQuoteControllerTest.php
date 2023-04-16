@@ -71,9 +71,7 @@ it('can filter by content', function () {
 
 it('can filter by state', function () {
     /** @var Quote $quote */
-    $quote = (new QuoteFactory)->withUser($this->user)->create([
-        'state' => Published::$name,
-    ]);
+    $quote = (new QuoteFactory)->withUser($this->user)->withState(Published::$name)->create();
 
     getJson(route('me.quotes', ['filter[state]' => 'published']))
         ->assertSuccessful()
@@ -127,7 +125,7 @@ test('sql queries optimization test', function () {
         ->toHaveCount(2)
         ->sequence(
             fn ($query) => $query->toBe('select count(*) as aggregate from `quotes` where `user_id` = ?'),
-            fn ($query) => $query->toBe('select `id`, `title`, `excerpt`, `content`, `state`, `average_score`, `user_id`, `created_at`, `updated_at` from `quotes` where `user_id` = ? limit 15 offset 0'),
+            fn ($query) => $query->toBe('select `id`, `title`, `content`, `state`, `average_score`, `user_id`, `created_at`, `updated_at` from `quotes` where `user_id` = ? limit 15 offset 0'),
         );
 
     DB::disableQueryLog();

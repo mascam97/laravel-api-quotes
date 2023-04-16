@@ -34,7 +34,7 @@ As User, I want to see quotes from famous people to inspire me
 
 ### State pattern
 
-**TODO**: As User, I can see only the quotes as `PUBLISHED` from other users
+As User, I can see only the quotes as `PUBLISHED` from other users
 
 As User, I can set a quotes as `DRAFTED` to save it, and when it is ready I can set as `PUBLISHED`
 

@@ -10,6 +10,7 @@ use Domain\Quotes\Actions\UpdateQuoteAction;
 use Domain\Quotes\Data\StoreQuoteData;
 use Domain\Quotes\Data\UpdateQuoteData;
 use Domain\Quotes\Models\Quote;
+use Domain\Quotes\States\Published;
 use Domain\Users\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
@@ -29,7 +30,6 @@ class QuoteController extends Controller
             ->select([
                 'id',
                 'title',
-                'excerpt',
                 'content',
                 'state',
                 'average_score',
@@ -77,7 +77,6 @@ class QuoteController extends Controller
             ->select([
                 'id',
                 'title',
-                'excerpt',
                 'content',
                 'state',
                 'average_score',
@@ -85,6 +84,7 @@ class QuoteController extends Controller
                 'created_at',
                 'updated_at',
             ])
+            ->whereState(Published::$name)
             ->whereId($quoteId);
 
         $quote = QueryBuilder::for($query)

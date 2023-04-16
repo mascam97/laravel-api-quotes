@@ -28,6 +28,15 @@ class QuoteFactory
         return $this;
     }
 
+    public function withState(string $state): self
+    {
+        $this->properties += [
+            'state' => $state,
+        ];
+
+        return $this;
+    }
+
     public function create(array $extra = []): Quote|Collection
     {
         if (! $this->amount) {

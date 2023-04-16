@@ -3,6 +3,7 @@
 namespace App\Api\Quotes\Queries;
 
 use Domain\Quotes\Models\Quote;
+use Domain\Quotes\States\Published;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -13,14 +14,13 @@ class QuoteIndexQuery extends QueryBuilder
         $query = Quote::query()->select([
             'id',
             'title',
-            'excerpt',
             'content',
             'state',
             'average_score',
             'user_id',
             'created_at',
             'updated_at',
-        ]);
+        ])->whereState(Published::$name);
 
         parent::__construct($query, $request);
 
