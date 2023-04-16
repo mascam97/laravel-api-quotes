@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::name('admin.')->middleware('set.locale')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
+        Route::get('me', [UserController::class, 'me'])
+            ->name('me');
+
         Route::apiResource('users', UserController::class)
             ->only(['index', 'show', 'destroy']);
 

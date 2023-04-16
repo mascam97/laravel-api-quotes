@@ -13,12 +13,41 @@ use Domain\Quotes\Models\Quote;
 use Domain\Users\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\ModelStates\Exceptions\CouldNotPerformTransition;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class QuoteController extends Controller
 {
+    public function me(Request $request): AnonymousResourceCollection
+    {
+        /** @var User $authUser */
+        $authUser = $request->user();
+
+        $query = Quote::query()
+            ->select([
+                'id',
+                'title',
+                'excerpt',
+                'content',
+                'state',
+                'average_score',
+                'user_id',
+                'created_at',
+                'updated_at',
+            ])
+            ->whereUser($authUser);
+
+        // TODO: Search a way to use QuoteIndexQuery
+        $quotes = QueryBuilder::for($query)
+            ->allowedFilters(['title', 'content', 'state'])
+            ->allowedSorts('id', 'title', 'created_at')
+            ->paginate();
+
+        return QuoteResource::collection($quotes);
+    }
+
     public function index(QuoteIndexQuery $quoteQuery): AnonymousResourceCollection
     {
         $quotes = $quoteQuery->paginate();

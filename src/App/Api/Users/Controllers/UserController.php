@@ -6,11 +6,20 @@ use App\Api\Users\Queries\UserIndexQuery;
 use App\Api\Users\Resources\UserResource;
 use App\Controller;
 use Domain\Users\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {
+    public function me(Request $request): UserResource
+    {
+        /** @var User $authUser */
+        $authUser = $request->user();
+
+        return UserResource::make($authUser);
+    }
+
     public function index(UserIndexQuery $userQuery): AnonymousResourceCollection
     {
         $users = $userQuery->paginate();

@@ -30,6 +30,9 @@ it('cannot authorize guest', function () {
 
     deleteJson(route('quotes.destroy', ['quote' => $this->quote->id]))
         ->assertUnauthorized();
+
+    getJson(route('me.quotes'))
+        ->assertUnauthorized();
 });
 
 it('cannot store invalid data', function () {

@@ -22,6 +22,11 @@ Route::middleware('set.locale')->group(function () {
         Route::prefix('v1')->group(function () {
             Route::apiResource('quotes', QuoteController::class);
 
+            Route::get('me/quotes', [QuoteController::class, 'me'])
+                ->name('me.quotes');
+            Route::get('me', [UserController::class, 'me'])
+                ->name('me');
+
             Route::apiResource('users', UserController::class)
                 ->only(['index', 'show']);
 

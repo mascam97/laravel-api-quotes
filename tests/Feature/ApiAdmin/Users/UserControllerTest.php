@@ -19,6 +19,9 @@ it('cannot authorize guest', function () {
 
     deleteJson(route('admin.users.show', ['user' => $this->user->id]))
         ->assertUnauthorized();
+
+    getJson(route('admin.me'))
+        ->assertUnauthorized();
 });
 
 it('requires permission', function () {
