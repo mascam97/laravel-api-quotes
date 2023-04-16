@@ -3,6 +3,7 @@
 namespace App\Api\Ratings\Controllers;
 
 use App\Api\Ratings\Queries\RatingIndexQuery;
+use App\Api\Ratings\Queries\RatingShowQuery;
 use App\Api\Ratings\Resources\RatingResource;
 use App\Controller;
 use Domain\Quotes\Actions\RefreshQuoteAverageScoreAction;
@@ -14,7 +15,6 @@ use Domain\Users\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Spatie\QueryBuilder\QueryBuilder;
 
 class RatingController extends Controller
 {
@@ -25,26 +25,9 @@ class RatingController extends Controller
         return RatingResource::collection($quotes);
     }
 
-    public function show(int $ratingId): RatingResource
+    public function show(RatingShowQuery $ratingQuery, int $ratingId): RatingResource
     {
-        $query = Rating::query()
-            ->select([
-                'id',
-                'score',
-                'qualifier_id',
-                'qualifier_type',
-                'qualifier',
-                'rateable_id',
-                'rateable_type',
-                'rateable',
-                'created_at',
-                'updated_at',
-            ])
-            ->whereId($ratingId);
-
-        $rating = QueryBuilder::for($query)
-            ->allowedIncludes(['qualifier', 'rateable'])
-            ->firstOrFail();
+        $rating = $ratingQuery->where('id', $ratingId)->firstOrFail();
 
         return RatingResource::make($rating);
     }

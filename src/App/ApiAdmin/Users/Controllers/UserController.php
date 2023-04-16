@@ -3,6 +3,7 @@
 namespace App\ApiAdmin\Users\Controllers;
 
 use App\ApiAdmin\Users\Queries\UserIndexQuery;
+use App\ApiAdmin\Users\Queries\UserShowQuery;
 use App\ApiAdmin\Users\Resources\UserResource;
 use App\Controller;
 use Domain\Users\Models\User;
@@ -11,7 +12,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
-use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {
@@ -38,23 +38,11 @@ class UserController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function show(int $userId): UserResource
+    public function show(UserShowQuery $userQuery, int $userId): UserResource
     {
         $this->authorize('view', User::class);
 
-        $query = User::query()
-            ->select([
-                'id',
-                'name',
-                'email',
-                'created_at',
-                'updated_at',
-            ])
-            ->whereId($userId);
-
-        $user = QueryBuilder::for($query)
-            ->allowedIncludes('permissions')
-            ->allowedIncludes('roles')
+        $user = $userQuery->where('id', $userId)
             ->firstOrFail();
 
         return UserResource::make($user);

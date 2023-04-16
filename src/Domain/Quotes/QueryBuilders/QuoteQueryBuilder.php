@@ -2,7 +2,6 @@
 
 namespace Domain\Quotes\QueryBuilders;
 
-use Domain\Quotes\States\QuoteState;
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 

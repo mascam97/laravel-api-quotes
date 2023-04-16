@@ -3,6 +3,7 @@
 namespace App\ApiAdmin\Activities\Controllers;
 
 use App\ApiAdmin\Activities\Queries\ActivityIndexQuery;
+use App\ApiAdmin\Activities\Queries\ActivityShowQuery;
 use App\ApiAdmin\Activities\Resources\ActivityResource;
 use App\Controller;
 use Domain\Exports\ActivityExport;
@@ -11,7 +12,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Activitylog\Models\Activity;
-use Spatie\QueryBuilder\QueryBuilder;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ActivityController extends Controller
@@ -31,29 +31,11 @@ class ActivityController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function show(int $activityId): ActivityResource
+    public function show(ActivityShowQuery $activityQuery, int $activityId): ActivityResource
     {
         $this->authorize('view', Activity::class);
 
-        $query = Activity::query()
-            ->select([
-                'id',
-                'log_name',
-                'description',
-                'subject_type',
-                'subject_id',
-                'subject',
-                'causer_type',
-                'causer_id',
-                'causer',
-                'event',
-                'created_at',
-                'updated_at',
-            ])
-            ->where('id', $activityId);
-
-        $activity = QueryBuilder::for($query)
-            ->allowedIncludes(['subject', 'causer'])
+        $activity = $activityQuery->where('id', $activityId)
             ->firstOrFail();
 
         return ActivityResource::make($activity);

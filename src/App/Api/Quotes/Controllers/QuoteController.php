@@ -3,6 +3,8 @@
 namespace App\Api\Quotes\Controllers;
 
 use App\Api\Quotes\Queries\QuoteIndexQuery;
+use App\Api\Quotes\Queries\QuoteMeQuery;
+use App\Api\Quotes\Queries\QuoteShowQuery;
 use App\Api\Quotes\Resources\QuoteResource;
 use App\Controller;
 use Domain\Quotes\Actions\StoreQuoteAction;
@@ -10,40 +12,17 @@ use Domain\Quotes\Actions\UpdateQuoteAction;
 use Domain\Quotes\Data\StoreQuoteData;
 use Domain\Quotes\Data\UpdateQuoteData;
 use Domain\Quotes\Models\Quote;
-use Domain\Quotes\States\Published;
 use Domain\Users\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\ModelStates\Exceptions\CouldNotPerformTransition;
-use Spatie\QueryBuilder\QueryBuilder;
 
 class QuoteController extends Controller
 {
-    public function me(Request $request): AnonymousResourceCollection
+    public function me(QuoteMeQuery $quoteQuery): AnonymousResourceCollection
     {
-        /** @var User $authUser */
-        $authUser = $request->user();
-
-        $query = Quote::query()
-            ->select([
-                'id',
-                'title',
-                'content',
-                'state',
-                'average_score',
-                'user_id',
-                'created_at',
-                'updated_at',
-            ])
-            ->whereUser($authUser);
-
-        // TODO: Search a way to use QuoteIndexQuery
-        $quotes = QueryBuilder::for($query)
-            ->allowedFilters(['title', 'content', 'state'])
-            ->allowedSorts('id', 'title', 'created_at')
-            ->paginate();
+        $quotes = $quoteQuery->paginate();
 
         return QuoteResource::collection($quotes);
     }
@@ -71,25 +50,9 @@ class QuoteController extends Controller
         ], 201);
     }
 
-    public function show(int $quoteId): QuoteResource
+    public function show(QuoteShowQuery $quoteQuery, int $quoteId): QuoteResource
     {
-        $query = Quote::query()
-            ->select([
-                'id',
-                'title',
-                'content',
-                'state',
-                'average_score',
-                'user_id',
-                'created_at',
-                'updated_at',
-            ])
-            ->whereState(Published::$name)
-            ->whereId($quoteId);
-
-        $quote = QueryBuilder::for($query)
-            ->allowedIncludes('user')
-            ->firstOrFail();
+        $quote = $quoteQuery->where('id', $quoteId)->firstOrFail();
 
         return QuoteResource::make($quote);
     }

@@ -6,7 +6,7 @@ use Domain\Rating\Models\Rating;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class RatingIndexQuery extends QueryBuilder
+class RatingShowQuery extends QueryBuilder
 {
     public function __construct(Request $request)
     {
@@ -23,8 +23,6 @@ class RatingIndexQuery extends QueryBuilder
 
         parent::__construct($query, $request);
 
-        $this->allowedFilters(['qualifier_type', 'rateable_type'])
-            ->allowedIncludes(['qualifier', 'rateable'])
-            ->allowedSorts('id', 'created_at');
+        $this->allowedIncludes(['qualifier', 'rateable']);
     }
 }

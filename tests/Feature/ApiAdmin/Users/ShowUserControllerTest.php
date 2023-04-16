@@ -2,10 +2,8 @@
 
 use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
+use Illuminate\Support\Facades\DB;
 use function Pest\Laravel\getJson;
-use function PHPUnit\Framework\assertCount;
-use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertLessThan;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -19,8 +17,8 @@ beforeEach(function () {
 
 it('can show', function () {
     getJson(route('admin.users.show', ['user' => $this->user->id]))
-        ->assertSuccessful()
+        ->assertOk()
         ->assertJsonStructure([
             'data' => ['id', 'name', 'email', 'created_at'],
-        ])->assertOk();
+        ]);
 });

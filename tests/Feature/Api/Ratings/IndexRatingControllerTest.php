@@ -20,9 +20,10 @@ beforeEach(function () {
 
 it('can index', function () {
     getJson(route('ratings.index'))
+        ->assertOk()
         ->assertJsonStructure([
             'data' => ['*' => ['id', 'score', 'qualifier_id', 'qualifier_type', 'rateable_id', 'rateable_type', 'created_at', 'updated_at']],
-        ])->assertOk();
+        ]);
 });
 
 it('can filter by qualifier_type', function () {
@@ -81,7 +82,7 @@ test('sql queries optimization test', function () {
         ->toHaveCount(2)
         ->sequence(
             fn ($query) => $query->toBe('select count(*) as aggregate from `ratings`'),
-            fn ($query) => $query->toBe('select `id`, `score`, `qualifier_id`, `qualifier_type`, `qualifier`, `rateable_id`, `rateable_type`, `rateable`, `created_at`, `updated_at` from `ratings` limit 15 offset 0'),
+            fn ($query) => $query->toBe('select `id`, `score`, `qualifier_id`, `qualifier_type`, `rateable_id`, `rateable_type`, `created_at`, `updated_at` from `ratings` limit 15 offset 0'),
         );
 
     DB::disableQueryLog();
