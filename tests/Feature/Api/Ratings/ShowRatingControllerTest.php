@@ -23,7 +23,7 @@ beforeEach(function () {
 it('can show', function () {
     login($this->user);
 
-    $responseData = getJson(route('ratings.show', [
+    $responseData = getJson(route('api.ratings.show', [
         'rating' => $this->rating->id,
     ]))->assertOk()
         ->json('data');
@@ -32,7 +32,7 @@ it('can show', function () {
 });
 
 it('can include qualifier', function () {
-    $responseData = getJson(route('ratings.show', [
+    $responseData = getJson(route('api.ratings.show', [
         'rating' => $this->rating->getKey(),
         'include' => 'qualifier',
     ]))->json('data');
@@ -45,7 +45,7 @@ it('can include qualifier', function () {
 });
 
 it('can include rateable', function () {
-    $responseData = getJson(route('ratings.show', [
+    $responseData = getJson(route('api.ratings.show', [
         'rating' => $this->rating->getKey(),
         'include' => 'rateable',
     ]))->json('data');
@@ -63,7 +63,7 @@ it('can include rateable', function () {
 
 test('sql queries optimization test', function () {
     DB::enableQueryLog();
-    getJson(route('ratings.show', ['rating' => $this->rating->getKey()]))->assertOk();
+    getJson(route('api.ratings.show', ['rating' => $this->rating->getKey()]))->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(1)

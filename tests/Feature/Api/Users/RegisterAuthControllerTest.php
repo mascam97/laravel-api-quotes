@@ -17,7 +17,7 @@ beforeEach(function () {
 });
 
 it('cannot register with invalid data', function () {
-    postJson(route('register'), [
+    postJson(route('api.register'), [
         'name' => '',
         'email' => '134email',
         'password' => '',
@@ -30,7 +30,7 @@ it('cannot register with duplicated email', function () {
     /** @var User $user */
     $user = User::factory()->create();
 
-    postJson(route('register'), $this->requestData->withUser($user)->create())
+    postJson(route('api.register'), $this->requestData->withUser($user)->create())
         ->assertStatus(422)
         ->assertSee('The email has already been taken.');
 });
@@ -38,7 +38,7 @@ it('cannot register with duplicated email', function () {
 it('can register', function () {
     config()->set('app.locale', 'en');
 
-    postJson(route('register'),
+    postJson(route('api.register'),
         $this->requestData->withName('new user in english')->create()
     )->assertOk()
         ->assertSee('The user was created successfully');
@@ -51,7 +51,7 @@ it('can register', function () {
 
 it('can register in spanish locale', function () {
     postJson(
-        uri: route('register'),
+        uri: route('api.register'),
         data: $this->requestData->withName('new user in spanish')->create(),
         headers: ['Accept-Language' => 'es']
     )->assertOk()
@@ -66,7 +66,7 @@ it('can register in spanish locale', function () {
 
 it('hashes password', function () {
     postJson(
-        route('register'),
+        route('api.register'),
         $this->requestData->withPassword('hashedPassword')->create()
     )->assertOk();
 
@@ -77,11 +77,11 @@ it('hashes password', function () {
 });
 
 it('processes a job to send a welcome email', function () {
-    postJson(route('register'))->assertUnprocessable();
+    postJson(route('api.register'))->assertUnprocessable();
 
     QueueableActionFake::assertNotPushed(SendWelcomeEmailAction::class);
 
-    postJson(route('register'), $this->requestData->create())
+    postJson(route('api.register'), $this->requestData->create())
         ->assertOk();
 
     QueueableActionFake::assertPushed(SendWelcomeEmailAction::class);
@@ -90,7 +90,7 @@ it('processes a job to send a welcome email', function () {
 test('sql queries optimization test', function () {
     DB::enableQueryLog();
 
-    postJson(route('register'),
+    postJson(route('api.register'),
         $this->requestData->create()
     )->assertOk();
 

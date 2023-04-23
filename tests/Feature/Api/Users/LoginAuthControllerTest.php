@@ -5,13 +5,13 @@ use Illuminate\Support\Facades\DB;
 use function Pest\Laravel\postJson;
 
 it('cannot login with invalid data', function () {
-    postJson(route('api-token-auth'), [
+    postJson(route('api.token-auth'), [
         'email' => 'user@mail.com',
         'password' => 'userPassword',
         'device_name' => $this->faker->userAgent,
     ])->assertJsonMissingValidationErrors(['device_name', 'email', 'password']);
 
-    postJson(route('api-token-auth'), [
+    postJson(route('api.token-auth'), [
         'device_name' => '',
         'email' => '',
         'password' => '',
@@ -22,7 +22,7 @@ it('can login', function () {
     /** @var User $user */
     $user = User::factory()->create();
 
-    postJson(route('api-token-auth'), [
+    postJson(route('api.token-auth'), [
         'email' => $user->email,
         'password' => 'password', // value by default in factory
         'device_name' => $this->faker->userAgent,
@@ -32,7 +32,7 @@ it('can login', function () {
             'user', $user->id, $user->email,
         ]);
 
-    postJson(route('api-token-auth'), [
+    postJson(route('api.token-auth'), [
         'email' => $user->email,
         'password' => 'wrong password',
         'device_name' => $this->faker->userAgent,
@@ -46,7 +46,7 @@ test('sql queries optimization test', function () {
 
     DB::enableQueryLog();
 
-    postJson(route('api-token-auth'), [
+    postJson(route('api.token-auth'), [
         'email' => $user->email,
         'password' => 'password', // value by default in factory
         'device_name' => $this->faker->userAgent,

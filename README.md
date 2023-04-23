@@ -39,7 +39,7 @@ _Main portfolio as PHP Backend Developer - Community to rate quotes_
 - Implemented a **QueryBuilder library** and improve the **API logic** (delete unnecessary API versioning)
 - Implemented **Sonar Cloud to reduce Technical Debt** (duplications, smells code, etc.)
 - Implemented some **recommendations to build large-than-average web applications**
-- Reached the highest level in PHPStan, level 9 for src and level 8 for tests
+- Reached the 8 level in PHPStan
 - **Redefined business logic in ratings for a better scalability**
 - Improved test suit with advanced practices (test command, jobs, middleware, etc.)
 

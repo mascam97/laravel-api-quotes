@@ -11,8 +11,6 @@ class QuoteShowQuery extends QueryBuilder
 {
     public function __construct(Request $request)
     {
-        $quoteId = $request->route('quoteId');
-
         $query = Quote::query()
             ->select([
                 'id',

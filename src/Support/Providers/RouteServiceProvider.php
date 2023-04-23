@@ -56,7 +56,7 @@ class RouteServiceProvider extends ServiceProvider
             /** @var ?User $authUser */
             $authUser = $request->user();
 
-            return Limit::perMinute(60)->by(optional($authUser)->getKey() ?: $request->ip());  /* @phpstan-ignore-line */
+            return Limit::perMinute(60)->by(optional($authUser)->getKey() ?: $request->ip());
         });
     }
 }

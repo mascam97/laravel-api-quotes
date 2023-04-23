@@ -24,8 +24,8 @@ class DBQuoteFactory extends Factory
     {
         return [
             'user_id' => random_int(1, 10),
-            'title' => $this->faker->sentence,
-            'content' => $this->faker->text(500),
+            'title' => $this->faker->sentence(nbWords: 3),
+            'content' => $this->faker->text(),
             'average_score' => null,
         ];
     }

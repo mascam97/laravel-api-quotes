@@ -16,11 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::name('external-api.')->middleware('set.locale')->group(function () {
-    Route::post('api-token-auth', [AuthController::class, 'login'])
-        ->name('api-token-auth');
+    Route::post('token-auth', [AuthController::class, 'login'])->name('token-auth');
 
     Route::middleware('auth:sanctum')->group(function () {
-        Route::apiResource('quotes', QuoteController::class)
-            ->only(['index', 'show']);
+        Route::apiResource('quotes', QuoteController::class)->only(['index', 'show']);
     });
 });

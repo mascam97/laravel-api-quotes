@@ -12,7 +12,7 @@ trait CanBeFaked
     public static function fake(\Closure|array|null $callback = null): void
     {
         Http::fake(
-            callback: $callback, /* @phpstan-ignore-line */
+            callback: $callback,
         );
     }
 }

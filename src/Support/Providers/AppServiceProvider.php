@@ -15,11 +15,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             abstract: ExternalApiService::class,
             concrete: fn () => new ExternalApiService(
-                baseUri: (string) config('services.external-api.uri'), /* @phpstan-ignore-line */
-                key: (string) config('services.external-api.key'), /* @phpstan-ignore-line */
-                timeout: (int) config('services.external-api.timeout'), /* @phpstan-ignore-line */
-                retryTimes: (int) config('services.external-api.retry.times'), /* @phpstan-ignore-line */
-                retrySleep: (int) config('services.external-api.retry.sleep') /* @phpstan-ignore-line */
+                baseUri: (string) config('services.external-api.uri'),
+                key: (string) config('services.external-api.key'),
+                timeout: (int) config('services.external-api.timeout'),
+                retryTimes: (int) config('services.external-api.retry.times'),
+                retrySleep: (int) config('services.external-api.retry.sleep')
             )
         );
     }

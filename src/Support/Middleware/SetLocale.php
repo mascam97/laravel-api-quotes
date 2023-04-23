@@ -20,7 +20,7 @@ class SetLocale
         $authUser = $request->user();
 
         if ($request->hasHeader('Accept-Language')) {
-            $locale = $request->getPreferredLanguage(config('app.available_locales')); /* @phpstan-ignore-line */
+            $locale = $request->getPreferredLanguage(config('app.available_locales'));
 
             if ($locale && $authUser) {
                 $authUser->locale = $locale;

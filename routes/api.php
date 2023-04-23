@@ -17,31 +17,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('set.locale')->group(function () {
+Route::name('api.')->middleware('set.locale')->group(function () {
+    Route::post('token-auth', [AuthController::class, 'login'])->name('token-auth');
+    Route::post('register', [AuthController::class, 'register'])->name('register');
+
     Route::middleware('auth:sanctum')->group(function () {
-        Route::prefix('v1')->group(function () {
-            Route::apiResource('quotes', QuoteController::class);
+        Route::get('me', [UserController::class, 'me'])->name('me');
+        Route::get('me/quotes', [QuoteController::class, 'me'])->name('me.quotes');
 
-            Route::get('me/quotes', [QuoteController::class, 'me'])
-                ->name('me.quotes');
-            Route::get('me', [UserController::class, 'me'])
-                ->name('me');
+        Route::apiResource('users', UserController::class)->only(['index', 'show']);
 
-            Route::apiResource('users', UserController::class)
-                ->only(['index', 'show']);
+        Route::apiResource('quotes', QuoteController::class);
 
-            Route::apiResource('ratings', RatingController::class)
-                ->only(['index', 'show', 'update', 'destroy']);
-
-            Route::post('ratings/quotes/{quote}', [RatingController::class, 'store'])
-                ->name('ratings.quotes.store');
-            // Route::post('ratings/CanBeRated/{model}', [RatingController::class, 'store'])->name('...')
-        });
+        Route::apiResource('ratings', RatingController::class)
+            ->only(['index', 'show', 'update', 'destroy']);
+        Route::post('ratings/quotes/{quote}', [RatingController::class, 'store'])
+            ->name('ratings.quotes.store');
+        // Route::post('ratings/CanBeRated/{model}', [RatingController::class, 'store'])->name('...')
     });
-
-    Route::post('api-token-auth', [AuthController::class, 'login'])
-        ->name('api-token-auth');
-
-    Route::post('register', [AuthController::class, 'register'])
-        ->name('register');
 });

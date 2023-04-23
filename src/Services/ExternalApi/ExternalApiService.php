@@ -4,6 +4,7 @@ namespace Services\ExternalApi;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Services\Concerns\CanBeFaked;
 use Services\ExternalApi\Data\QuoteData;
@@ -26,6 +27,7 @@ class ExternalApiService
     {
         // TODO: Investigate a way to create logs, activities, reports for the external api
         $request = Http::acceptJson()
+            ->withHeaders(['Accept-language' => App::getLocale()])
             ->baseUrl(url: $this->baseUri)
             ->timeout(seconds: $this->timeout);
 
@@ -53,7 +55,7 @@ class ExternalApiService
         }
 
         return $response->collect('data')
-            ->each(fn (array $quote) => QuoteData::fromArray($quote)); /* @phpstan-ignore-line */
+            ->each(fn (array $quote) => QuoteData::fromArray($quote));
     }
 
     /**
@@ -69,6 +71,6 @@ class ExternalApiService
             throw new ExternalApiException();
         }
 
-        return QuoteData::fromArray($response->json('data')); /* @phpstan-ignore-line */
+        return QuoteData::fromArray($response->json('data'));
     }
 }

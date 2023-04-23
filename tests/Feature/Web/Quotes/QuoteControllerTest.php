@@ -11,7 +11,7 @@ beforeEach(function () {
 });
 
 it('can see the main view', function () {
-    get(route('welcome'))
+    get(route('web.welcome'))
         ->assertOk()
         ->assertSee($this->quotes->pluck('title')[0])
         ->assertSee($this->quotes->pluck('title')[1])
@@ -20,7 +20,7 @@ it('can see the main view', function () {
 
 test('sql queries optimization test', function () {
     DB::enableQueryLog();
-    get(route('welcome'))->assertOk();
+    get(route('web.welcome'))->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(1)

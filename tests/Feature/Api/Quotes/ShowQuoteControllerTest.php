@@ -18,7 +18,7 @@ beforeEach(function () {
 });
 
 it('can show', function () {
-    $responseData = getJson(route('quotes.show', ['quote' => $this->quote->id]))
+    $responseData = getJson(route('api.quotes.show', ['quote' => $this->quote->id]))
         ->assertJsonStructure([
             'data' => ['id', 'title', 'content', 'state', 'average_rating', 'excerpt', 'created_at', 'updated_at'],
         ])->assertOk()
@@ -30,7 +30,7 @@ it('can show', function () {
 });
 
 it('can include user', function () {
-    $responseData = getJson(route('quotes.show', [
+    $responseData = getJson(route('api.quotes.show', [
         'quote' => $this->quote->getKey(),
         'include' => 'user',
     ]))->json('data');
@@ -41,7 +41,7 @@ it('can include user', function () {
 
 test('sql queries optimization test', function () {
     DB::enableQueryLog();
-    getJson(route('quotes.show', ['quote' => $this->quote->getKey()]))->assertOk();
+    getJson(route('api.quotes.show', ['quote' => $this->quote->getKey()]))->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(1)

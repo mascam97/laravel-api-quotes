@@ -26,13 +26,13 @@ class NewsletterNotification extends Notification
     public function toMail(User $notifiable): MailMessage
     {
         return (new MailMessage())
-            ->greeting(trans('mail.greeting.newsletter')) /* @phpstan-ignore-line */
+            ->greeting(trans('mail.greeting.newsletter'))
             ->line(trans('mail.notification.newsletter', [
                 'user' => $notifiable->name,
                 'user_count' => User::query()->count(),
                 'quote_count' => Quote::query()->count(),
             ]))
-            ->action(trans('mail.link.website'), env('APP_URL', 'http://localhost'))   /* @phpstan-ignore-line */
+            ->action(trans('mail.link.website'), env('APP_URL', 'http://localhost'))
             ->line(trans('mail.gratitude'));
     }
 

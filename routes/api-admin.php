@@ -17,20 +17,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::name('admin.')->middleware('set.locale')->group(function () {
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::get('me', [UserController::class, 'me'])
-            ->name('me');
+    Route::post('token-auth', [AuthController::class, 'login'])->name('token-auth');
 
-        Route::apiResource('users', UserController::class)
-            ->only(['index', 'show', 'destroy']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('me', [UserController::class, 'me'])->name('me');
+
+        Route::apiResource('users', UserController::class)->only(['index', 'show', 'destroy']);
 
         Route::apiResource('activities', ActivityController::class)
             ->only(['index', 'show', 'destroy']);
-
         Route::post('activities/export', [ActivityController::class, 'export'])
             ->name('activities.export');
     });
-
-    Route::post('api-token-auth', [AuthController::class, 'login'])
-        ->name('api-token-auth');
 });

@@ -19,7 +19,7 @@ beforeEach(function () {
 });
 
 it('can index', function () {
-    getJson(route('quotes.index'))
+    getJson(route('api.quotes.index'))
         ->assertOk()
         ->assertJsonStructure([
             'data' => [
@@ -33,7 +33,7 @@ it('can filter by title', function () {
         'title' => 'Hamlet',
     ]);
 
-    getJson(route('quotes.index', ['filter[title]' => 'hamlet']))
+    getJson(route('api.quotes.index', ['filter[title]' => 'hamlet']))
         ->assertJson(function (AssertableJson $json) use ($quote) {
             $json->has('data', 1)
                 ->has('data.0', function (AssertableJson $data) use ($quote) {
@@ -54,7 +54,7 @@ it('can filter by content', function () {
         'content' => 'Some text about something',
     ]);
 
-    getJson(route('quotes.index', ['filter[content]' => 'Some text about something']))
+    getJson(route('api.quotes.index', ['filter[content]' => 'Some text about something']))
         ->assertSuccessful()
         ->assertJson(function (AssertableJson $json) use ($quote) {
             $json->has('data', 1)
@@ -77,7 +77,7 @@ it('can filter by user id', function () {
     /** @var Quote $quote */
     $quote = (new QuoteFactory)->withUser($newUser)->withState(Published::$name)->create();
 
-    getJson(route('quotes.index', ['filter[user_id]' => $newUser->id]))
+    getJson(route('api.quotes.index', ['filter[user_id]' => $newUser->id]))
         ->assertJson(function (AssertableJson $json) use ($quote) {
             $json->has('data', 1)
                 ->has('data.0', function (AssertableJson $data) use ($quote) {
@@ -91,7 +91,7 @@ it('can filter by user id', function () {
 });
 
 it('can include user', function () {
-    getJson(route('quotes.index', ['include' => 'user']))
+    getJson(route('api.quotes.index', ['include' => 'user']))
         ->assertJson(function (AssertableJson $json) {
             $json->has('data', 5)
                 ->has('data.0', function (AssertableJson $data) {
@@ -109,7 +109,7 @@ it('can include user', function () {
         'title' => 'Some text about something',
     ]);
 
-    getJson(route('quotes.index', [
+    getJson(route('api.quotes.index', [
         'filter[title]' => 'Some text about something',
         'include' => 'user',
     ]))->assertJson(function (AssertableJson $json) use ($quote, $newUser) {
@@ -126,12 +126,12 @@ it('can include user', function () {
 });
 
 it('can sort by id', function () {
-    $responseData = getJson(route('quotes.index', ['sort' => 'id']))
+    $responseData = getJson(route('api.quotes.index', ['sort' => 'id']))
         ->json('data');
 
     assertLessThan($responseData[4]['id'], $responseData[0]['id']);
 
-    $responseDataTwo = getJson(route('quotes.index', ['sort' => '-id']))
+    $responseDataTwo = getJson(route('api.quotes.index', ['sort' => '-id']))
         ->json('data');
 
     assertLessThan($responseDataTwo[0]['id'], $responseDataTwo[4]['id']);
@@ -142,12 +142,12 @@ it('can sort by title', function () {
         'title' => 'AAA',
     ]);
 
-    $responseData = getJson(route('quotes.index', ['sort' => 'title']))
+    $responseData = getJson(route('api.quotes.index', ['sort' => 'title']))
         ->json('data');
 
     assertEquals('AAA', $responseData[0]['title']);
 
-    $responseDataTwo = getJson(route('quotes.index', ['sort' => '-title']))
+    $responseDataTwo = getJson(route('api.quotes.index', ['sort' => '-title']))
         ->json('data');
 
     assertEquals('AAA', $responseDataTwo[5]['title']);
@@ -155,7 +155,7 @@ it('can sort by title', function () {
 
 test('sql queries optimization test', function () {
     DB::enableQueryLog();
-    getJson(route('quotes.index'))->assertOk();
+    getJson(route('api.quotes.index'))->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(2)

@@ -15,7 +15,7 @@ beforeEach(function () {
 });
 
 it('can index', function () {
-    getJson(route('me'))
+    getJson(route('api.me'))
         ->assertOk()
         ->assertJson(function (AssertableJson $json) {
             $json->has('data', function (AssertableJson $data) {
@@ -29,7 +29,7 @@ it('can index', function () {
 
 test('sql queries optimization test', function () {
     DB::enableQueryLog();
-    getJson(route('me'))->assertOk();
+    getJson(route('api.me'))->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(0);

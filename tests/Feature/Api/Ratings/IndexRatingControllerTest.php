@@ -19,7 +19,7 @@ beforeEach(function () {
 });
 
 it('can index', function () {
-    getJson(route('ratings.index'))
+    getJson(route('api.ratings.index'))
         ->assertOk()
         ->assertJsonStructure([
             'data' => ['*' => ['id', 'score', 'qualifier_id', 'qualifier_type', 'rateable_id', 'rateable_type', 'created_at', 'updated_at']],
@@ -27,7 +27,7 @@ it('can index', function () {
 });
 
 it('can filter by qualifier_type', function () {
-    $responseData = getJson(route('ratings.index', ['filter[qualifier_type]' => 'user']))
+    $responseData = getJson(route('api.ratings.index', ['filter[qualifier_type]' => 'user']))
         ->json('data');
 
     assertCount(1, $responseData);
@@ -36,7 +36,7 @@ it('can filter by qualifier_type', function () {
 });
 
 it('can filter by rateable_type', function () {
-    $responseData = getJson(route('ratings.index', ['filter[rateable_type]' => 'quote']))
+    $responseData = getJson(route('api.ratings.index', ['filter[rateable_type]' => 'quote']))
         ->json('data');
 
     assertCount(1, $responseData);
@@ -45,7 +45,7 @@ it('can filter by rateable_type', function () {
 });
 
 it('can include qualifier', function () {
-    $responseData = getJson(route('ratings.index', ['include' => 'qualifier']))
+    $responseData = getJson(route('api.ratings.index', ['include' => 'qualifier']))
         ->json('data');
 
     assertCount(1, $responseData);
@@ -58,7 +58,7 @@ it('can include qualifier', function () {
 });
 
 it('can include rateable', function () {
-    $responseData = getJson(route('ratings.index', ['include' => 'rateable']))
+    $responseData = getJson(route('api.ratings.index', ['include' => 'rateable']))
         ->json('data');
 
     assertCount(1, $responseData);
@@ -76,7 +76,7 @@ it('can include rateable', function () {
 
 test('sql queries optimization test', function () {
     DB::enableQueryLog();
-    getJson(route('ratings.index'))->assertOk();
+    getJson(route('api.ratings.index'))->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(2)

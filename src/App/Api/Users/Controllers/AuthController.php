@@ -52,7 +52,7 @@ class AuthController extends Controller
         (new SendWelcomeEmailAction())->onQueue()->execute($user);
 
         return response()->json([
-            'message' => trans('message.created', [/* @phpstan-ignore-line */
+            'message' => trans('message.created', [
                 'attribute' => trans('validation.attributes.user'),
             ]),
             'data' => UserResource::make($user),

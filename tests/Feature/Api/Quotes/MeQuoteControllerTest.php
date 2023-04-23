@@ -19,7 +19,7 @@ beforeEach(function () {
 });
 
 it('can index', function () {
-    getJson(route('me.quotes'))
+    getJson(route('api.me.quotes'))
         ->assertOk()
         ->assertJsonStructure([
             'data' => [
@@ -33,7 +33,7 @@ it('can filter by title', function () {
         'title' => 'Hamlet',
     ]);
 
-    getJson(route('me.quotes', ['filter[title]' => 'hamlet']))
+    getJson(route('api.me.quotes', ['filter[title]' => 'hamlet']))
         ->assertJson(function (AssertableJson $json) use ($quote) {
             $json->has('data', 1)
                 ->has('data.0', function (AssertableJson $data) use ($quote) {
@@ -54,7 +54,7 @@ it('can filter by content', function () {
         'content' => 'Some text about something',
     ]);
 
-    getJson(route('me.quotes', ['filter[content]' => 'Some text about something']))
+    getJson(route('api.me.quotes', ['filter[content]' => 'Some text about something']))
         ->assertSuccessful()
         ->assertJson(function (AssertableJson $json) use ($quote) {
             $json->has('data', 1)
@@ -73,7 +73,7 @@ it('can filter by state', function () {
     /** @var Quote $quote */
     $quote = (new QuoteFactory)->withUser($this->user)->withState(Published::$name)->create();
 
-    getJson(route('me.quotes', ['filter[state]' => 'published']))
+    getJson(route('api.me.quotes', ['filter[state]' => 'published']))
         ->assertSuccessful()
         ->assertJson(function (AssertableJson $json) use ($quote) {
             $json->has('data', 1)
@@ -90,12 +90,12 @@ it('can filter by state', function () {
 });
 
 it('can sort by id', function () {
-    $responseData = getJson(route('me.quotes', ['sort' => 'id']))
+    $responseData = getJson(route('api.me.quotes', ['sort' => 'id']))
         ->json('data');
 
     assertLessThan($responseData[4]['id'], $responseData[0]['id']);
 
-    $responseDataTwo = getJson(route('me.quotes', ['sort' => '-id']))
+    $responseDataTwo = getJson(route('api.me.quotes', ['sort' => '-id']))
         ->json('data');
 
     assertLessThan($responseDataTwo[0]['id'], $responseDataTwo[4]['id']);
@@ -106,12 +106,12 @@ it('can sort by title', function () {
         'title' => 'AAA',
     ]);
 
-    $responseData = getJson(route('me.quotes', ['sort' => 'title']))
+    $responseData = getJson(route('api.me.quotes', ['sort' => 'title']))
         ->json('data');
 
     assertEquals('AAA', $responseData[0]['title']);
 
-    $responseDataTwo = getJson(route('me.quotes', ['sort' => '-title']))
+    $responseDataTwo = getJson(route('api.me.quotes', ['sort' => '-title']))
         ->json('data');
 
     assertEquals('AAA', $responseDataTwo[5]['title']);
@@ -119,7 +119,7 @@ it('can sort by title', function () {
 
 test('sql queries optimization test', function () {
     DB::enableQueryLog();
-    getJson(route('me.quotes'))->assertOk();
+    getJson(route('api.me.quotes'))->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(2)

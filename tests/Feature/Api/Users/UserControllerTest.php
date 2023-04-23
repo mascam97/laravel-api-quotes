@@ -10,19 +10,19 @@ beforeEach(function () {
 });
 
 it('cannot authorize guest', function () {
-    getJson(route('users.index'))
+    getJson(route('api.users.index'))
         ->assertUnauthorized();
 
-    getJson(route('me'))
+    getJson(route('api.me'))
         ->assertUnauthorized();
 
-    getJson(route('users.show', ['user' => $this->user->id]))
+    getJson(route('api.users.show', ['user' => $this->user->id]))
         ->assertUnauthorized();
 });
 
 it('cannot show undefined data', function () {
     login($this->user);
 
-    getJson(route('users.show', ['user' => 100000]))
+    getJson(route('api.users.show', ['user' => 100000]))
         ->assertNotFound();
 });

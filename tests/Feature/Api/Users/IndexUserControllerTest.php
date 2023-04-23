@@ -19,7 +19,7 @@ beforeEach(function () {
 });
 
 it('can index', function () {
-    getJson(route('users.index'))
+    getJson(route('api.users.index'))
         ->assertJsonStructure([
             'data' => ['*' => ['id', 'name', 'email', 'created_at']],
         ])->assertOk();
@@ -29,7 +29,7 @@ it('can filter by id', function () {
     /** @var User $newUser */
     $newUser = User::factory()->create();
 
-    $responseData = getJson(route('users.index', ['filter[id]' => $newUser->id]))
+    $responseData = getJson(route('api.users.index', ['filter[id]' => $newUser->id]))
         ->json('data');
 
     assertCount(1, $responseData);
@@ -41,7 +41,7 @@ it('can filter by name', function () {
         'name' => 'Shakespeare',
     ]);
 
-    $responseData = getJson(route('users.index', ['filter[name]' => 'shakespeare']))
+    $responseData = getJson(route('api.users.index', ['filter[name]' => 'shakespeare']))
         ->json('data');
 
     assertCount(1, $responseData);
@@ -49,7 +49,7 @@ it('can filter by name', function () {
 });
 
 it('can include quotes', function () {
-    $responseData = getJson(route('users.index', ['include' => 'quotes']))
+    $responseData = getJson(route('api.users.index', ['include' => 'quotes']))
         ->json('data');
 
     assertCount(5, $responseData);
@@ -62,7 +62,7 @@ it('can include quotes', function () {
     /** @var User $quote */
     $quote = (new QuoteFactory)->withUser($newUser)->create();
 
-    $responseDataTwo = getJson(route('users.index', [
+    $responseDataTwo = getJson(route('api.users.index', [
         'filter[name]' => 'User with quote',
         'include' => 'quotes',
     ]))
@@ -74,12 +74,12 @@ it('can include quotes', function () {
 });
 
 it('can sort by id', function () {
-    $responseData = getJson(route('users.index', ['sort' => 'id']))
+    $responseData = getJson(route('api.users.index', ['sort' => 'id']))
         ->json('data');
 
     assertLessThan($responseData[4]['id'], $responseData[0]['id']);
 
-    $responseDataTwo = getJson(route('users.index', ['sort' => '-id']))
+    $responseDataTwo = getJson(route('api.users.index', ['sort' => '-id']))
         ->json('data');
 
     assertLessThan($responseDataTwo[0]['id'], $responseDataTwo[4]['id']);
@@ -89,12 +89,12 @@ it('can sort by name', function () {
     $this->user->name = 'AAA';
     $this->user->update();
 
-    $responseData = getJson(route('users.index', ['sort' => 'name']))
+    $responseData = getJson(route('api.users.index', ['sort' => 'name']))
         ->json('data');
 
     assertEquals('AAA', $responseData[0]['name']);
 
-    $responseDataTwo = getJson(route('users.index', ['sort' => '-name']))
+    $responseDataTwo = getJson(route('api.users.index', ['sort' => '-name']))
         ->json('data');
 
     assertEquals('AAA', $responseDataTwo[4]['name']);
@@ -102,7 +102,7 @@ it('can sort by name', function () {
 
 test('sql queries optimization test', function () {
     DB::enableQueryLog();
-    getJson(route('users.index'))->assertOk();
+    getJson(route('api.users.index'))->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(2)

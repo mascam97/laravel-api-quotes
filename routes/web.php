@@ -13,5 +13,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', [QuoteController::class, 'index'])->name('welcome');
+Route::name('web.')->middleware('set.locale')->group(function () {
+    Route::get('/', [QuoteController::class, 'index'])->name('welcome');
+});

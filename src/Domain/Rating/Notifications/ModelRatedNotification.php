@@ -37,13 +37,13 @@ class ModelRatedNotification extends Notification implements ShouldQueue
     public function toMail(mixed $notifiable): MailMessage
     {
         return (new MailMessage())
-            ->greeting(trans('mail.greeting.quote_rated')) /* @phpstan-ignore-line */
+            ->greeting(trans('mail.greeting.quote_rated'))
             ->line(trans('mail.notification.quote_rated', [/* @phpstan-ignore-line */
                 'qualifier' => $this->qualifierName,
                 'quote' => $this->rateableName,
                 'score' => $this->score,
             ]))
-            ->action(trans('mail.link.website'), env('APP_URL', 'http://localhost'))  /* @phpstan-ignore-line */
+            ->action(trans('mail.link.website'), env('APP_URL', 'http://localhost'))
             ->line(trans('mail.gratitude'));
     }
 

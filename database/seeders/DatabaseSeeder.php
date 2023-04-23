@@ -5,6 +5,9 @@ namespace Database\Seeders;
 use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Users\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,13 +18,28 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(PermissionsAndRolesSeeder::class);
 
-        /** @var User $admin */
-        $admin = User::factory()->create(['name' => 'admin']);
+        $admin = new User();
+        $admin->name = config('admin.name');
+        $admin->email = config('admin.email');
+        $admin->password = Hash::make(config('admin.password'));
+        $admin->locale = App::getLocale();
+        $admin->save();
+
         $admin->assignRole('Administrator');
 
-        User::factory(9)->create();
-        (new QuoteFactory)->setAmount(120)->create();
+        if (! App::environment('production')) {
+            User::factory(9)->create();
 
-        $this->call(RatingUserQuoteSeeder::class);
+            /** @var Collection $usersId */
+            $usersId = User::query()
+                ->whereNot('id', $admin->getKey())
+                ->select('id')
+                ->get()
+                ->pluck('id');
+
+            (new QuoteFactory)->setAmount(120)->create(['user_id' => $usersId->random()]);
+
+            $this->call(RatingUserQuoteSeeder::class);
+        }
     }
 }

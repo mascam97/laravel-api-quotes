@@ -16,29 +16,29 @@ beforeEach(function () {
 });
 
 it('cannot authorize guest', function () {
-    getJson(route('quotes.index'))
+    getJson(route('api.quotes.index'))
         ->assertUnauthorized();
 
-    getJson(route('quotes.show', ['quote' => $this->quote->id]))
+    getJson(route('api.quotes.show', ['quote' => $this->quote->id]))
         ->assertUnauthorized();
 
-    postJson(route('quotes.store'))
+    postJson(route('api.quotes.store'))
         ->assertUnauthorized();
 
-    putJson(route('quotes.update', ['quote' => $this->quote->id]))
+    putJson(route('api.quotes.update', ['quote' => $this->quote->id]))
         ->assertUnauthorized();
 
-    deleteJson(route('quotes.destroy', ['quote' => $this->quote->id]))
+    deleteJson(route('api.quotes.destroy', ['quote' => $this->quote->id]))
         ->assertUnauthorized();
 
-    getJson(route('me.quotes'))
+    getJson(route('api.me.quotes'))
         ->assertUnauthorized();
 });
 
 it('cannot store invalid data', function () {
     login();
 
-    postJson(route('quotes.index'), [
+    postJson(route('api.quotes.index'), [
         'title' => '',
         'content' => '',
     ])->assertJsonValidationErrors(['title', 'content']);
@@ -52,7 +52,7 @@ it('can store', function () {
 
     login();
 
-    postJson(route('quotes.index'), $data)
+    postJson(route('api.quotes.index'), $data)
         ->assertJsonMissingValidationErrors(['title', 'content'])
         ->assertSee('The quote was created successfully')
         ->assertJsonStructure([
@@ -66,7 +66,7 @@ it('can store', function () {
 it('cannot show undefined data', function () {
     login();
 
-    getJson(route('quotes.show', ['quote' => 100000]))
+    getJson(route('api.quotes.show', ['quote' => 100000]))
         ->assertNotFound();
 });
 
@@ -74,7 +74,7 @@ it('cannot update data from not owner', function () {
     $userNotOwner = User::factory()->create();
     login($userNotOwner);
 
-    putJson(route('quotes.update', ['quote' => $this->quote->id]), [
+    putJson(route('api.quotes.update', ['quote' => $this->quote->id]), [
         'title' => 'new title not allowed',
         'content' => 'new content not allowed',
     ])->assertForbidden();
@@ -97,7 +97,7 @@ it('can update', function () {
 
     login($this->user);
 
-    putJson(route('quotes.update', ['quote' => $this->quote->id]), $newData)
+    putJson(route('api.quotes.update', ['quote' => $this->quote->id]), $newData)
         ->assertJsonMissingValidationErrors(['title', 'content'])
         ->assertSee('The quote was updated successfully')
         ->assertJsonStructure([
@@ -114,7 +114,7 @@ it('cannot destroy data from not owner', function () {
     $UserNotOwner = User::factory()->create();
     login($UserNotOwner);
 
-    deleteJson(route('quotes.destroy', ['quote' => $this->quote->id]))
+    deleteJson(route('api.quotes.destroy', ['quote' => $this->quote->id]))
         ->assertForbidden();
 
     assertDatabaseHas(Quote::class, [
@@ -126,14 +126,14 @@ it('cannot destroy data from not owner', function () {
 it('cannot delete undefined data', function () {
     login();
 
-    deleteJson(route('quotes.destroy', ['quote' => 100000]))
+    deleteJson(route('api.quotes.destroy', ['quote' => 100000]))
         ->assertSee([])->assertNotFound();
 });
 
 it('can delete', function () {
     login($this->user);
 
-    deleteJson(route('quotes.destroy', ['quote' => $this->quote->id]))
+    deleteJson(route('api.quotes.destroy', ['quote' => $this->quote->id]))
         ->assertSee('The quote was deleted successfully')->assertOk();
 
     assertDatabaseMissing(Quote::class, ['id' => $this->quote->id]);

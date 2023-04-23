@@ -39,8 +39,8 @@ trait CanRate
      */
     public function rate(Model $model, int|null $score): bool
     {
-        $min = (int) config('rating.min'); /* @phpstan-ignore-line */
-        $max = (int) config('rating.max'); /* @phpstan-ignore-line */
+        $min = (int) config('rating.min');
+        $max = (int) config('rating.max');
         if ($score < $min || $score > $max) {
             throw new InvalidScore($min, $max);
         }

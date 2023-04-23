@@ -23,14 +23,14 @@ beforeEach(function () {
 });
 
 it('cannot authorize guest', function () {
-    getJson(route('ratings.index'))
+    getJson(route('api.ratings.index'))
         ->assertUnauthorized();
 
-    getJson(route('ratings.show', [
+    getJson(route('api.ratings.show', [
         'rating' => $this->rating->id,
     ]))->assertUnauthorized();
 
-    postJson(route('ratings.quotes.store', [
+    postJson(route('api.ratings.quotes.store', [
         'quote' => $this->quote->id,
         'rating' => $this->rating->id,
     ]))->assertUnauthorized();
@@ -39,7 +39,7 @@ it('cannot authorize guest', function () {
 it('cannot store invalid data', function () {
     login($this->user);
 
-    postJson(route('ratings.quotes.store', ['quote' => $this->quote->getKey()]), [
+    postJson(route('api.ratings.quotes.store', ['quote' => $this->quote->getKey()]), [
         'score' => '',
     ])->assertJsonValidationErrors(['score']);
 });
@@ -48,7 +48,7 @@ it('can store', function () {
     login($this->user);
 
     $responseData = postJson(
-        route('ratings.quotes.store', ['quote' => $this->quote->getKey()]),
+        route('api.ratings.quotes.store', ['quote' => $this->quote->getKey()]),
         ['score' => 4]
     )->assertJsonMissingValidationErrors(['score'])
          ->assertSee('The rating was created successfully')
@@ -67,7 +67,7 @@ it('can store', function () {
 it('cannot show undefined data', function () {
     login($this->user);
 
-    getJson(route('ratings.show', [
+    getJson(route('api.ratings.show', [
         'rating' => 100000,
     ]))->assertNotFound();
 });
@@ -81,7 +81,7 @@ it('cannot destroy data by not owner', function () {
 
     login($this->user);
 
-    deleteJson(route('ratings.destroy', [
+    deleteJson(route('api.ratings.destroy', [
         'rating' => $ratingNotOwned->getKey(),
     ]), ['score' => 3])->assertForbidden();
 
@@ -94,7 +94,7 @@ it('cannot destroy data by not owner', function () {
 it('cannot delete undefined data', function () {
     login($this->user);
 
-    deleteJson(route('ratings.destroy', ['rating' => 100000]))
+    deleteJson(route('api.ratings.destroy', ['rating' => 100000]))
         ->assertSee([])
         ->assertNotFound();
 });
@@ -102,7 +102,7 @@ it('cannot delete undefined data', function () {
 it('can delete', function () {
     login($this->user);
 
-    deleteJson(route('ratings.destroy', ['rating' => $this->rating->id]))
+    deleteJson(route('api.ratings.destroy', ['rating' => $this->rating->id]))
         ->assertSee('The rating was deleted successfully')
         ->assertOk();
 

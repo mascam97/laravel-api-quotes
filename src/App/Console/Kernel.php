@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
                 Log::error('The command to refresh the database did not work');
             });
 
-        // Task to sent a weekly report about how many users and quotes are
+        // Task to send a weekly report about how many users and quotes are
         $schedule->command('send:newsletter --schedule')
             ->sendOutputTo(storage_path('logs/send_newsletter_schedule.log'))
             ->onOneServer()

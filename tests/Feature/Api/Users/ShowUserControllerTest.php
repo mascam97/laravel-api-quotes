@@ -20,13 +20,13 @@ beforeEach(function () {
 });
 
 it('can show', function () {
-    getJson(route('users.show', ['user' => $this->user->id]))
+    getJson(route('api.users.show', ['user' => $this->user->id]))
         ->assertSee([$this->user->id, $this->user->name])
         ->assertOk();
 });
 
 it('can include quotes', function () {
-    $responseData = getJson(route('users.show', [
+    $responseData = getJson(route('api.users.show', [
         'user' => $this->user->getKey(),
         'include' => 'quotes',
     ]))->json('data');
@@ -37,7 +37,7 @@ it('can include quotes', function () {
 });
 
 it('can include quotes count', function () {
-    $responseData = getJson(route('users.show', [
+    $responseData = getJson(route('api.users.show', [
         'user' => $this->user->getKey(),
         'include' => 'quotesCount',
     ]))->json('data');
@@ -50,7 +50,7 @@ it('can include quotes count', function () {
 test('sql queries optimization test', function () {
     DB::enableQueryLog();
 
-    getJson(route('users.show', ['user' => $this->user->id]))->assertOk();
+    getJson(route('api.users.show', ['user' => $this->user->id]))->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(1)
