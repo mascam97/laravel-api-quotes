@@ -21,7 +21,7 @@ it('cannot authorize guest', function () {
 });
 
 it('cannot show undefined data', function () {
-    login($this->user);
+    loginApi($this->user);
 
     getJson(route('api.users.show', ['user' => 100000]))
         ->assertNotFound();

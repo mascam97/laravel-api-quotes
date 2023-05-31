@@ -15,7 +15,7 @@ beforeEach(function () {
 
     (new QuoteFactory)->setAmount(5)->withUser($this->user)->create();
 
-    login($this->user);
+    loginApi($this->user);
 });
 
 it('can index', function () {

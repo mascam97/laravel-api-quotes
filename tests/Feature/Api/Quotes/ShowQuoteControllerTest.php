@@ -14,7 +14,7 @@ beforeEach(function () {
 
     (new QuoteFactory)->setAmount(3)->withUser($this->user)->withState(Published::$name)->create();
 
-    login($this->user);
+    loginApi($this->user);
 });
 
 it('can show', function () {

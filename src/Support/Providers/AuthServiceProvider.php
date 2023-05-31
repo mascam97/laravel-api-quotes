@@ -10,6 +10,7 @@ use Domain\Rating\Policies\RatingPolicy;
 use Domain\Users\Models\User;
 use Domain\Users\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Laravel\Passport\Passport;
 use Spatie\Activitylog\Models\Activity;
 
 class AuthServiceProvider extends ServiceProvider
@@ -26,5 +27,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Passport::tokensExpireIn(now()->addDays(15));
+        Passport::refreshTokensExpireIn(now()->addDays(30));
+        Passport::personalAccessTokensExpireIn(now()->addMonths(6));
     }
 }

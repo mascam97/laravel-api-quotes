@@ -18,7 +18,7 @@ beforeEach(function () {
 
     giveRoleWithPermission($this->user, 'view any activities');
 
-    login($this->user);
+    loginApiAdmin($this->user);
 });
 
 it('can index', function () {

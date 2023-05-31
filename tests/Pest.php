@@ -4,23 +4,33 @@ use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
-use function Pest\Laravel\actingAs;
+use Laravel\Passport\Passport;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Tests\CreatesApplication;
 
 uses(TestCase::class, CreatesApplication::class, RefreshDatabase::class, WithFaker::class)->in('Feature', 'Unit');
 
-function login(?User $user = null): void
+function loginApi(?User $user = null): void
 {
-    actingAs($user ?? User::factory()->create(), 'sanctum');
+    Passport::actingAs(user: $user ?? User::factory()->create());
+}
+
+function loginApiAdmin(?User $user = null): void
+{
+    Passport::actingAs(user: $user ?? User::factory()->create(), guard: 'api-admin');
+}
+
+function loginExternalApi(?User $user = null): void
+{
+    Passport::actingAs(user: $user ?? User::factory()->create(), guard: 'external-api');
 }
 
 function giveRoleWithPermission(User $user, string $permissionName): void
 {
     /** @var Role $role */
-    $role = Role::create(['name' => 'admin']);
-    $permission = Permission::create(['name' => $permissionName]);
+    $role = Role::create(['name' => 'admin', 'guard_name' => 'api-admin']);
+    $permission = Permission::create(['name' => $permissionName, 'guard_name' => 'api-admin']);
 
     $role->givePermissionTo($permission);
 

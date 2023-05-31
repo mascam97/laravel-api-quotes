@@ -25,7 +25,7 @@ it('cannot authorize guest', function () {
 });
 
 it('requires permission', function () {
-    login($this->user);
+    loginApiAdmin($this->user);
 
     getJson(route('admin.users.index'))
         ->assertForbidden();
@@ -39,7 +39,7 @@ it('requires permission', function () {
 
 it('cannot show undefined data', function () {
     giveRoleWithPermission($this->user, 'view users');
-    login($this->user);
+    loginApiAdmin($this->user);
 
     getJson(route('admin.users.show', ['user' => 100000]))
         ->assertNotFound();

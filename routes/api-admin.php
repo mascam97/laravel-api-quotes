@@ -1,7 +1,6 @@
 <?php
 
 use App\ApiAdmin\Activities\Controllers\ActivityController;
-use App\ApiAdmin\Users\Controllers\AuthController;
 use App\ApiAdmin\Users\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,9 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::name('admin.')->middleware('set.locale')->group(function () {
-    Route::post('token-auth', [AuthController::class, 'login'])->name('token-auth');
-
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware('auth:api-admin')->group(function () {
         Route::get('me', [UserController::class, 'me'])->name('me');
 
         Route::apiResource('users', UserController::class)->only(['index', 'show', 'destroy']);

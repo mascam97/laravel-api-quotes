@@ -16,7 +16,7 @@ beforeEach(function () {
     (new UserFactory)->setAmount(4)->create();
     (new QuoteFactory)->setAmount(3)->withUser($this->user)->create();
 
-    login($this->user);
+    loginApi($this->user);
 });
 
 it('can show', function () {

@@ -18,10 +18,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::name('api.')->middleware('set.locale')->group(function () {
-    Route::post('token-auth', [AuthController::class, 'login'])->name('token-auth');
     Route::post('register', [AuthController::class, 'register'])->name('register');
 
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware('auth:api')->group(function () {
         Route::get('me', [UserController::class, 'me'])->name('me');
         Route::get('me/quotes', [QuoteController::class, 'me'])->name('me.quotes');
 

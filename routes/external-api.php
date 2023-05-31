@@ -1,7 +1,6 @@
 <?php
 
 use App\ExternalApi\Quotes\Controllers\QuoteController;
-use App\ExternalApi\Users\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::name('external-api.')->middleware('set.locale')->group(function () {
-    Route::post('token-auth', [AuthController::class, 'login'])->name('token-auth');
-
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware('auth:external-api')->group(function () {
         Route::apiResource('quotes', QuoteController::class)->only(['index', 'show']);
     });
 });

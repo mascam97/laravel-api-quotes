@@ -17,11 +17,11 @@ beforeEach(function () {
     $this->rating->score = 5;
     $this->rating->save();
 
-    login($this->user);
+    loginApi($this->user);
 });
 
 it('can show', function () {
-    login($this->user);
+    loginApi($this->user);
 
     $responseData = getJson(route('api.ratings.show', [
         'rating' => $this->rating->id,

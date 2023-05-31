@@ -11,7 +11,7 @@ use function PHPUnit\Framework\assertEquals;
 beforeEach(function () {
     $this->user = User::factory()->create();
 
-    login($this->user);
+    loginApi($this->user);
 
     // TODO: Build a stronger test with a better factory and many ratings
     $this->quote = (new QuoteFactory)->withUser($this->user)->create();

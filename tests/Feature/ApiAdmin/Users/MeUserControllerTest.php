@@ -11,7 +11,7 @@ beforeEach(function () {
 
     (new UserFactory)->setAmount(4)->create();
 
-    login($this->user);
+    loginApiAdmin($this->user);
 });
 
 it('can index', function () {

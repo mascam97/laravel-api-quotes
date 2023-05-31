@@ -28,6 +28,8 @@ class DatabaseSeeder extends Seeder
         $admin->assignRole('Administrator');
 
         if (! App::environment('production')) {
+            $this->call(PassportClientsSeeder::class);
+
             User::factory(9)->create();
 
             /** @var Collection $usersId */

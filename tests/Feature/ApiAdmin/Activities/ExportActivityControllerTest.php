@@ -16,7 +16,7 @@ beforeEach(function () {
 
     giveRoleWithPermission($this->user, 'export activities');
 
-    login($this->user);
+    loginApiAdmin($this->user);
 });
 
 it('downloads an export', function () {

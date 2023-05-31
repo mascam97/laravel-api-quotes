@@ -21,7 +21,7 @@ trait CanBeRated
         /** @var int|float $modelScore */
         $modelScore = $this->qualifiers($model)->avg('score');
 
-        if ($modelScore === 0.0) {
+        if ($modelScore === 0.0 || $modelScore === 0) {
             return 0.0;
         }
 

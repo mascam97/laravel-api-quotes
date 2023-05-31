@@ -6,7 +6,7 @@ use function Pest\Laravel\getJson;
 use Services\ExternalApi\ExternalApiService;
 
 beforeEach(function () {
-    login();
+    loginExternalApi();
 });
 
 it('can index', function () {

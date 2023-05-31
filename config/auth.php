@@ -42,7 +42,18 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'passport',
+            'provider' => 'users',
+            'hash' => false,
+        ],
+        // TODO: Add external authentication server
+        'api-admin' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+            'hash' => false,
+        ],
+        'external-api' => [
+            'driver' => 'passport',
             'provider' => 'users',
             'hash' => false,
         ],

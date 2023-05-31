@@ -12,7 +12,7 @@ beforeEach(function () {
 
     giveRoleWithPermission($this->user, 'view users');
 
-    login($this->user);
+    loginApiAdmin($this->user);
 });
 
 it('can show', function () {

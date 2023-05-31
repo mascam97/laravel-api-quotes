@@ -9,10 +9,10 @@ use Support\Middleware\SetLocale;
 beforeEach(function () {
     Route::get('test-locale-route', function () {
         return 'OK';
-    })->middleware(['auth:sanctum', SetLocale::class]);
+    })->middleware(['auth:api', SetLocale::class]);
 
     $this->user = User::factory()->create(['locale' => 'es_MX']);
-    login($this->user);
+    loginApi($this->user);
 });
 
 it('use user locale when there is no header', function () {

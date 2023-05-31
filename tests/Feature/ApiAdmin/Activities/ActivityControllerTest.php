@@ -35,7 +35,7 @@ it('cannot authorize guest', function () {
 });
 
 it('requires permission', function () {
-    login($this->user);
+    loginApiAdmin($this->user);
 
     getJson(route('admin.activities.index'))
         ->assertForbidden();
@@ -52,7 +52,7 @@ it('requires permission', function () {
 
 it('cannot show undefined data', function () {
     giveRoleWithPermission($this->user, 'view activities');
-    login($this->user);
+    loginApiAdmin($this->user);
 
     getJson(route('admin.activities.show', ['activity' => 100000]))
         ->assertNotFound();

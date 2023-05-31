@@ -36,7 +36,7 @@ it('cannot authorize guest', function () {
 });
 
 it('cannot store invalid data', function () {
-    login();
+    loginApi();
 
     postJson(route('api.quotes.index'), [
         'title' => '',
@@ -50,7 +50,7 @@ it('can store', function () {
         'content' => $this->faker->text(500),
     ];
 
-    login();
+    loginApi();
 
     postJson(route('api.quotes.index'), $data)
         ->assertJsonMissingValidationErrors(['title', 'content'])
@@ -64,7 +64,7 @@ it('can store', function () {
 });
 
 it('cannot show undefined data', function () {
-    login();
+    loginApi();
 
     getJson(route('api.quotes.show', ['quote' => 100000]))
         ->assertNotFound();
@@ -72,7 +72,7 @@ it('cannot show undefined data', function () {
 
 it('cannot update data from not owner', function () {
     $userNotOwner = User::factory()->create();
-    login($userNotOwner);
+    loginApi($userNotOwner);
 
     putJson(route('api.quotes.update', ['quote' => $this->quote->id]), [
         'title' => 'new title not allowed',
@@ -95,7 +95,7 @@ it('can update', function () {
         'content' => 'new content',
     ];
 
-    login($this->user);
+    loginApi($this->user);
 
     putJson(route('api.quotes.update', ['quote' => $this->quote->id]), $newData)
         ->assertJsonMissingValidationErrors(['title', 'content'])
@@ -112,7 +112,7 @@ it('can update', function () {
 it('cannot destroy data from not owner', function () {
     /** @var User $UserNotOwner */
     $UserNotOwner = User::factory()->create();
-    login($UserNotOwner);
+    loginApi($UserNotOwner);
 
     deleteJson(route('api.quotes.destroy', ['quote' => $this->quote->id]))
         ->assertForbidden();
@@ -124,14 +124,14 @@ it('cannot destroy data from not owner', function () {
 });
 
 it('cannot delete undefined data', function () {
-    login();
+    loginApi();
 
     deleteJson(route('api.quotes.destroy', ['quote' => 100000]))
         ->assertSee([])->assertNotFound();
 });
 
 it('can delete', function () {
-    login($this->user);
+    loginApi($this->user);
 
     deleteJson(route('api.quotes.destroy', ['quote' => $this->quote->id]))
         ->assertSee('The quote was deleted successfully')->assertOk();

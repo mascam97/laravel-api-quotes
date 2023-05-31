@@ -17,7 +17,7 @@ beforeEach(function () {
 
     $this->activity = Activity::query()->first();
 
-    login($this->user);
+    loginApiAdmin($this->user);
 });
 
 it('can show', function () {

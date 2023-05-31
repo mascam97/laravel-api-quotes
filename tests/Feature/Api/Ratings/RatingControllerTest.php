@@ -37,7 +37,7 @@ it('cannot authorize guest', function () {
 });
 
 it('cannot store invalid data', function () {
-    login($this->user);
+    loginApi($this->user);
 
     postJson(route('api.ratings.quotes.store', ['quote' => $this->quote->getKey()]), [
         'score' => '',
@@ -45,7 +45,7 @@ it('cannot store invalid data', function () {
 });
 
 it('can store', function () {
-    login($this->user);
+    loginApi($this->user);
 
     $responseData = postJson(
         route('api.ratings.quotes.store', ['quote' => $this->quote->getKey()]),
@@ -65,7 +65,7 @@ it('can store', function () {
 });
 
 it('cannot show undefined data', function () {
-    login($this->user);
+    loginApi($this->user);
 
     getJson(route('api.ratings.show', [
         'rating' => 100000,
@@ -79,7 +79,7 @@ it('cannot destroy data by not owner', function () {
     $ratingNotOwned->score = 5;
     $ratingNotOwned->save();
 
-    login($this->user);
+    loginApi($this->user);
 
     deleteJson(route('api.ratings.destroy', [
         'rating' => $ratingNotOwned->getKey(),
@@ -92,7 +92,7 @@ it('cannot destroy data by not owner', function () {
 });
 
 it('cannot delete undefined data', function () {
-    login($this->user);
+    loginApi($this->user);
 
     deleteJson(route('api.ratings.destroy', ['rating' => 100000]))
         ->assertSee([])
@@ -100,7 +100,7 @@ it('cannot delete undefined data', function () {
 });
 
 it('can delete', function () {
-    login($this->user);
+    loginApi($this->user);
 
     deleteJson(route('api.ratings.destroy', ['rating' => $this->rating->id]))
         ->assertSee('The rating was deleted successfully')
