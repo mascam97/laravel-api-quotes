@@ -28,6 +28,7 @@ class UserResource extends JsonResource
             'permissions_count' => $this->when($this->permissions_count !== null, $this->permissions_count),
             'roles' => RoleResource::collection($this->whenLoaded('roles')),
             'roles_count' => $this->when($this->roles_count !== null, $this->roles_count),
+            'deleted_at' => (string) $this->deleted_at,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
         ];

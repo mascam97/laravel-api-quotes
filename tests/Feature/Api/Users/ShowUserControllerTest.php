@@ -55,7 +55,7 @@ test('sql queries optimization test', function () {
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(1)
         ->sequence(
-            fn ($query) => $query->toBe('select `id`, `name`, `email`, `created_at` from `users` where `id` = ? limit 1'),
+            fn ($query) => $query->toBe('select `id`, `name`, `email`, `created_at` from `users` where `id` = ? and `users`.`deleted_at` is null limit 1'),
         );
 
     DB::disableQueryLog();

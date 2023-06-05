@@ -43,4 +43,13 @@ class DBUserFactory extends Factory
             ];
         });
     }
+
+    public function deleted(): self
+    {
+        return $this->state(function () {
+            return [
+                'deleted_at' => now(),
+            ];
+        });
+    }
 }

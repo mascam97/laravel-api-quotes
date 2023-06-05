@@ -31,7 +31,8 @@ Route::name('api.')->middleware('set.locale')->group(function () {
         Route::apiResource('ratings', RatingController::class)
             ->only(['index', 'show', 'update', 'destroy']);
         Route::post('ratings/quotes/{quote}', [RatingController::class, 'store'])
-            ->name('ratings.quotes.store');
+            ->name('ratings.quotes.store')
+            ->whereNumber('quote');
         // Route::post('ratings/CanBeRated/{model}', [RatingController::class, 'store'])->name('...')
     });
 });

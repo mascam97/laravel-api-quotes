@@ -55,6 +55,7 @@ _Main portfolio as PHP Backend Developer - Community to rate quotes_
 - Increased **Coverage** to 95%
 - Implemented an **External API** to get data
 - Implemented **OAuth** for authentication
+- Implemented **Soft Delete** in Users
 
 ---
 

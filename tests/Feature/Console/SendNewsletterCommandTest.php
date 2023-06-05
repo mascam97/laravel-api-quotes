@@ -85,8 +85,8 @@ test('sql queries optimization test', function () {
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(2)
         ->sequence(
-            fn ($query) => $query->toBe('select count(*) as aggregate from `users` where `email_verified_at` is not null'),
-            fn ($query) => $query->toBe('select * from `users` where `email_verified_at` is not null order by `id` asc limit 10'),
+            fn ($query) => $query->toBe('select count(*) as aggregate from `users` where `email_verified_at` is not null and `users`.`deleted_at` is null'),
+            fn ($query) => $query->toBe('select * from `users` where `email_verified_at` is not null and `users`.`deleted_at` is null order by `id` asc limit 10'),
         );
 
     DB::disableQueryLog();

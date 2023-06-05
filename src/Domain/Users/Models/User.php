@@ -12,6 +12,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -27,6 +28,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $locale
  * @property ?SexEnum $sex
  * @property ?Carbon $email_verified_at
+ * @property ?Carbon $deleted_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property ?int $quotes_count
@@ -40,7 +42,7 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class User extends Authenticatable implements Rates, MustVerifyEmail
 {
-    use HasFactory, HasRoles, Notifiable, HasApiTokens, CanRate;
+    use HasFactory, HasRoles, Notifiable, HasApiTokens, CanRate, SoftDeletes;
 
     protected $fillable = [
         'name',

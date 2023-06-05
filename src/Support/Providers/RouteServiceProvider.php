@@ -58,5 +58,30 @@ class RouteServiceProvider extends ServiceProvider
 
             return Limit::perMinute(60)->by(optional($authUser)->getKey() ?: $request->ip());
         });
+
+        RateLimiter::for('api-admin', function (Request $request) {
+            /** @var ?User $authUser */
+            $authUser = $request->user();
+
+            return Limit::perMinute(30)->by(optional($authUser)->getKey() ?: $request->ip());
+        });
+
+        RateLimiter::for('external-api', function (Request $request) {
+            /** @var ?User $authUser */
+            $authUser = $request->user();
+
+            return Limit::perMinute(15)->by(optional($authUser)->getKey() ?: $request->ip());
+        });
+
+        RateLimiter::for('passport.token', function (Request $request) {
+            return [
+                Limit::perMinute(500),
+                Limit::perMinute(3)->by($request->input('username')),
+            ];
+        });
+
+        RateLimiter::for('downloads', function (Request $request) {
+            return Limit::perMinute(10);
+        });
     }
 }

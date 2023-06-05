@@ -3,6 +3,7 @@
 use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use function Pest\Laravel\assertSoftDeleted;
 use function Pest\Laravel\deleteJson;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertTrue;
@@ -32,5 +33,5 @@ it('can delete an user', function () {
     assertEquals('deleted', $activity->description);
     assertEquals('default', $activity->log_name);
 
-    $user->refresh();
-})->throws(ModelNotFoundException::class);
+    assertSoftDeleted($user);
+});

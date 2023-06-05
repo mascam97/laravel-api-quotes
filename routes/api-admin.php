@@ -24,6 +24,7 @@ Route::name('admin.')->middleware('set.locale')->group(function () {
         Route::apiResource('activities', ActivityController::class)
             ->only(['index', 'show', 'destroy']);
         Route::post('activities/export', [ActivityController::class, 'export'])
-            ->name('activities.export');
+            ->name('activities.export')
+            ->middleware(['throttle:downloads']);
     });
 });

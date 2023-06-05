@@ -22,6 +22,7 @@ it('can index', function () {
                 $data->where('id', $this->user->getKey())
                     ->has('name')
                     ->has('email')
+                    ->has('deleted_at')
                     ->has('updated_at')
                     ->has('created_at');
             })->etc();
