@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Laravel\Cashier\Billable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -27,6 +28,10 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $locale
  * @property ?SexEnum $sex
  * @property ?Carbon $email_verified_at
+ * @property ?string $stripe_id
+ * @property ?string $pm_type
+ * @property ?string $pm_last_four
+ * @property ?Carbon $trial_ends_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property ?int $quotes_count
@@ -40,7 +45,7 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class User extends Authenticatable implements Rates, MustVerifyEmail
 {
-    use HasFactory, HasRoles, Notifiable, HasApiTokens, CanRate;
+    use HasFactory, HasRoles, Notifiable, HasApiTokens, CanRate, Billable;
 
     protected $fillable = [
         'name',
@@ -59,6 +64,8 @@ class User extends Authenticatable implements Rates, MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'trial_ends_at' => 'datetime:Y-m-d',
+
     ];
 
     public function newEloquentBuilder($query): UserQueryBuilder

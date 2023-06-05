@@ -2,6 +2,7 @@
 
 use App\Api\Quotes\Controllers\QuoteController;
 use App\Api\Ratings\Controllers\RatingController;
+use App\Api\Transactions\Controllers\TransactionsController;
 use App\Api\Users\Controllers\AuthController;
 use App\Api\Users\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -33,5 +34,7 @@ Route::name('api.')->middleware('set.locale')->group(function () {
         Route::post('ratings/quotes/{quote}', [RatingController::class, 'store'])
             ->name('ratings.quotes.store');
         // Route::post('ratings/CanBeRated/{model}', [RatingController::class, 'store'])->name('...')
+
+        Route::get('transactions', [TransactionsController::class, 'index'])->name('transactions.index');
     });
 });

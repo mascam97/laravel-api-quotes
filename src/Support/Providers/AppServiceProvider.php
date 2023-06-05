@@ -2,7 +2,9 @@
 
 namespace Support\Providers;
 
+use Domain\Users\Models\User;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
 use Services\ExternalApi\ExternalApiService;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,5 +31,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Cashier::useCustomerModel(User::class);
+        Cashier::calculateTaxes();
     }
 }
