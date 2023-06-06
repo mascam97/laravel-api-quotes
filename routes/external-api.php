@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::name('external-api.')->middleware('set.locale')->group(function () {
-    Route::middleware('auth:external-api')->group(function () {
-        Route::apiResource('quotes', QuoteController::class)->only(['index', 'show']);
-    });
+Route::name('external-api.')->middleware(['set.locale', 'auth:external-api'])->group(function () {
+    Route::apiResource('quotes', QuoteController::class)->only(['index', 'show']);
 });

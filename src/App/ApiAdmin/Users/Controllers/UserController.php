@@ -9,20 +9,11 @@ use App\Controller;
 use Domain\Users\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function me(Request $request): UserResource
-    {
-        /** @var User $authUser */
-        $authUser = $request->user();
-
-        return UserResource::make($authUser);
-    }
-
     /**
      * @throws AuthorizationException
      */

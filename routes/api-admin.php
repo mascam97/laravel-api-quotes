@@ -1,6 +1,7 @@
 <?php
 
 use App\ApiAdmin\Activities\Controllers\ActivityController;
+use App\ApiAdmin\Profile\Controllers\ProfileController;
 use App\ApiAdmin\Users\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,16 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::name('admin.')->middleware('set.locale')->group(function () {
-    Route::middleware('auth:api-admin')->group(function () {
-        Route::get('me', [UserController::class, 'me'])->name('me');
+Route::name('admin.')->middleware(['set.locale', 'auth:api-admin'])->group(function () {
+    Route::apiSingleton('profile', ProfileController::class)->destroyable();
 
-        Route::apiResource('users', UserController::class)->only(['index', 'show', 'destroy']);
+    Route::apiResource('users', UserController::class)->except(['store', 'update']);
 
-        Route::apiResource('activities', ActivityController::class)
-            ->only(['index', 'show', 'destroy']);
-        Route::post('activities/export', [ActivityController::class, 'export'])
-            ->name('activities.export')
-            ->middleware(['throttle:downloads']);
-    });
+    Route::apiResource('activities', ActivityController::class)->except(['store', 'update']);
+
+    Route::post('activities/export', [ActivityController::class, 'export'])
+        ->name('activities.export')
+        ->middleware(['throttle:downloads']);
 });

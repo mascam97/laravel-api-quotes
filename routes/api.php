@@ -1,8 +1,9 @@
 <?php
 
+use App\Api\Profile\Controllers\ProfileController;
 use App\Api\Quotes\Controllers\QuoteController;
 use App\Api\Ratings\Controllers\RatingController;
-use App\Api\Users\Controllers\AuthController;
+use App\Api\Users\Controllers\RegisterController;
 use App\Api\Users\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,18 +19,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::name('api.')->middleware('set.locale')->group(function () {
-    Route::post('register', [AuthController::class, 'register'])->name('register');
+    Route::post('register', RegisterController::class)->name('register');
 
     Route::middleware('auth:api')->group(function () {
-        Route::get('me', [UserController::class, 'me'])->name('me');
+        Route::apiSingleton('profile', ProfileController::class)->destroyable();
+
         Route::get('me/quotes', [QuoteController::class, 'me'])->name('me.quotes');
 
         Route::apiResource('users', UserController::class)->only(['index', 'show']);
 
-        Route::apiResource('quotes', QuoteController::class);
+        Route::apiResource('quotes', QuoteController::class)->shallow();
 
-        Route::apiResource('ratings', RatingController::class)
-            ->only(['index', 'show', 'update', 'destroy']);
+        Route::apiResource('ratings', RatingController::class)->except(['store']);
+
         Route::post('ratings/quotes/{quote}', [RatingController::class, 'store'])
             ->name('ratings.quotes.store')
             ->whereNumber('quote');

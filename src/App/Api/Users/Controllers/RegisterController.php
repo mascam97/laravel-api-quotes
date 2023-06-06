@@ -11,9 +11,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
-class AuthController extends Controller
+class RegisterController extends Controller
 {
-    public function register(UserRequest $request): JsonResponse
+    public function __invoke(UserRequest $request): JsonResponse
     {
 //        TODO: Move to an Action and DTOs
         $user = new User();

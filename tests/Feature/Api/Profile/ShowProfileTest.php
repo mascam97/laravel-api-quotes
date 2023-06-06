@@ -11,18 +11,19 @@ beforeEach(function () {
 
     (new UserFactory)->setAmount(4)->create();
 
-    loginApiAdmin($this->user);
+    loginApi($this->user);
 });
 
 it('can index', function () {
-    getJson(route('admin.me'))
+    getJson(route('api.profile.show'))
         ->assertOk()
         ->assertJson(function (AssertableJson $json) {
             $json->has('data', function (AssertableJson $data) {
                 $data->where('id', $this->user->getKey())
                     ->has('name')
                     ->has('email')
-                    ->has('deleted_at')
+                    ->has('locale')
+                    ->has('sex')
                     ->has('updated_at')
                     ->has('created_at');
             })->etc();
@@ -31,7 +32,7 @@ it('can index', function () {
 
 test('sql queries optimization test', function () {
     DB::enableQueryLog();
-    getJson(route('admin.me'))->assertOk();
+    getJson(route('api.profile.show'))->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(0);

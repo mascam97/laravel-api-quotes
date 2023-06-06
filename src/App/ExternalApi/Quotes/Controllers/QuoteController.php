@@ -9,23 +9,23 @@ use Services\ExternalApi\ExternalApiService;
 
 class QuoteController extends Controller
 {
-    /**
-     * @throws ExternalApiException
-     */
-    public function index(ExternalApiService $externalApiService): JsonResponse
+    public function __construct(private readonly ExternalApiService $externalApiService)
     {
-        return response()->json([
-            'data' => $externalApiService->getAllQuotes(),
-        ]);
     }
 
     /**
      * @throws ExternalApiException
      */
-    public function show(ExternalApiService $externalApiService, int $quoteId): JsonResponse
+    public function index(): JsonResponse
     {
-        return response()->json([
-            'data' => $externalApiService->getQuote($quoteId),
-        ]);
+        return response()->json(['data' => $this->externalApiService->getAllQuotes()]);
+    }
+
+    /**
+     * @throws ExternalApiException
+     */
+    public function show(int $quoteId): JsonResponse
+    {
+        return response()->json(['data' => $this->externalApiService->getQuote($quoteId)]);
     }
 }

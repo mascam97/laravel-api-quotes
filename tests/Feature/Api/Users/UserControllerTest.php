@@ -13,7 +13,7 @@ it('cannot authorize guest', function () {
     getJson(route('api.users.index'))
         ->assertUnauthorized();
 
-    getJson(route('api.me'))
+    getJson(route('api.profile.show'))
         ->assertUnauthorized();
 
     getJson(route('api.users.show', ['user' => $this->user->id]))
