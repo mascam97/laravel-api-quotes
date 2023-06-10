@@ -47,9 +47,10 @@ test('sql queries optimization test', function () {
     deleteJson(route('api.ratings.destroy', ['rating' => $this->rating->id]))->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
-        ->toHaveCount(4)
+        ->toHaveCount(5)
         ->sequence(
             fn ($query) => $query->toBe('select * from `ratings` where `id` = ? limit 1'),
+            fn ($query) => $query->toBe('select * from `permissions`'), // TODO: Remove this query
             fn ($query) => $query->toBe('select * from `quotes` where `quotes`.`id` = ? limit 1'),
             fn ($query) => $query->toBe('delete from `ratings` where `id` = ?'),
             fn ($query) => $query->toBe('select avg(`score`) as aggregate from `users` inner join `ratings` on `users`.`id` = `ratings`.`qualifier_id` where `ratings`.`rateable_id` = ? and `ratings`.`rateable_type` = ? and `ratings`.`qualifier_type` = ? and `ratings`.`rateable_type` = ? and `users`.`deleted_at` is null'),

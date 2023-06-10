@@ -35,7 +35,7 @@ test('sql queries optimization test', function () {
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(1)
         ->sequence(
-            fn ($query) => $query->toContain('update `quotes` set `title` = ?, `content` = ?, '), // TODO: Validate with CI
+            fn ($query) => $query->toBe('update `quotes` set `title` = ?, `content` = ?, `quotes`.`updated_at` = ? where `id` = ?')
         );
 
     DB::disableQueryLog();

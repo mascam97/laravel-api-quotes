@@ -79,7 +79,7 @@ test('sql queries optimization test', function () {
         ->sequence(
             fn ($query) => $query->toBe('select * from `quotes` where `id` = ? limit 1'),
             fn ($query) => $query->toBe('select * from `ratings` where `qualifier_id` = ? and `qualifier_type` = ? and `rateable_id` = ? and `rateable_type` = ? limit 1'),
-            fn ($query) => $query->toContain('update `ratings` set `score` = ?, '),  // TODO: Validate with CI
+            fn ($query) => $query->toBe('update `ratings` set `score` = ?, `ratings`.`updated_at` = ? where `id` = ?'),
         );
 
     DB::disableQueryLog();

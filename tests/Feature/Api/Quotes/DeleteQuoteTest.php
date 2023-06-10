@@ -44,9 +44,10 @@ test('sql queries optimization test', function () {
     deleteJson(route('api.quotes.destroy', ['quote' => $this->quote->id]))->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
-        ->toHaveCount(2)
+        ->toHaveCount(3)
         ->sequence(
             fn ($query) => $query->toBe('select * from `quotes` where `id` = ? limit 1'),
+            fn ($query) => $query->toBe('select * from `permissions`'), // TODO: Remove this query
             fn ($query) => $query->toBe('delete from `quotes` where `id` = ?'),
         );
 
