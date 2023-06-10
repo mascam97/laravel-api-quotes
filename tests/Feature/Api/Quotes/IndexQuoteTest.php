@@ -23,7 +23,7 @@ it('can index', function () {
         ->assertOk()
         ->assertJsonStructure([
             'data' => [
-                '*' => ['id', 'title', 'content', 'state', 'average_rating', 'excerpt', 'created_at', 'updated_at'], ],
+                '*' => ['id', 'title', 'content', 'state', 'average_rating', 'excerpt', 'created_at', 'updated_at']],
         ]);
 });
 

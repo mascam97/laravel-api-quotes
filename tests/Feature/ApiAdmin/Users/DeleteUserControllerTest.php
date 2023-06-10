@@ -2,7 +2,6 @@
 
 use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use function Pest\Laravel\assertSoftDeleted;
 use function Pest\Laravel\deleteJson;
 use function PHPUnit\Framework\assertEquals;

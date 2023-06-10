@@ -13,6 +13,5 @@ parameters:
         - '#Undefined variable: \$this#'
         - '#Call to an undefined method Pest\\Expectation|Pest\\Support\\.*#'
         - '#Access to an undefined property Pest\\Expectation<mixed>::\$id.*#'
-        - '#Access to an undefined property Pest\\Expectation<mixed>::\$qualifier_id.*#'
 
     checkMissingIterableValueType: false

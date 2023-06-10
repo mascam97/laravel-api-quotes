@@ -4,9 +4,8 @@ use Domain\Quotes\Factories\QuoteFactory;
 use Domain\Quotes\States\Published;
 use Domain\Users\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Testing\Fluent\AssertableJson;
 use function Pest\Laravel\getJson;
-use function PHPUnit\Framework\assertArrayHasKey;
-use function PHPUnit\Framework\assertEquals;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -18,25 +17,31 @@ beforeEach(function () {
 });
 
 it('can show', function () {
-    $responseData = getJson(route('api.quotes.show', ['quote' => $this->quote->id]))
-        ->assertJsonStructure([
-            'data' => ['id', 'title', 'content', 'state', 'average_rating', 'excerpt', 'created_at', 'updated_at'],
-        ])->assertOk()
-        ->json('data');
-
-    expect($responseData)
-        ->id->toBe($this->quote->id)
-        ->content->toBe($this->quote->content);
+    getJson(route('api.quotes.show', ['quote' => $this->quote->id]))
+        ->assertJson(function (AssertableJson $json) {
+            $json->has('data', function (AssertableJson $data) {
+                $data->where('id', $this->quote->id)
+                    ->has('title')
+                    ->has('content')
+                    ->has('average_rating')
+                    ->has('state')
+                    ->has('excerpt')
+                    ->has('created_at')
+                    ->has('updated_at');
+            })->etc();
+        });
 });
 
 it('can include user', function () {
-    $responseData = getJson(route('api.quotes.show', [
-        'quote' => $this->quote->getKey(),
-        'include' => 'user',
-    ]))->json('data');
-
-    assertArrayHasKey('user', $responseData);
-    assertEquals($this->user->getKey(), $responseData['user']['id']);
+    getJson(route('api.quotes.show', ['quote' => $this->quote->getKey(), 'include' => 'user']))
+        ->assertJson(function (AssertableJson $json) {
+            $json->has('data.user', function (AssertableJson $data) {
+                $data->where('id', $this->user->id)
+                    ->has('name')
+                    ->has('email')
+                    ->has('created_at');
+            })->etc();
+        });
 });
 
 test('sql queries optimization test', function () {

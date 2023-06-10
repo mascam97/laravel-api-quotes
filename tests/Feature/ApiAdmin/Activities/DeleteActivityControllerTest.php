@@ -1,8 +1,8 @@
 <?php
 
 use Domain\Users\Models\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use function Pest\Laravel\assertModelMissing;
 use function Pest\Laravel\deleteJson;
 use Spatie\Activitylog\Models\Activity;
 
@@ -25,8 +25,8 @@ it('can delete an activity', function () {
     deleteJson(route('admin.activities.show', ['activity' => $this->activity->id]))
         ->assertSuccessful();
 
-    $this->activity->refresh();
-})->throws(ModelNotFoundException::class);
+    assertModelMissing($this->activity);
+});
 
 test('sql queries optimization test', function () {
     DB::enableQueryLog();

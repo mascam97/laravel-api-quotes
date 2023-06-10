@@ -30,11 +30,6 @@ Route::name('api.')->middleware('set.locale')->group(function () {
 
         Route::apiResource('quotes', QuoteController::class)->shallow();
 
-        Route::apiResource('ratings', RatingController::class)->except(['store']);
-
-        Route::post('ratings/quotes/{quote}', [RatingController::class, 'store'])
-            ->name('ratings.quotes.store')
-            ->whereNumber('quote');
-        // Route::post('ratings/CanBeRated/{model}', [RatingController::class, 'store'])->name('...')
+        Route::apiResource('ratings', RatingController::class);
     });
 });

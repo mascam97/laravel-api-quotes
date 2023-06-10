@@ -2,12 +2,14 @@
 
 namespace Domain\Quotes\QueryBuilders;
 
+use Domain\Quotes\Models\Quote;
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @method select($columns = ['*'])
  * @method count()
+ * @method Quote firstOrFail($columns = ['*'])
  */
 class QuoteQueryBuilder extends Builder
 {

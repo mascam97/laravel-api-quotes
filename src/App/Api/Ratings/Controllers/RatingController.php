@@ -7,7 +7,6 @@ use App\Api\Ratings\Queries\RatingShowQuery;
 use App\Api\Ratings\Resources\RatingResource;
 use App\Controller;
 use Domain\Quotes\Actions\RefreshQuoteAverageScoreAction;
-use Domain\Quotes\Models\Quote;
 use Domain\Rating\Actions\UpdateOrCreateRatingAction;
 use Domain\Rating\Data\RatingData;
 use Domain\Rating\Models\Rating;
@@ -32,20 +31,15 @@ class RatingController extends Controller
         return RatingResource::make($rating);
     }
 
-    public function store(
-        Quote $quote,
-        RatingData $data,
-    ): JsonResponse {
+    public function store(RatingData $data): JsonResponse
+    {
         /** @var User $authUser */
         $authUser = auth()->user();
 
         $rating = (new UpdateOrCreateRatingAction())->__invoke(
             qualifier: $authUser,
-            rateable: $quote,
             data: $data
         );
-
-        (new RefreshQuoteAverageScoreAction())->__invoke(quote: $quote);
 
         $rating->load('rateable');
 
@@ -54,6 +48,8 @@ class RatingController extends Controller
             'data' => RatingResource::make($rating),
         ], 201);
     }
+
+    // TODO: Add update action to reduce queries in store
 
     /**
      * @throws AuthorizationException
