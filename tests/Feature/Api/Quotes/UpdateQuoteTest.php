@@ -40,6 +40,7 @@ it('can update', function () {
 
 it('can show', function () {
     getJson(route('api.quotes.show', ['quote' => $this->quote->id]))
+        ->assertOk()
         ->assertJson(function (AssertableJson $json) {
             $json->has('data', function (AssertableJson $data) {
                 $data->where('id', $this->quote->id)

@@ -2,8 +2,7 @@
 
 namespace App\Api\Quotes\Controllers;
 
-use App\Api\Quotes\Queries\QuoteIndexQuery;
-use App\Api\Quotes\Queries\QuoteMeQuery;
+use App\Api\Quotes\Queries\IndexQuoteQuery;
 use App\Api\Quotes\Queries\QuoteShowQuery;
 use App\Api\Quotes\Resources\QuoteResource;
 use App\Controller;
@@ -20,14 +19,7 @@ use Spatie\ModelStates\Exceptions\CouldNotPerformTransition;
 
 class QuoteController extends Controller
 {
-    public function me(QuoteMeQuery $quoteQuery): AnonymousResourceCollection
-    {
-        $quotes = $quoteQuery->paginate();
-
-        return QuoteResource::collection($quotes);
-    }
-
-    public function index(QuoteIndexQuery $quoteQuery): AnonymousResourceCollection
+    public function index(IndexQuoteQuery $quoteQuery): AnonymousResourceCollection
     {
         $quotes = $quoteQuery->paginate();
 
@@ -50,9 +42,14 @@ class QuoteController extends Controller
         ], 201);
     }
 
+    /**
+     * @throws AuthorizationException
+     */
     public function show(QuoteShowQuery $quoteQuery, int $quoteId): QuoteResource
     {
         $quote = $quoteQuery->where('id', $quoteId)->firstOrFail();
+
+        $this->authorize('view', $quote);
 
         return QuoteResource::make($quote);
     }

@@ -17,8 +17,7 @@ beforeEach(function () {
 });
 
 it('can show', function () {
-    getJson(route('api.quotes.show', ['quote' => $this->quote->id]))
-        ->assertOk()
+    getJson(route('api.public.quotes.show', ['quote' => $this->quote->id]))
         ->assertJson(function (AssertableJson $json) {
             $json->has('data', function (AssertableJson $data) {
                 $data->where('id', $this->quote->id)
@@ -33,15 +32,26 @@ it('can show', function () {
         });
 });
 
+it('can include user', function () {
+    getJson(route('api.public.quotes.show', ['quote' => $this->quote->getKey(), 'include' => 'user']))
+        ->assertJson(function (AssertableJson $json) {
+            $json->has('data.user', function (AssertableJson $data) {
+                $data->where('id', $this->user->id)
+                    ->has('name')
+                    ->has('email')
+                    ->has('created_at');
+            })->etc();
+        });
+});
+
 test('sql queries optimization test', function () {
     DB::enableQueryLog();
-    getJson(route('api.quotes.show', ['quote' => $this->quote->getKey()]))->assertOk();
+    getJson(route('api.public.quotes.show', ['quote' => $this->quote->getKey()]))->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
-        ->toHaveCount(2)
+        ->toHaveCount(1)
         ->sequence(
-            fn ($query) => $query->toBe('select `id`, `title`, `content`, `state`, `average_score`, `user_id`, `created_at`, `updated_at` from `quotes` where `id` = ? limit 1'),
-            fn ($query) => $query->toBe('select * from `permissions`'), // TODO: Remove this query
+            fn ($query) => $query->toBe('select `id`, `title`, `content`, `state`, `average_score`, `user_id`, `created_at`, `updated_at` from `quotes` where `state` = ? and `id` = ? limit 1'),
         );
 
     DB::disableQueryLog();

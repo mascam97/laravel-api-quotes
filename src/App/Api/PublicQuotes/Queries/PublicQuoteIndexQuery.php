@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Api\Quotes\Queries;
+namespace App\Api\PublicQuotes\Queries;
 
 use Domain\Quotes\Models\Quote;
 use Domain\Quotes\States\Published;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class QuoteIndexQuery extends QueryBuilder
+class PublicQuoteIndexQuery extends QueryBuilder
 {
     public function __construct(Request $request)
     {

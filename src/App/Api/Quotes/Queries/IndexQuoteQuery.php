@@ -7,7 +7,7 @@ use Domain\Users\Models\User;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class QuoteMeQuery extends QueryBuilder
+class IndexQuoteQuery extends QueryBuilder
 {
     public function __construct(Request $request)
     {
@@ -21,7 +21,6 @@ class QuoteMeQuery extends QueryBuilder
                 'content',
                 'state',
                 'average_score',
-                'user_id',
                 'created_at',
                 'updated_at',
             ])

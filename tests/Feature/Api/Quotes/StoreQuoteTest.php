@@ -17,6 +17,7 @@ beforeEach(function () {
 
 it('can store', function () {
     postJson(route('api.quotes.store'), ['title' => 'Quote title', 'content' => 'Quote content'])
+        ->assertCreated()
         ->assertJson(function (AssertableJson $json) {
             $json->has('data', function (AssertableJson $data) {
                 $data->has('id')
@@ -25,7 +26,6 @@ it('can store', function () {
                     ->has('average_rating')
                     ->has('state')
                     ->has('excerpt')
-                    ->has('user')
                     ->has('created_at')
                     ->has('updated_at');
             })->where('message', 'The quote was created successfully')

@@ -11,6 +11,17 @@ class QuotePolicy
 {
     use HandlesAuthorization;
 
+    public function view(User $user, Quote $quote): bool
+    {
+        if ($quote->user()->is($user)) {
+            return true;
+        }
+
+        Log::channel('daily')->warning("User {$user->id} tried to view the quote {$quote->id}");
+
+        return false;
+    }
+
     public function update(User $user, Quote $quote): bool
     {
         if ($quote->user()->is($user)) {

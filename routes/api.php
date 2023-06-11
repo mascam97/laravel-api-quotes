@@ -1,6 +1,7 @@
 <?php
 
 use App\Api\Profile\Controllers\ProfileController;
+use App\Api\PublicQuotes\Controllers\PublicQuotesController;
 use App\Api\Quotes\Controllers\QuoteController;
 use App\Api\Ratings\Controllers\RatingController;
 use App\Api\Users\Controllers\RegisterController;
@@ -24,11 +25,13 @@ Route::name('api.')->middleware('set.locale')->group(function () {
     Route::middleware('auth:api')->group(function () {
         Route::apiSingleton('profile', ProfileController::class)->destroyable();
 
-        Route::get('me/quotes', [QuoteController::class, 'me'])->name('me.quotes');
-
         Route::apiResource('users', UserController::class)->only(['index', 'show']);
 
         Route::apiResource('quotes', QuoteController::class)->shallow();
+
+        Route::name('public.')->prefix('public')->group(function () {
+            Route::apiResource('quotes', PublicQuotesController::class)->only(['index', 'show']);
+        });
 
         Route::apiResource('ratings', RatingController::class);
     });

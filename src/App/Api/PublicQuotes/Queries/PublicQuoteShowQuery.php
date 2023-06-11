@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Api\Quotes\Queries;
+namespace App\Api\PublicQuotes\Queries;
 
 use Domain\Quotes\Models\Quote;
+use Domain\Quotes\States\Published;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class QuoteShowQuery extends QueryBuilder
+class PublicQuoteShowQuery extends QueryBuilder
 {
     public function __construct(Request $request)
     {
@@ -20,8 +21,11 @@ class QuoteShowQuery extends QueryBuilder
                 'user_id',
                 'created_at',
                 'updated_at',
-            ]);
+            ])
+            ->whereState(Published::$name);
 
         parent::__construct($query, $request);
+
+        $this->allowedIncludes('user');
     }
 }
