@@ -103,18 +103,18 @@ it('can sort by id', function () {
 
 it('can sort by title', function () {
     (new QuoteFactory)->withUser($this->user)->create([
-        'title' => 'AAA',
+        'title' => '000',
     ]);
 
     $responseData = getJson(route('api.me.quotes', ['sort' => 'title']))
         ->json('data');
 
-    assertEquals('AAA', $responseData[0]['title']);
+    assertEquals('000', $responseData[0]['title']);
 
     $responseDataTwo = getJson(route('api.me.quotes', ['sort' => '-title']))
         ->json('data');
 
-    assertEquals('AAA', $responseDataTwo[5]['title']);
+    assertEquals('000', $responseDataTwo[5]['title']);
 });
 
 test('sql queries optimization test', function () {

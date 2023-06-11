@@ -46,10 +46,9 @@ test('sql queries optimization test', function () {
     ])->assertCreated();
 
     expect(formatQueries(DB::getQueryLog()))
-        ->toHaveCount(6)
+        ->toHaveCount(5)
         ->sequence(
             fn ($query) => $query->toBe('select * from `quotes` where `id` = ? limit 1'),
-            fn ($query) => $query->toBe('select * from `ratings` where `qualifier_id` = ? and `qualifier_type` = ? and `rateable_id` = ? and `rateable_type` = ? limit 1'),
             fn ($query) => $query->toBe('insert into `ratings` (`qualifier_id`, `qualifier_type`, `rateable_id`, `rateable_type`, `score`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?)'),
             fn ($query) => $query->toBe('select avg(`score`) as aggregate from `users` inner join `ratings` on `users`.`id` = `ratings`.`qualifier_id` where `ratings`.`rateable_id` = ? and `ratings`.`rateable_type` = ? and `ratings`.`qualifier_type` = ? and `ratings`.`rateable_type` = ? and `users`.`deleted_at` is null'),
             fn ($query) => $query->toBe('update `quotes` set `average_score` = ?, `quotes`.`updated_at` = ? where `id` = ?'),

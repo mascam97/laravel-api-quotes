@@ -5,7 +5,7 @@ namespace Domain\Rating\Data;
 use Domain\Quotes\Models\Quote;
 use Spatie\LaravelData\Data;
 
-class RatingData extends Data
+class StoreRatingData extends Data
 {
     public function __construct(
         public int $score,

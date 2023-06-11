@@ -7,8 +7,10 @@ use App\Api\Ratings\Queries\RatingShowQuery;
 use App\Api\Ratings\Resources\RatingResource;
 use App\Controller;
 use Domain\Quotes\Actions\RefreshQuoteAverageScoreAction;
-use Domain\Rating\Actions\UpdateOrCreateRatingAction;
-use Domain\Rating\Data\RatingData;
+use Domain\Rating\Actions\StoreRatingAction;
+use Domain\Rating\Actions\UpdateRatingAction;
+use Domain\Rating\Data\StoreRatingData;
+use Domain\Rating\Data\UpdateRatingData;
 use Domain\Rating\Models\Rating;
 use Domain\Users\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -31,12 +33,12 @@ class RatingController extends Controller
         return RatingResource::make($rating);
     }
 
-    public function store(RatingData $data): JsonResponse
+    public function store(StoreRatingData $data): JsonResponse
     {
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $rating = (new UpdateOrCreateRatingAction())->__invoke(
+        $rating = (new StoreRatingAction())->__invoke(
             qualifier: $authUser,
             data: $data
         );
@@ -49,7 +51,20 @@ class RatingController extends Controller
         ], 201);
     }
 
-    // TODO: Add update action to reduce queries in store
+    /**
+     * @throws AuthorizationException
+     */
+    public function update(Rating $rating, UpdateRatingData $data): JsonResponse
+    {
+        $this->authorize('pass', $rating);
+
+        (new UpdateRatingAction())->__invoke(
+            rating: $rating,
+            data: $data
+        );
+
+        return response()->json(['message' => trans('message.updated', ['attribute' => 'rating'])]);
+    }
 
     /**
      * @throws AuthorizationException

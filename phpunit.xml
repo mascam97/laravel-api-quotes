@@ -28,6 +28,6 @@
         <server name="TELESCOPE_ENABLED" value="false"/>
     </php>
     <logging>
-        <junit outputFile="coverage/phpunit/clover.xml"/>
+        <junit outputFile="coverage.xml"/>
     </logging>
 </phpunit>
