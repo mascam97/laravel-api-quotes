@@ -1,4 +1,4 @@
-# Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.5.0-blue) ![Status](https://img.shields.io/badge/status-passing-green)  [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=mascam97_laravel-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=mascam97_laravel-api-quotes)  [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=mascam97_laravel-api-quotes&metric=coverage)](https://sonarcloud.io/summary/new_code?id=mascam97_laravel-api-quotes)
+# Laravel API Quotes ![Stable](https://img.shields.io/badge/stable-3.6.0-blue) ![Status](https://img.shields.io/badge/status-passing-green)  [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=mascam97_laravel-api-quotes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=mascam97_laravel-api-quotes)  [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=mascam97_laravel-api-quotes&metric=coverage)](https://sonarcloud.io/summary/new_code?id=mascam97_laravel-api-quotes)
 
 _Main portfolio as PHP Backend Developer - Community to rate quotes_
 
@@ -56,6 +56,8 @@ _Main portfolio as PHP Backend Developer - Community to rate quotes_
 - Implemented an **External API** to get data
 - Implemented **OAuth** for authentication
 - Implemented **Soft Delete** in Users
+- Implemented **MySQL and Redis** in pipeline
+- Improved **API design**
 
 ---
 
