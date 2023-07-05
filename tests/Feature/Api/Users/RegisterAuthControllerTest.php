@@ -116,7 +116,7 @@ test('sql queries optimization test', function () {
         ->toHaveCount(2)
         ->sequence(
             fn ($query) => $query->toBe('select count(*) as aggregate from `users` where `email` = ?'),
-            fn ($query) => $query->toBe('insert into `users` (`name`, `email`, `sex`, `birthday`, `password`, `locale`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?)'),
+            fn ($query) => $query->toBe('insert into `users` (`name`, `email`, `sex`, `birthday`, `password`, `locale`, `email_subscribed_at`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?)'),
         );
 
     DB::disableQueryLog();

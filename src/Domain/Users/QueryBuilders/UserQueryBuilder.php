@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @method User find($columns = ['*'])
+ * @method User findOrFail($columns = ['*'])
  * @method select($columns = ['*'])
  * @method count()
  */
@@ -25,5 +26,10 @@ class UserQueryBuilder extends Builder
     public function whereEmailIsVerified(): self
     {
         return $this->whereNotNull('email_verified_at');  /* @phpstan-ignore-line */
+    }
+
+    public function whereHasEmailSubscribed(): self
+    {
+        return $this->whereNotNull('email_subscribed_at');  /* @phpstan-ignore-line */
     }
 }

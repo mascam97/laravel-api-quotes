@@ -24,6 +24,7 @@ class RegisterController extends Controller
         $user->birthday = $request->date('birthday');
         $user->password = Hash::make($request->string('password'));
         $user->locale = app()->getLocale();
+        $user->email_subscribed_at = now();
         $user->save();
 
         Log::channel('daily')->info('New user was created.', ['email' => $user->email]);

@@ -17,6 +17,7 @@ class SendEmailModelRatedNotification
         $rateable = $event->getRateable();
         if ($rateable instanceof Quote) {
             $notification = new ModelRatedNotification(
+                $event->getQualifier()->getKey(),
                 $event->getQualifier()->name, /* @phpstan-ignore-line */
                 $rateable->title,
                 $event->getScore()

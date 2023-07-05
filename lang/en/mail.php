@@ -15,6 +15,7 @@ return [
 
     'link' => [
         'website' => 'Visit our official website',
+        'unsubscribe' => 'Unsubscribe',
     ],
 
     'gratitude' => 'Thank you for using our application!',

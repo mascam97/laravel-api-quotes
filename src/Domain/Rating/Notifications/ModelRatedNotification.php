@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\URL;
 
 class ModelRatedNotification extends Notification implements ShouldQueue
 {
@@ -15,6 +16,7 @@ class ModelRatedNotification extends Notification implements ShouldQueue
      * Create a new notification instance.
      */
     public function __construct(
+        private readonly string $qualifierId,
         private readonly string $qualifierName,
         private readonly string $rateableName,
         private readonly ?int $score
@@ -44,6 +46,10 @@ class ModelRatedNotification extends Notification implements ShouldQueue
                 'score' => $this->score,
             ]))
             ->action(trans('mail.link.website'), env('APP_URL', 'http://localhost'))
+            ->action(
+                trans('mail.link.unsubscribe'),
+                URL::signedRoute('web.email-unsubscribe-users', ['user' => $this->qualifierId])
+            )
             ->line(trans('mail.gratitude'));
     }
 

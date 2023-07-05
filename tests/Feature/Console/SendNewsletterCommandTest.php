@@ -46,6 +46,21 @@ it('sends newsletter only to verified users', function () {
     Notification::assertNotSentTo($unverifiedUser, NewsletterNotification::class);
 });
 
+it('sends newsletter only to email subscribers', function () {
+    /** @var User $subscribedUser */
+    $subscribedUser = User::factory()->create();
+    /** @var User $unsubscribedUser */
+    $unsubscribedUser = User::factory()->notEmailSubscribed()->create();
+
+    $this->artisan(SendNewsletterCommand::class, ['emails' => [$subscribedUser->email, $unsubscribedUser->email]])
+        ->expectsConfirmation('Are you sure to send an email to 1 users?', 'yes')
+        ->expectsOutput('1 emails were sent.')
+        ->assertExitCode(CommandExitCode::SUCCESS);
+
+    Notification::assertSentTo($subscribedUser, NewsletterNotification::class);
+    Notification::assertNotSentTo($unsubscribedUser, NewsletterNotification::class);
+});
+
 it('sends newsletter to selected users', function () {
     /** @var User $userA */
     $userA = User::factory()->create();
@@ -85,8 +100,8 @@ test('sql queries optimization test', function () {
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(2)
         ->sequence(
-            fn ($query) => $query->toBe('select count(*) as aggregate from `users` where `email_verified_at` is not null and `users`.`deleted_at` is null'),
-            fn ($query) => $query->toBe('select * from `users` where `email_verified_at` is not null and `users`.`deleted_at` is null order by `id` asc limit 10'),
+            fn ($query) => $query->toBe('select count(*) as aggregate from `users` where `email_verified_at` is not null and `email_subscribed_at` is not null and `users`.`deleted_at` is null'),
+            fn ($query) => $query->toBe('select * from `users` where `email_verified_at` is not null and `email_subscribed_at` is not null and `users`.`deleted_at` is null order by `id` asc limit 10'),
         );
 
     DB::disableQueryLog();

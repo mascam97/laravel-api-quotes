@@ -32,7 +32,7 @@ class SendNewsletterCommand extends Command
     {
         $emails = (array) $this->argument('emails');
         $schedule = $this->option('schedule');
-        $builder = User::query()->whereEmailIsVerified();
+        $builder = User::query()->whereEmailIsVerified()->whereHasEmailSubscribed();
 
         if ($emails !== []) {
             $builder->whereEmailIn($emails);

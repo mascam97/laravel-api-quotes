@@ -1,6 +1,7 @@
 <?php
 
 use App\Web\Quotes\Controllers\QuoteController;
+use App\Web\Users\Controllers\EmailUnsubscribeUsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 Route::name('web.')->middleware('set.locale')->group(function () {
     Route::get('/', [QuoteController::class, 'index'])->name('welcome');
+
+    Route::get('/email-unsubscribe-users/{userId}', EmailUnsubscribeUsersController::class)
+        ->middleware('signed')
+        ->name('email-unsubscribe-users');
 });

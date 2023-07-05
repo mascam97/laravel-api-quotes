@@ -29,6 +29,7 @@ class DBUserFactory extends Factory
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),
+            'email_subscribed_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'locale' => 'en_US',
             'remember_token' => Str::random(10),
@@ -40,6 +41,15 @@ class DBUserFactory extends Factory
         return $this->state(function () {
             return [
                 'email_verified_at' => null,
+            ];
+        });
+    }
+
+    public function notEmailSubscribed(): self
+    {
+        return $this->state(function () {
+            return [
+                'email_subscribed_at' => null,
             ];
         });
     }

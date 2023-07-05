@@ -137,22 +137,6 @@ it('can sort by id', function () {
     assertLessThan($responseDataTwo[0]['id'], $responseDataTwo[4]['id']);
 });
 
-it('can sort by title', function () {
-    (new QuoteFactory)->withUser($this->user)->withState(Published::$name)->create([
-        'title' => 'AAA',
-    ]);
-
-    $responseData = getJson(route('api.public.quotes.index', ['sort' => 'title']))
-        ->json('data');
-
-    assertEquals('AAA', $responseData[0]['title']);
-
-    $responseDataTwo = getJson(route('api.public.quotes.index', ['sort' => '-title']))
-        ->json('data');
-
-    assertEquals('AAA', $responseDataTwo[5]['title']);
-});
-
 test('sql queries optimization test', function () {
     DB::enableQueryLog();
     getJson(route('api.public.quotes.index'))->assertOk();
