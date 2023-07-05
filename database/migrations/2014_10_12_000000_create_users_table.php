@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
                 SexEnum::FEMININE->value,
                 SexEnum::NOT_APPLICABLE->value,
             ])->nullable();
+            $table->date('birthday')->nullable();
             $table->string('email', 80)->unique();
             $table->string('locale', 5);
             $table->timestamp('email_verified_at')->nullable();

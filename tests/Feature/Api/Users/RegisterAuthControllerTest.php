@@ -1,6 +1,7 @@
 <?php
 
 use Domain\Users\Actions\SendWelcomeEmailAction;
+use Domain\Users\Enums\SexEnum;
 use Domain\Users\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -21,9 +22,16 @@ it('cannot register with invalid data', function () {
         'name' => '',
         'email' => '134email',
         'password' => '',
-        'device_name' => '',
-    ])->assertJsonValidationErrors(['name', 'email', 'password'])
-        ->assertSee('The name field is required. (and 2 more errors)');
+        'birthday' => 'invalid_date',
+        'sex' => 'invalid_sex',
+    ])->assertUnprocessable()
+        ->assertJsonValidationErrors([
+            'name' => 'The name field is required.',
+            'email' => 'The email must be a valid email address.',
+            'password' => 'The password field is required.',
+            'birthday' => 'The birthday is not a valid date.',
+            'sex' => 'The selected sex is invalid.',
+        ]);
 });
 
 it('cannot register with duplicated email', function () {
@@ -31,21 +39,34 @@ it('cannot register with duplicated email', function () {
     $user = User::factory()->create();
 
     postJson(route('api.register'), $this->requestData->withUser($user)->create())
-        ->assertStatus(422)
+        ->assertUnprocessable()
         ->assertSee('The email has already been taken.');
 });
 
 it('can register', function () {
     config()->set('app.locale', 'en');
 
-    postJson(route('api.register'),
-        $this->requestData->withName('new user in english')->create()
-    )->assertOk()
+    postJson(route('api.register'), $this->requestData->withName('new user in english')->create())
+        ->assertOk()
         ->assertSee('The user was created successfully');
 
     $this->assertDatabaseHas(User::class, [
         'name' => 'new user in english',
         'locale' => 'en_US',
+        'sex' => null,
+        'birthday' => null,
+    ]);
+});
+
+it('can register with optional fields', function () {
+    postJson(route('api.register'),
+        $this->requestData->create(['sex' => SexEnum::FEMININE, 'birthday' => '2000-01-01'])
+    )->assertOk()
+        ->assertSee('The user was created successfully');
+
+    $this->assertDatabaseHas(User::class, [
+        'sex' => 'FEMININE',
+        'birthday' => '2000-01-01',
     ]);
 });
 
@@ -81,8 +102,7 @@ it('processes a job to send a welcome email', function () {
 
     QueueableActionFake::assertNotPushed(SendWelcomeEmailAction::class);
 
-    postJson(route('api.register'), $this->requestData->create())
-        ->assertOk();
+    postJson(route('api.register'), $this->requestData->create())->assertOk();
 
     QueueableActionFake::assertPushed(SendWelcomeEmailAction::class);
 });
@@ -90,15 +110,13 @@ it('processes a job to send a welcome email', function () {
 test('sql queries optimization test', function () {
     DB::enableQueryLog();
 
-    postJson(route('api.register'),
-        $this->requestData->create()
-    )->assertOk();
+    postJson(route('api.register'), $this->requestData->create())->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(2)
         ->sequence(
             fn ($query) => $query->toBe('select count(*) as aggregate from `users` where `email` = ?'),
-            fn ($query) => $query->toBe('insert into `users` (`name`, `email`, `password`, `locale`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?)'),
+            fn ($query) => $query->toBe('insert into `users` (`name`, `email`, `sex`, `birthday`, `password`, `locale`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?)'),
         );
 
     DB::disableQueryLog();

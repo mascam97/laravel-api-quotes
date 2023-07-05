@@ -6,6 +6,7 @@ use App\Api\Users\Requests\UserRequest;
 use App\Api\Users\Resources\UserResource;
 use App\Controller;
 use Domain\Users\Actions\SendWelcomeEmailAction;
+use Domain\Users\Enums\SexEnum;
 use Domain\Users\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
@@ -19,6 +20,8 @@ class RegisterController extends Controller
         $user = new User();
         $user->name = $request->string('name');
         $user->email = $request->string('email');
+        $user->sex = $request->enum('sex', SexEnum::class);
+        $user->birthday = $request->date('birthday');
         $user->password = Hash::make($request->string('password'));
         $user->locale = app()->getLocale();
         $user->save();

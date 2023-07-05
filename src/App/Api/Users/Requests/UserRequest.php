@@ -23,7 +23,8 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => 'required|max:80',
-            'sex' => new Enum(SexEnum::class),
+            'sex' => ['nullable', new Enum(SexEnum::class)],
+            'birthday' => ['bail', 'nullable', 'date', 'before:today', 'after:1900-01-01'],
             'email' => 'required|email|unique:users',
             'password' => 'required',
         ];

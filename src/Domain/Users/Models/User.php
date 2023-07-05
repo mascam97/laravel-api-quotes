@@ -27,6 +27,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $password
  * @property string $locale
  * @property ?SexEnum $sex
+ * @property ?Carbon $birthday
  * @property ?Carbon $email_verified_at
  * @property ?Carbon $deleted_at
  * @property Carbon $created_at

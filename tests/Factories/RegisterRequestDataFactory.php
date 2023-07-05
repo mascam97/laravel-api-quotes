@@ -2,6 +2,8 @@
 
 namespace Tests\Factories;
 
+use Carbon\Carbon;
+use Domain\Users\Enums\SexEnum;
 use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 
@@ -14,8 +16,6 @@ class RegisterRequestDataFactory
     protected string $email = 'user@mail.com';
 
     protected string $password = 'password';
-
-    protected string $deviceName = 'device name';
 
     public static function new(): self
     {
@@ -58,7 +58,6 @@ class RegisterRequestDataFactory
             'name' => $this->name,
             'email' => $this->email,
             'password' => $this->password,
-            'device_name' => $this->deviceName,
         ];
     }
 }
