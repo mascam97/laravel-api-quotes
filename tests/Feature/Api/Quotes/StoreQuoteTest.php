@@ -38,8 +38,9 @@ test('sql queries optimization test', function () {
     postJson(route('api.quotes.store'), ['title' => 'Quote title', 'content' => 'Quote content'])->assertCreated();
 
     expect(formatQueries(DB::getQueryLog()))
-        ->toHaveCount(1)
+        ->toHaveCount(2)
         ->sequence(
+            fn ($query) => $query->toBe('select count(*) as aggregate from `quotes` where `title` = ?'),
             fn ($query) => $query->toBe('insert into `quotes` (`state`, `title`, `content`, `average_score`, `user_id`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?)'),
         );
 

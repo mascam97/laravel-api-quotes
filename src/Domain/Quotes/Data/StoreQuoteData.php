@@ -12,4 +12,12 @@ class StoreQuoteData extends Data
         public ?bool $published = false,
     ) {
     }
+
+    public static function rules(): array
+    {
+        return [
+            'title' => ['required', 'string', 'min:3', 'max:80', 'unique:quotes,title'],
+            'content' => ['required', 'string', 'min:3'],
+        ];
+    }
 }

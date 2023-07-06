@@ -11,4 +11,12 @@ class UpdateQuoteData extends Data
         public ?string $content,
     ) {
     }
+
+    public static function rules(): array
+    {
+        return [
+            'title' => ['nullable', 'string', 'min:3', 'max:80', 'unique:quotes,title'],
+            'content' => ['nullable', 'string', 'min:3'],
+        ];
+    }
 }

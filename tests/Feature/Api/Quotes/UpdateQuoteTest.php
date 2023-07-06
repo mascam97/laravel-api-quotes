@@ -78,9 +78,10 @@ test('sql queries optimization test', function () {
     ])->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
-        ->toHaveCount(3)
+        ->toHaveCount(4)
         ->sequence(
             fn ($query) => $query->toBe('select * from `quotes` where `id` = ? limit 1'),
+            fn ($query) => $query->toBe('select count(*) as aggregate from `quotes` where `title` = ?'),
             fn ($query) => $query->toBe('select * from `permissions`'), // TODO: Remove this query
             fn ($query) => $query->toBe('update `quotes` set `title` = ?, `content` = ?, `quotes`.`updated_at` = ? where `id` = ?'),
         );
