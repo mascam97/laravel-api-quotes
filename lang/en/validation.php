@@ -131,8 +131,11 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'password' => [
+            'min' => 'The :attribute should have more than :min characters',
+        ],
+        'email' => [
+            'unique' => 'The :attribute has already been taken.',
         ],
     ],
 
@@ -148,7 +151,41 @@ return [
     */
 
     'attributes' => [
+        'address' => 'address',
+        'age' => 'age',
+        'body' => 'body',
+        'city' => 'city',
+        'content' => 'content',
+        'country' => 'country',
+        'current_password' => 'current_password',
+        'date' => 'date',
+        'day' => 'day',
+        'description' => 'description',
+        'email' => 'email',
+        'excerpt' => 'excerpt',
+        'first_name' => 'first_name',
+        'gender' => 'gender',
+        'hour' => 'hour',
+        'last_name' => 'last_name',
+        'message' => 'message',
+        'minute' => 'minute',
+        'mobile' => 'mobile',
+        'month' => 'month',
+        'name' => 'name',
+        'password' => 'password',
+        'password_confirmation' => 'password_confirmation',
+        'phone' => 'phone',
+        'price' => 'price',
+        'quote' => 'quote',
+        'role' => 'role',
+        'second' => 'second',
+        'sex' => 'sex',
+        'subject' => 'subject',
+        'terms' => 'terms',
+        'time' => 'time',
+        'title' => 'title',
         'user' => 'user',
+        'year' => 'year',
     ],
 
 ];
