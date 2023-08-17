@@ -6,6 +6,7 @@ use App\ApiAdmin\Users\Queries\UserIndexQuery;
 use App\ApiAdmin\Users\Queries\UserShowQuery;
 use App\ApiAdmin\Users\Resources\UserResource;
 use App\Controller;
+use Domain\Users\Actions\DeleteUserAction;
 use Domain\Users\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
@@ -49,8 +50,7 @@ class UserController extends Controller
         /** @var User $authUser */
         $authUser = Auth::user();
 
-        // TODO: Move deletion to an action and delete its related data as quotes
-        $user->delete();
+        (new DeleteUserAction())->__invoke($user);
 
         activity()
             ->causedBy($authUser)
