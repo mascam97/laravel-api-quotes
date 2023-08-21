@@ -6,6 +6,7 @@ use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Validation\ValidationException;
 use Services\Concerns\CanBeFaked;
 use Services\ExternalApi\Data\QuoteData;
 use Services\ExternalApi\Exceptions\ExternalApiException;
@@ -51,11 +52,17 @@ class ExternalApiService
         $response = $request->get('/quotes');
 
         if ($response->failed()) {
-            throw new ExternalApiException();
+            throw ExternalApiException::responseFailed();
         }
 
-        return $response->collect('data')
-            ->each(fn (array $quote) => QuoteData::fromArray($quote));
+        try {
+            return $response->collect('data')
+                ->each(fn (array $quote) => QuoteData::fromArray($quote));
+        } catch (ValidationException $e) {
+            report($e);
+
+            throw ExternalApiException::validationFailed();
+        }
     }
 
     /**
@@ -68,9 +75,15 @@ class ExternalApiService
         $response = $request->get("/quotes/{$id}");
 
         if ($response->failed()) {
-            throw new ExternalApiException();
+            throw ExternalApiException::responseFailed();
         }
 
-        return QuoteData::fromArray($response->json('data'));
+        try {
+            return QuoteData::fromArray($response->json('data'));
+        } catch (ValidationException $e) {
+            report($e);
+
+            throw ExternalApiException::validationFailed();
+        }
     }
 }

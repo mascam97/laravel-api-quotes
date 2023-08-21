@@ -2,6 +2,8 @@
 
 namespace Services\ExternalApi\Data;
 
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Spatie\LaravelData\Data;
 
 class QuoteData extends Data
@@ -17,8 +19,23 @@ class QuoteData extends Data
     ) {
     }
 
+    /**
+     * @throws ValidationException
+     */
     public static function fromArray(array $json): self
     {
+        Validator::make($json, [
+            'id' => 'required|integer',
+            'title' => 'required|string',
+            'author' => 'required|string',
+            'content' => 'required|string',
+            // TODO: Validate image_url should return a image
+            'image_url' => 'required|string|url|active_url',
+            'year' => 'required|integer|between:1000,2021',
+            // TODO: Validate info_url should return a safe url
+            'info_url' => 'required|string|url|active_url',
+        ])->validate();
+
         return new self(
             id: $json['id'],
             title: $json['title'],
