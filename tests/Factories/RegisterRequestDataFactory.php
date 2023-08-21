@@ -15,7 +15,7 @@ class RegisterRequestDataFactory
 
     protected string $email = 'user@mail.com';
 
-    protected string $password = 'password';
+    protected string $password = '53cUr3.Pa55word';
 
     public static function new(): self
     {

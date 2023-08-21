@@ -88,13 +88,13 @@ it('can register in spanish locale', function () {
 it('hashes password', function () {
     postJson(
         route('api.register'),
-        $this->requestData->withPassword('hashedPassword')->create()
+        $this->requestData->withPassword('hashed.Pa55word')->create()
     )->assertOk();
 
     /** @var User $user */
     $user = User::query()->where('email', 'user@mail.com')->first();
 
-    assertTrue(Hash::check('hashedPassword', $user->password));
+    assertTrue(Hash::check('hashed.Pa55word', $user->password));
 });
 
 it('processes a job to send a welcome email', function () {
