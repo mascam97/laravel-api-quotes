@@ -1,7 +1,11 @@
 {
     "data": {
         "id": 10,
+        "title": "The Little Prince",
         "author": "Antoine de Saint-Exupéry",
-        "content": "It is only with the heart that one can see rightly; what is essential is invisible to the eye."
+        "content": "It is only with the heart that one can see rightly; what is essential is invisible to the eye.",
+        "image_url": "https://picsum.photos/200/300/?random",
+        "year": 1943,
+        "info_url": "https://en.wikipedia.org/wiki/The_Little_Prince"
     }
 }

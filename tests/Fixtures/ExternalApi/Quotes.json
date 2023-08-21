@@ -2,18 +2,30 @@
     "data": [
         {
             "id": 10,
+            "title": "The Little Prince",
             "author": "Antoine de Saint-Exupéry",
-            "content": "It is only with the heart that one can see rightly; what is essential is invisible to the eye."
+            "content": "It is only with the heart that one can see rightly; what is essential is invisible to the eye.",
+            "image_url": "https://picsum.photos/200/300/?random",
+            "year": 1943,
+            "info_url": "https://en.wikipedia.org/wiki/The_Little_Prince"
         },
         {
             "id": 11,
+            "title": "Don Quixote",
             "author": "Miguel de Cervantes Saavedra",
-            "content": "Too much sanity may be madness — and maddest of all: to see life as it is, and not as it should be!"
+            "content": "Too much sanity may be madness — and maddest of all: to see life as it is, and not as it should be!",
+            "image_url": "https://picsum.photos/200/300/?random",
+            "year": 1605,
+            "info_url": "https://en.wikipedia.org/wiki/Don_Quixote"
         },
         {
             "id": 12,
+            "title": "Wuthering Heights",
             "author": "Emily Brontë",
-            "content": "Whatever our souls are made of, his and mine are the same"
+            "content": "Whatever our souls are made of, his and mine are the same",
+            "image_url": "https://picsum.photos/200/300/?random",
+            "year": 1847,
+            "info_url": "https://en.wikipedia.org/wiki/Wuthering_Heights"
         }
     ]
 }
