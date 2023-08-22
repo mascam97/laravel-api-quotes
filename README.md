@@ -253,6 +253,7 @@ This project is licensed under the [MIT License](https://choosealicense.com/lice
 
 ### References :books:
 
+- [OWASP API Security Project](https://owasp.org/www-project-api-security/)
 - ["Cruddy by Design" - Adam Wathan - Laracon US 2017](https://www.youtube.com/watch?v=MF0jFKvS4SI)
 - [Steve McDougall: How to do API integrations in Laravel](https://www.youtube.com/live/0Rq-yHAwYjQ?feature=share&t=22323)
 - [18 Tips to optimize laravel database queries](https://dudi.dev/optimize-laravel-database-queries/)
