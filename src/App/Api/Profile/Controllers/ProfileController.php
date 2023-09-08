@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+/** @authenticated */
 class ProfileController extends Controller
 {
     public function show(Request $request): ProfileResource

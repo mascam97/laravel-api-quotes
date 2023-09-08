@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Services\ExternalApi\Exceptions\ExternalApiException;
 use Services\ExternalApi\ExternalApiService;
 
+/** @authenticated */
 class QuoteController extends Controller
 {
     public function __construct(private readonly ExternalApiService $externalApiService)

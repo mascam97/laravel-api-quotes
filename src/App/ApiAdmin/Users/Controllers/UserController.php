@@ -13,9 +13,16 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 
+/** @authenticated */
 class UserController extends Controller
 {
     /**
+     * @bodyParam filter[id] int The ID of the user.
+     * @bodyParam filter[name] string The name of the user.
+     * @bodyParam filter[trashed] for deleted users, `only` or `with` trashed.
+     * @bodyParam include string Include relationship, Example permissions, roles.
+     * @bodyParam sort string Sort by column, Example id, name.
+     *
      * @throws AuthorizationException
      */
     public function index(UserIndexQuery $userQuery): AnonymousResourceCollection
@@ -28,6 +35,8 @@ class UserController extends Controller
     }
 
     /**
+     * @bodyParam include string Include relationship, Example permissions, roles.
+     *
      * @throws AuthorizationException
      */
     public function show(UserShowQuery $userQuery, int $userId): UserResource

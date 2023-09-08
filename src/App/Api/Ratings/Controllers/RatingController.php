@@ -17,8 +17,15 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
+/** @authenticated */
 class RatingController extends Controller
 {
+    /**
+     * @bodyParam filter[qualifier_type] string Filter by qualifier type Example: App\Models\User
+     * @bodyParam filter[rateable_type] string Filter by rateable type Example: App\Models\Quote
+     * @bodyParam include string Include qualifier and rateable Example: qualifier,rateable
+     * @bodyParam sort string Sort by fields Example: id,created_at
+     */
     public function index(RatingIndexQuery $quoteQuery): AnonymousResourceCollection
     {
         $quotes = $quoteQuery->paginate();
@@ -26,6 +33,9 @@ class RatingController extends Controller
         return RatingResource::collection($quotes);
     }
 
+    /**
+     * @bodyParam include string Include qualifier and rateable Example: qualifier,rateable
+     */
     public function show(RatingShowQuery $ratingQuery, int $ratingId): RatingResource
     {
         $rating = $ratingQuery->where('id', $ratingId)->firstOrFail();

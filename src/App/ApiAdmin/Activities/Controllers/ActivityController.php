@@ -14,9 +14,13 @@ use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Activitylog\Models\Activity;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
+/** @authenticated */
 class ActivityController extends Controller
 {
     /**
+     * @bodyParam filter[log_name] string optional Filter by log name. Example: auth
+     * @bodyParam include string optional Include relationships. Example: subject,causer
+     *
      * @throws AuthorizationException
      */
     public function index(ActivityIndexQuery $activityQuery): AnonymousResourceCollection
@@ -29,6 +33,8 @@ class ActivityController extends Controller
     }
 
     /**
+     * @bodyParam include string optional Include relationships. Example: subject,causer
+     *
      * @throws AuthorizationException
      */
     public function show(ActivityShowQuery $activityQuery, int $activityId): ActivityResource

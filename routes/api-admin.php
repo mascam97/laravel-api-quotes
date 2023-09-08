@@ -17,12 +17,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::name('admin.')->middleware(['set.locale', 'auth:api-admin'])->group(function () {
+    /** Show, update and destroy the authenticated user */
     Route::apiSingleton('profile', ProfileController::class)->destroyable();
 
+    /** Get, show and delete users */
     Route::apiResource('users', UserController::class)->except(['store', 'update']);
 
+    /** Get, show and delete activities */
     Route::apiResource('activities', ActivityController::class)->except(['store', 'update']);
 
+    /** Export activities */
     Route::post('activities/export', [ActivityController::class, 'export'])
         ->name('activities.export')
         ->middleware(['throttle:downloads']);

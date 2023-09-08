@@ -17,8 +17,15 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\ModelStates\Exceptions\CouldNotPerformTransition;
 
+/** @authenticated */
 class QuoteController extends Controller
 {
+    /**
+     * @bodyParam filter[title] string Filter by title Example: My quote
+     * @bodyParam filter[content] string Filter by content Example: My content
+     * @bodyParam filter[state] string Filter by state Example: published
+     * @bodyParam sort string Sort by fields Example: id,title,created_at
+     */
     public function index(IndexQuoteQuery $quoteQuery): AnonymousResourceCollection
     {
         $quotes = $quoteQuery->paginate();

@@ -15,5 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::name('external-api.')->middleware(['set.locale', 'auth:external-api'])->group(function () {
+    /** Get and show quotes as examples */
     Route::apiResource('quotes', QuoteController::class)->only(['index', 'show']);
 });

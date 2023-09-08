@@ -7,6 +7,7 @@ use App\Controller;
 use Domain\Users\Models\User;
 use Illuminate\Http\Request;
 
+/** @authenticated */
 class ProfileController extends Controller
 {
     public function show(Request $request): ProfileResource

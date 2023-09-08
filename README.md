@@ -219,6 +219,16 @@ Note: Remember in production the better command is `queue:work`, [explanation](h
 
 ---
 
+## Deployment 📦
+
+### API Documentation :page_facing_up:
+
+Run the next command to generate the API documentation in the folder `public/docs`.
+
+```
+sail artisan scribe:generate
+```
+
 ### Built With 🛠️
 
 - [Laravel 10](https://laravel.com/docs/10.x/releases/) - PHP framework.
@@ -238,6 +248,7 @@ Note: Remember in production the better command is `queue:work`, [explanation](h
 - [Queueable actions in Laravel](https://github.com/spatie/laravel-queueable-action)
 - [Laravel Model State](https://spatie.be/docs/laravel-model-states/v2/01-introduction) - Advanced state support for Laravel models
 - [PEST PHP](https://pestphp.com/) - An elegant PHP Testing Framework
+- [Scribe](https://scribe.knuckles.wtf/laravel/) - Generate API documentation for humans from your Laravel codebase.
 
 ### Authors
 
