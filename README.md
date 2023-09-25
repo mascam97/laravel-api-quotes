@@ -239,6 +239,7 @@ sail artisan scribe:generate
 - [Laravel Excel](https://laravel-excel.com/) - Supercharged Excel exports and imports in Laravel.
 - [Laravel Query Detector](https://beyondco.de/docs/laravel-query-detector/usage) - Laravel N+1 Query Detector.
 - [Laravel Passport](https://laravel.com/docs/10.x/passport) - Full OAuth2 server implementation.
+- [Laravel Vapor](https://vapor.laravel.com/) - Serverless deployment platform for Laravel.
 - [Larastan](https://github.com/nunomaduro/larastan) - PHP tool to find errors in your code.
 - [PHP Code Standards Fixer](https://cs.symfony.com/) - PHP tool to fixe your code to follow standards.
 - [Rector](https://getrector.org/) - Instant Upgrades and Automated Refactoring of any PHP 5.3+ code.
