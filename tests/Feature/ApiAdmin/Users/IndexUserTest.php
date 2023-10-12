@@ -23,9 +23,16 @@ beforeEach(function () {
 it('can index', function () {
     getJson(route('admin.users.index'))
         ->assertOk()
-        ->assertJsonStructure([
-            'data' => ['*' => ['id', 'name', 'email', 'created_at']],
-        ]);
+        ->assertJson(function (AssertableJson $json) {
+            $json->has('data', 5, fn ($json) => $json
+                ->has('id')
+                ->has('name')
+                ->has('email')
+                ->has('created_at')
+                ->has('updated_at')
+                ->has('deleted_at')
+            )->etc();
+        });
 });
 
 it('can filter by id', function () {

@@ -7,6 +7,8 @@ use Services\ExternalApi\ExternalApiService;
 
 beforeEach(function () {
     loginExternalApi();
+
+    Http::preventStrayRequests();
 });
 
 it('can show a quote', function () {

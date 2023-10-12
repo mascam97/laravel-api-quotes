@@ -50,12 +50,12 @@ class User extends Authenticatable implements Rates, MustVerifyEmail
         'name',
         'email',
         'password',
+        'sex',
     ];
 
-    protected $hidden = [/* @phpstan-ignore-line */
+    protected $hidden = [
         'password',
         'remember_token',
-        'sex' => SexEnum::class.':nullable',
     ];
 
     /**
@@ -63,6 +63,10 @@ class User extends Authenticatable implements Rates, MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'sex' => SexEnum::class,
+        'quotes_count' => 'int',
+        'roles_count' => 'int',
+        'permissions_count' => 'int',
     ];
 
     public function newEloquentBuilder($query): UserQueryBuilder

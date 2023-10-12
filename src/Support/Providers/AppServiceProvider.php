@@ -2,6 +2,7 @@
 
 namespace Support\Providers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use Services\ExternalApi\ExternalApiService;
 
@@ -29,5 +30,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $appNotInProduction = ! app()->isProduction();
+
+        // Ensure an exception is thrown when lazy loading is attempted (n+1 problem)
+        Model::preventLazyLoading($appNotInProduction);
+        // Ensure an exception is thrown when a non-existing attribute is accessed
+        Model::shouldBeStrict($appNotInProduction);
     }
 }

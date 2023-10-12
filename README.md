@@ -265,6 +265,7 @@ This project is licensed under the [MIT License](https://choosealicense.com/lice
 
 ### References :books:
 
+- [20+ Laravel best practices, tips and tricks to use in 2023](https://benjamincrozat.com/laravel-best-practices)
 - [OWASP API Security Project](https://owasp.org/www-project-api-security/)
 - ["Cruddy by Design" - Adam Wathan - Laracon US 2017](https://www.youtube.com/watch?v=MF0jFKvS4SI)
 - [Steve McDougall: How to do API integrations in Laravel](https://www.youtube.com/live/0Rq-yHAwYjQ?feature=share&t=22323)

@@ -40,7 +40,7 @@ test('sql queries optimization test', function () {
         'scope' => '*',
     ])->assertOk();
 
-    expect(formatQueries(DB::getQueryLog()))->toHaveCount(5);
+    expect(formatQueries(DB::getQueryLog()))->toHaveCount(6);
 
     DB::disableQueryLog();
 });

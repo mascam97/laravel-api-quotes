@@ -17,7 +17,7 @@ beforeEach(function () {
 
 it('can destroy user', function () {
     deleteJson(route('api.profile.destroy', ['password' => 'password']))
-        ->assertOk()->dump()
+        ->assertOk()
         ->assertJson(function (AssertableJson $json) {
             $json->where('message', 'The user was deleted successfully');
         });

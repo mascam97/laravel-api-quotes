@@ -46,6 +46,7 @@ it('can filter by rateable_type', function () {
 
 it('can include qualifier', function () {
     $responseData = getJson(route('api.ratings.index', ['include' => 'qualifier']))
+        ->assertOk()
         ->json('data');
 
     assertCount(1, $responseData);
@@ -59,6 +60,7 @@ it('can include qualifier', function () {
 
 it('can include rateable', function () {
     $responseData = getJson(route('api.ratings.index', ['include' => 'rateable']))
+        ->assertOk()
         ->json('data');
 
     assertCount(1, $responseData);

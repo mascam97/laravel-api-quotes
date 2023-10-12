@@ -34,6 +34,7 @@ it('can show', function () {
 
 it('can include user', function () {
     getJson(route('api.public.quotes.show', ['quote' => $this->quote->getKey(), 'include' => 'user']))
+        ->assertOk()
         ->assertJson(function (AssertableJson $json) {
             $json->has('data.user', function (AssertableJson $data) {
                 $data->where('id', $this->user->id)

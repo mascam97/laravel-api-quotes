@@ -6,6 +6,8 @@ use Services\ExternalApi\ExternalApiService;
 
 beforeEach(function () {
     loginExternalApi();
+
+    Http::preventStrayRequests();
 });
 
 it('validates id field', function () {
