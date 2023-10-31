@@ -52,6 +52,12 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+        // TODO: Add external authentication server
+        'api-analytics' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+            'hash' => false,
+        ],
         'external-api' => [
             'driver' => 'passport',
             'provider' => 'users',

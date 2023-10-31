@@ -58,6 +58,7 @@ _Main portfolio as PHP Backend Developer - Community to rate quotes_
 - Implemented **Soft Delete** in Users
 - Implemented **MySQL and Redis** in pipeline
 - Improved **API design**
+- Implemented **GraphQL** and use `queries` to get data
 
 ---
 
@@ -237,6 +238,7 @@ sail artisan scribe:generate
 - [Laravel Permission](https://spatie.be/docs/laravel-permission/v5/introduction) - Associate users with roles and permissions.
 - [Laravel Activitylog](https://spatie.be/docs/laravel-activitylog/v4/introduction) - Log the activities of your users.
 - [Laravel Excel](https://laravel-excel.com/) - Supercharged Excel exports and imports in Laravel.
+- [Laravel GraphQL](https://github.com/rebing/graphql-laravel) - Laravel wrapper for Facebook's GraphQL.
 - [Laravel Query Detector](https://beyondco.de/docs/laravel-query-detector/usage) - Laravel N+1 Query Detector.
 - [Laravel Passport](https://laravel.com/docs/10.x/passport) - Full OAuth2 server implementation.
 - [Laravel Vapor](https://vapor.laravel.com/) - Serverless deployment platform for Laravel.
