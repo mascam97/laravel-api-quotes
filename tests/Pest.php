@@ -21,6 +21,11 @@ function loginApiAdmin(?User $user = null): void
     Passport::actingAs(user: $user ?? User::factory()->create(), guard: 'api-admin');
 }
 
+function loginApiAnalytics(?User $user = null): void
+{
+    Passport::actingAs(user: $user ?? User::factory()->create(), guard: 'api-analytics');
+}
+
 function loginExternalApi(?User $user = null): void
 {
     Passport::actingAs(user: $user ?? User::factory()->create(), guard: 'external-api');
