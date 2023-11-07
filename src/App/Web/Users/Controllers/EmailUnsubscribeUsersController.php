@@ -4,6 +4,7 @@ namespace App\Web\Users\Controllers;
 
 use App\Controller;
 use Domain\Users\Models\User;
+use Illuminate\Support\Carbon;
 
 class EmailUnsubscribeUsersController extends Controller
 {
@@ -11,7 +12,7 @@ class EmailUnsubscribeUsersController extends Controller
     {
         $user = User::query()->findOrFail($userId);
 
-        if ($user->email_subscribed_at === null) {
+        if (! $user->email_subscribed_at instanceof Carbon) {
             return 'Email already unsubscribed.';
         }
 

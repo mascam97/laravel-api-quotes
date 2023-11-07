@@ -1,0 +1,29 @@
+name: Run static analysis in src folder - develop
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - '.github/workflows/develop-phpstan-src.yml'
+      - 'src/**.php'
+      - 'phpstan.neon'
+
+jobs:
+  phpstan:
+    name: phpstan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          coverage: none
+
+      - name: Install composer dependencies
+        uses: ramsey/composer-install@v1
+
+      - name: Run PHPStan on src
+        run: ./vendor/bin/phpstan --error-format=github

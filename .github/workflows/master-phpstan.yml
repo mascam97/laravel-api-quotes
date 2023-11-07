@@ -1,11 +1,13 @@
-name: PHPStan
+name: Run static analysis - master
 
 on:
   push:
+    branches:
+      - master
     paths:
       - '**.php'
+      - '.github/workflows/master-phpstan.yml'
       - 'phpstan.neon'
-      - '.github/workflows/phpstan.yml'
       - 'composer.lock'
 
 jobs:
@@ -23,7 +25,6 @@ jobs:
 
       - name: Install composer dependencies
         uses: ramsey/composer-install@v1
-
 
       - name: Run PHPStan on src
         run: ./vendor/bin/phpstan --error-format=github

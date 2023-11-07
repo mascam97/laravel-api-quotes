@@ -1,13 +1,13 @@
-name: Run test PHPUnit
+name: Run feature testing about Web
 
 on:
   push:
+    branches-ignore:
+      - develop
+      - master
     paths:
-      - '**.php'
-      - 'phpunit.xml'
-      - '.github/workflows/tests.yml'
-      - '.env.pipeline'
-      - 'composer.lock'
+      - '.github/workflows/default-web-testing.yml'
+      - 'src/App/Web/**.php'
 
 jobs:
   laravel-tests:
@@ -64,21 +64,8 @@ jobs:
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
 
-    - name: Execute tests (Unit and Feature tests) via PHPUnit
-      run: vendor/bin/pest --coverage-clover=coverage.xml
+    - name: Execute tests
+      run: vendor/bin/pest --testsuite=Feature --group=Web --coverage-clover=coverage.xml
       env:
         DB_PORT: ${{ job.services.mysql.ports['3306'] }}
         REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
-
-    - name: Fix code coverage paths
-      run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' coverage.xml
-
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-
-    - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Needed to get PR information, if any
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

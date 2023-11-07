@@ -5,11 +5,23 @@ use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Passport\Passport;
+use Pest\PendingCalls\UsesCall;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Tests\CreatesApplication;
 
-uses(TestCase::class, CreatesApplication::class, LazilyRefreshDatabase::class, WithFaker::class)->in('Feature', 'Unit');
+function commonTestSetup(): UsesCall
+{
+    return uses(TestCase::class, CreatesApplication::class, LazilyRefreshDatabase::class, WithFaker::class);
+}
+
+commonTestSetup()->group('api')->in('Feature/Api');
+commonTestSetup()->group('apiAdmin')->in('Feature/ApiAdmin');
+commonTestSetup()->group('apiAnalytics')->in('Feature/ApiAnalytics');
+commonTestSetup()->group('console')->in('Feature/Console');
+commonTestSetup()->group('externalApi')->in('Feature/ExternalApi');
+commonTestSetup()->group('web')->in('Feature/Web');
+commonTestSetup()->in('Feature/OAuth', 'Feature/Support', 'Unit');
 
 function loginApi(?User $user = null): void
 {

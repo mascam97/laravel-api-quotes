@@ -34,11 +34,9 @@ class UserType extends GraphQLType
             'email' => [
                 'type' => Type::string(),
                 'description' => 'The email of user',
-                'resolve' => function ($root, array $args) {
-                    // If you want to resolve the field yourself,
-                    // it can be done here
-                    return strtolower($root->email);
-                },
+                'resolve' => fn ($root, array $args): string => // If you want to resolve the field yourself,
+// it can be done here
+strtolower((string) $root->email),
             ],
             'created_at' => [
                 'type' => Type::string(),

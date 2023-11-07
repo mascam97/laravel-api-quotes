@@ -1,10 +1,12 @@
-name: PHP Insights
+name: Check code quality - master
 
 on:
   push:
+    branches:
+      - master
     paths:
       - '**.php'
-      - '.github/workflows/php-insights.yml'
+      - '.github/workflows/master-php-insights.yml'
       - 'composer.lock'
 
 jobs:
