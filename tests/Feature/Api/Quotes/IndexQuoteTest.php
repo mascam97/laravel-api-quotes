@@ -125,7 +125,7 @@ test('sql queries optimization test', function () {
         ->toHaveCount(2)
         ->sequence(
             fn ($query) => $query->toBe('select count(*) as aggregate from `quotes` where `user_id` = ?'),
-            fn ($query) => $query->toBe('select `id`, `title`, `content`, `state`, `average_score`, `created_at`, `updated_at` from `quotes` where `user_id` = ? limit 15 offset 0'),
+            fn ($query) => $query->toBe('select `id`, `title`, `content`, `state`, `average_score`, `created_at`, `updated_at` from `quotes` where `user_id` = ? order by `created_at` asc limit 20 offset 0'),
         );
 
     DB::disableQueryLog();

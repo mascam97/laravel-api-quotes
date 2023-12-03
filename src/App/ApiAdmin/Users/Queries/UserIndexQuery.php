@@ -24,6 +24,7 @@ class UserIndexQuery extends QueryBuilder
 
         $this->allowedFilters(['id', 'name', AllowedFilter::trashed()])
             ->allowedIncludes(['permissions', 'roles'])
-            ->allowedSorts('id', 'name');
+            ->defaultSort('created_at')
+            ->allowedSorts('id', 'name', 'created_at');
     }
 }

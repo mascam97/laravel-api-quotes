@@ -108,7 +108,7 @@ test('sql queries optimization test', function () {
         ->toHaveCount(2)
         ->sequence(
             fn ($query) => $query->toBe('select count(*) as aggregate from `users` where `users`.`deleted_at` is null'),
-            fn ($query) => $query->toBe('select `id`, `name`, `email`, `created_at` from `users` where `users`.`deleted_at` is null limit 15 offset 0'),
+            fn ($query) => $query->toBe('select `id`, `name`, `email`, `created_at` from `users` where `users`.`deleted_at` is null order by `created_at` asc limit 20 offset 0'),
         );
 
     DB::disableQueryLog();

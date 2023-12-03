@@ -12,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Activitylog\Models\Activity;
+use Support\Metadata\GetQueryMetaDataAction;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /** @authenticated */
@@ -27,9 +28,12 @@ class ActivityController extends Controller
     {
         $this->authorize('viewAny', Activity::class);
 
-        $activities = $activityQuery->paginate();
+        $activities = $activityQuery
+            ->jsonPaginate()
+            ->withQueryString();
 
-        return ActivityResource::collection($activities);
+        return ActivityResource::collection($activities)
+            ->additional(['meta' => (new GetQueryMetaDataAction())->__invoke($activityQuery->getQuery())]);
     }
 
     /**

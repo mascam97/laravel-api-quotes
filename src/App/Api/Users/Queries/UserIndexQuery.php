@@ -21,6 +21,7 @@ class UserIndexQuery extends QueryBuilder
 
         $this->allowedFilters(['id', 'name'])
             ->allowedIncludes('quotes')
-            ->allowedSorts('id', 'name');
+            ->defaultSort('created_at')
+            ->allowedSorts('id', 'name', 'created_at');
     }
 }

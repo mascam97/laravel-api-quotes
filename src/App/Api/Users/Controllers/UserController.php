@@ -7,6 +7,7 @@ use App\Api\Users\Queries\UserShowQuery;
 use App\Api\Users\Resources\UserResource;
 use App\Controller;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Support\Metadata\GetQueryMetaDataAction;
 
 /** @authenticated */
 class UserController extends Controller
@@ -19,9 +20,12 @@ class UserController extends Controller
      */
     public function index(UserIndexQuery $userQuery): AnonymousResourceCollection
     {
-        $users = $userQuery->paginate();
+        $users = $userQuery
+            ->jsonPaginate()
+            ->withQueryString();
 
-        return UserResource::collection($users);
+        return UserResource::collection($users)
+            ->additional(['meta' => (new GetQueryMetaDataAction())->__invoke($userQuery->getQuery())]);
     }
 
     /**

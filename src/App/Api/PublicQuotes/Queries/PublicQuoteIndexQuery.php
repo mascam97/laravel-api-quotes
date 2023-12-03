@@ -26,6 +26,7 @@ class PublicQuoteIndexQuery extends QueryBuilder
 
         $this->allowedFilters(['title', 'content', 'user_id'])
             ->allowedIncludes('user')
+            ->defaultSort('created_at')
             ->allowedSorts('id', 'title', 'created_at');
     }
 }

@@ -16,6 +16,7 @@ use Domain\Users\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Support\Metadata\GetQueryMetaDataAction;
 
 /** @authenticated */
 class RatingController extends Controller
@@ -26,11 +27,14 @@ class RatingController extends Controller
      * @bodyParam include string Include qualifier and rateable Example: qualifier,rateable
      * @bodyParam sort string Sort by fields Example: id,created_at
      */
-    public function index(RatingIndexQuery $quoteQuery): AnonymousResourceCollection
+    public function index(RatingIndexQuery $ratingQuery): AnonymousResourceCollection
     {
-        $quotes = $quoteQuery->paginate();
+        $quotes = $ratingQuery
+            ->jsonPaginate()
+            ->withQueryString();
 
-        return RatingResource::collection($quotes);
+        return RatingResource::collection($quotes)
+            ->additional(['meta' => (new GetQueryMetaDataAction())->__invoke($ratingQuery->getQuery())]);
     }
 
     /**

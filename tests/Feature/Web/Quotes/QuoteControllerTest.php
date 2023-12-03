@@ -25,7 +25,7 @@ test('sql queries optimization test', function () {
     expect(formatQueries(DB::getQueryLog()))
         ->toHaveCount(1)
         ->sequence(
-            fn ($query) => $query->toBe('select `title`, `content`, `created_at` from `quotes`'),
+            fn ($query) => $query->toBe('select `title`, `content`, `created_at` from `quotes` order by `created_at` asc'),
         );
 
     DB::disableQueryLog();

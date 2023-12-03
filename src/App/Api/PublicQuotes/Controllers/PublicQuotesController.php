@@ -7,6 +7,7 @@ use App\Api\PublicQuotes\Queries\PublicQuoteShowQuery;
 use App\Api\PublicQuotes\Resources\PublicQuoteResource;
 use App\Controller;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Support\Metadata\GetQueryMetaDataAction;
 
 /** @authenticated */
 class PublicQuotesController extends Controller
@@ -19,9 +20,12 @@ class PublicQuotesController extends Controller
      */
     public function index(PublicQuoteIndexQuery $quoteQuery): AnonymousResourceCollection
     {
-        $quotes = $quoteQuery->paginate();
+        $quotes = $quoteQuery
+            ->jsonPaginate()
+            ->withQueryString();
 
-        return PublicQuoteResource::collection($quotes);
+        return PublicQuoteResource::collection($quotes)
+            ->additional(['meta' => (new GetQueryMetaDataAction())->__invoke($quoteQuery->getQuery())]);
     }
 
     /**

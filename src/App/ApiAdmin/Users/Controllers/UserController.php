@@ -12,6 +12,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Support\Metadata\GetQueryMetaDataAction;
 
 /** @authenticated */
 class UserController extends Controller
@@ -29,9 +30,12 @@ class UserController extends Controller
     {
         $this->authorize('viewAny', User::class);
 
-        $users = $userQuery->paginate();
+        $users = $userQuery
+            ->jsonPaginate()
+            ->withQueryString();
 
-        return UserResource::collection($users);
+        return UserResource::collection($users)
+            ->additional(['meta' => (new GetQueryMetaDataAction())->__invoke($userQuery->getQuery())]);
     }
 
     /**

@@ -16,6 +16,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\ModelStates\Exceptions\CouldNotPerformTransition;
+use Support\Metadata\GetQueryMetaDataAction;
 
 /** @authenticated */
 class QuoteController extends Controller
@@ -28,9 +29,12 @@ class QuoteController extends Controller
      */
     public function index(IndexQuoteQuery $quoteQuery): AnonymousResourceCollection
     {
-        $quotes = $quoteQuery->paginate();
+        $quotes = $quoteQuery
+            ->jsonPaginate()
+            ->withQueryString();
 
-        return QuoteResource::collection($quotes);
+        return QuoteResource::collection($quotes)
+            ->additional(['meta' => (new GetQueryMetaDataAction())->__invoke($quoteQuery->getQuery())]);
     }
 
     /**

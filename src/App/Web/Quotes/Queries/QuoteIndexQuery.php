@@ -19,6 +19,7 @@ class QuoteIndexQuery extends QueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters(['title', 'content'])
-            ->allowedSorts('title');
+            ->defaultSort('created_at')
+            ->allowedSorts('title', 'created_at');
     }
 }

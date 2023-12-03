@@ -25,6 +25,7 @@ class RatingIndexQuery extends QueryBuilder
 
         $this->allowedFilters(['qualifier_type', 'rateable_type'])
             ->allowedIncludes(['qualifier', 'rateable'])
+            ->defaultSort('created_at')
             ->allowedSorts('id', 'created_at');
     }
 }

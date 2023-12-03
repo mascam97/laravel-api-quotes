@@ -29,6 +29,7 @@ class IndexQuoteQuery extends QueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters(['title', 'content', 'state'])
+            ->defaultSort('created_at')
             ->allowedSorts('id', 'title', 'created_at');
     }
 }
