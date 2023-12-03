@@ -196,7 +196,7 @@ it('can sort by two columns', function () {
         ->toHaveCount(2)
         ->sequence(
             fn ($query) => $query->toBe('select count(*) as aggregate from `quotes` where `state` = ?'),
-            fn ($query) => $query->toBe('select `id`, `title`, `content`, `state`, `average_score`, `user_id`, `created_at`, `updated_at` from `quotes` where `state` = ? order by `created_at` asc limit 20 offset 0'),
+            fn ($query) => $query->toBe('select `id`, `title`, `content`, `state`, `average_score`, `user_id`, `created_at`, `updated_at` from `quotes` where `state` = ? order by `title` asc, `created_at` asc limit 20 offset 0'),
         );
 
     DB::disableQueryLog();
