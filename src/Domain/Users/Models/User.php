@@ -3,6 +3,7 @@
 namespace Domain\Users\Models;
 
 use Database\Factories\DBUserFactory;
+use Domain\Pockets\Models\Pocket;
 use Domain\Quotes\Models\Quote;
 use Domain\Rating\Contracts\Rates;
 use Domain\Rating\Utils\CanRate;
@@ -11,7 +12,9 @@ use Domain\Users\QueryBuilders\UserQueryBuilder;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -22,6 +25,7 @@ use Spatie\Permission\Traits\HasRoles;
 /**
  * @property-read int $id
  *
+ * @property int $pocket_id
  * @property string $name
  * @property string $email
  * @property string $password
@@ -38,6 +42,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property ?int $roles_count
  *
  * @property-read HasMany $quotes
+ * @property-read HasOne $pocket
  *
  * @method static DBUserFactory factory(...$parameters)
  * @method static UserQueryBuilder query()
@@ -78,6 +83,11 @@ class User extends Authenticatable implements Rates, MustVerifyEmail
     public function quotes(): HasMany
     {
         return $this->hasMany(Quote::class);
+    }
+
+    public function pocket(): BelongsTo
+    {
+        return $this->belongsTo(Pocket::class);
     }
 
     /**
