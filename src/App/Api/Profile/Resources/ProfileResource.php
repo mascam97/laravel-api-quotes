@@ -2,6 +2,7 @@
 
 namespace App\Api\Profile\Resources;
 
+use App\Api\Pockets\Resources\PocketResource;
 use Domain\Users\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -24,6 +25,7 @@ class ProfileResource extends JsonResource
             'email' => $this->email,
             'locale' => $this->locale,
             'sex' => $this->sex,
+            'pocket' => PocketResource::make($this->whenLoaded('pocket')),
             'updated_at' => (string) $this->updated_at,
             'created_at' => (string) $this->created_at,
         ];

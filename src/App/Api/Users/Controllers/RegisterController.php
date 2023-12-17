@@ -27,6 +27,8 @@ class RegisterController extends Controller
         $user->email_subscribed_at = now();
         $user->save();
 
+        // TODO: Create pocket when user is created
+
         Log::channel('daily')->info('New user was created.', ['email' => $user->email]);
 
         (new SendWelcomeEmailAction())->onQueue()->execute($user);

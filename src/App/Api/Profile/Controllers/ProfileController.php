@@ -17,6 +17,8 @@ class ProfileController extends Controller
     {
         /** @var User $authUser */
         $authUser = $request->user();
+        // TODO: use include=pocket as http query parameter to load pocket
+        $authUser->load('pocket');
 
         return ProfileResource::make($authUser);
     }

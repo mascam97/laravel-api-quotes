@@ -15,6 +15,7 @@ class UserIndexQuery extends QueryBuilder
             'id',
             'name',
             'email',
+            'pocket_id',
             'deleted_at',
             'created_at',
             'updated_at',
@@ -23,7 +24,8 @@ class UserIndexQuery extends QueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters(['id', 'name', AllowedFilter::trashed()])
-            ->allowedIncludes(['permissions', 'roles'])
+            // TODO: Support error when there is no pocket
+            ->allowedIncludes(['permissions', 'roles', 'pocket'])
             ->defaultSort('created_at')
             ->allowedSorts('id', 'name', 'created_at');
     }

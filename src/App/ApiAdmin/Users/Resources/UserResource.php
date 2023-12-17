@@ -3,6 +3,7 @@
 namespace App\ApiAdmin\Users\Resources;
 
 use App\ApiAdmin\Permissions\Resources\PermissionResource;
+use App\ApiAdmin\Pockets\Resources\PocketResource;
 use App\ApiAdmin\Roles\Resources\RoleResource;
 use Domain\Users\Models\User;
 use Illuminate\Http\Request;
@@ -28,6 +29,7 @@ class UserResource extends JsonResource
             'permissions_count' => $this->when($this->permissions_count !== null, $this->permissions_count),
             'roles' => RoleResource::collection($this->whenLoaded('roles')),
             'roles_count' => $this->when($this->roles_count !== null, $this->roles_count),
+            'pocket' => new PocketResource($this->whenLoaded('pocket')),
             'deleted_at' => (string) $this->deleted_at,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,

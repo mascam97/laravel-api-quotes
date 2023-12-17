@@ -21,6 +21,6 @@ class UserShowQuery extends QueryBuilder
 
         parent::__construct($query, $request);
 
-        $this->allowedIncludes(['permissions', 'roles']);
+        $this->allowedIncludes(['permissions', 'roles', 'pocket']);
     }
 }

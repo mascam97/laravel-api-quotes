@@ -1,5 +1,6 @@
 <?php
 
+use Domain\Pockets\Models\Pocket;
 use Domain\Users\Factories\UserFactory;
 use Domain\Users\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -11,9 +12,10 @@ use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertLessThan;
 
 beforeEach(function () {
-    $this->user = User::factory()->create();
+    $this->pocket = Pocket::factory()->create();
+    $this->user = User::factory()->create(['pocket_id' => $this->pocket->getKey()]);
 
-    (new UserFactory)->setAmount(4)->create();
+    (new UserFactory)->setAmount(4)->create(['pocket_id' => $this->pocket->getKey()]);
 
     giveRoleWithPermission($this->user, 'view any users');
 
@@ -127,6 +129,15 @@ it('can include roles', function () {
     assertCount(5, $responseData);
     assertArrayHasKey('roles', $responseData[0]);
     assertEquals('admin', $responseData[0]['roles'][0]['name']);
+});
+
+it('can include pocket', function () {
+    $responseData = getJson(route('admin.users.index', ['include' => 'pocket']))
+        ->assertOk()
+        ->json('data');
+
+    assertArrayHasKey('pocket', $responseData[0]);
+    assertEquals($this->pocket->getKey(), $responseData[0]['pocket']['id']);
 });
 
 test('sql queries optimization test', function () {

@@ -21,7 +21,7 @@ class UserController extends Controller
      * @bodyParam filter[id] int The ID of the user.
      * @bodyParam filter[name] string The name of the user.
      * @bodyParam filter[trashed] for deleted users, `only` or `with` trashed.
-     * @bodyParam include string Include relationship, Example permissions, roles.
+     * @bodyParam include string Include relationship, Example permissions, roles, pocket.
      * @bodyParam sort string Sort by column, Example id, name.
      *
      * @throws AuthorizationException
