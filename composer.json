@@ -47,6 +47,7 @@
         "barryvdh/laravel-debugbar": "^3.7",
         "beyondcode/laravel-dump-server": "^1.8",
         "beyondcode/laravel-query-detector": "^1.7",
+        "driftingly/rector-laravel": "^0.26.2",
         "eduarguz/shift-php-cs": "^3.0",
         "fakerphp/faker": "^1.9.1",
         "knuckleswtf/scribe": "^4.23",
@@ -57,7 +58,7 @@
         "nunomaduro/phpinsights": "^2.6",
         "pestphp/pest-plugin-laravel": "^2.0",
         "phpunit/phpunit": "^10.0.0",
-        "rector/rector": "^0.15",
+        "rector/rector": "^0.18.12",
         "roave/security-advisories": "dev-latest",
         "spatie/laravel-ignition": "^2.0"
     },
