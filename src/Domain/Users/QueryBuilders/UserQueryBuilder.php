@@ -20,16 +20,16 @@ class UserQueryBuilder extends Builder
 
     public function whereEmailIn(array $emails): self
     {
-        return $this->whereIn('email', $emails);  /* @phpstan-ignore-line */
+        return $this->whereIn('email', $emails);
     }
 
     public function whereEmailIsVerified(): self
     {
-        return $this->whereNotNull('email_verified_at');  /* @phpstan-ignore-line */
+        return $this->whereNotNull('email_verified_at');
     }
 
     public function whereHasEmailSubscribed(): self
     {
-        return $this->whereNotNull('email_subscribed_at');  /* @phpstan-ignore-line */
+        return $this->whereNotNull('email_subscribed_at');
     }
 }
