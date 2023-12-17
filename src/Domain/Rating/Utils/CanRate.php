@@ -4,7 +4,7 @@ namespace Domain\Rating\Utils;
 
 use Domain\Quotes\Models\Quote;
 use Domain\Rating\Events\ModelRated;
-use Domain\Rating\Exceptions\InvalidScore;
+use Domain\Rating\Exceptions\InvalidScoreException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
@@ -35,14 +35,14 @@ trait CanRate
     /**
      * @param Quote $model
      *
-     * @throws InvalidScore
+     * @throws InvalidScoreException
      */
     public function rate(Model $model, int|null $score): bool
     {
         $min = (int) config('rating.min');
         $max = (int) config('rating.max');
         if ($score < $min || $score > $max) {
-            throw new InvalidScore($min, $max);
+            throw new InvalidScoreException($min, $max);
         }
 
         $this->ratings($model)->attach($model->getKey(), [

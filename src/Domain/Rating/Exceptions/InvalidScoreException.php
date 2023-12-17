@@ -5,7 +5,7 @@ namespace Domain\Rating\Exceptions;
 use Illuminate\Http\JsonResponse;
 use Support\DomainException;
 
-class InvalidScore extends DomainException
+class InvalidScoreException extends DomainException
 {
     public function __construct(
         private readonly int $min,

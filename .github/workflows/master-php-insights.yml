@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
+          php-version: 8.2
       - run: composer install --prefer-dist --no-progress --no-suggest
       # TODO: Increase metrics
       - run: vendor/bin/phpinsights --min-quality=85 --min-complexity=85 --min-architecture=75 --min-style=90 -n --ansi --format=github-action

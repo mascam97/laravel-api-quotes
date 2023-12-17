@@ -3,7 +3,7 @@
 namespace Domain\Rating\Factories;
 
 use Domain\Quotes\Models\Quote;
-use Domain\Rating\Exceptions\InvalidScore;
+use Domain\Rating\Exceptions\InvalidScoreException;
 use Domain\Users\Models\User;
 
 class RatingFactory
@@ -27,7 +27,7 @@ class RatingFactory
     }
 
     /**
-     * @throws InvalidScore
+     * @throws InvalidScoreException
      */
     public function create(int $score): void
     {

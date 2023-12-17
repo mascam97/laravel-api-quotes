@@ -45,7 +45,7 @@ _Main portfolio as PHP Backend Developer - Community to rate quotes_
 
 ### Achievements 2023 :star2:
 
-- Upgraded to **Laravel 10**
+- Upgraded to **PHP 8.2** and **Laravel 10**
 - Upgraded to **PHPUnit 10**
 - Implemented an **Administrator domain**
 - Implemented **Roles and Permissions** for administrator domain

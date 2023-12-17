@@ -11,16 +11,16 @@ use Services\Concerns\CanBeFaked;
 use Services\ExternalApi\Data\QuoteData;
 use Services\ExternalApi\Exceptions\ExternalApiException;
 
-class ExternalApiService
+readonly class ExternalApiService
 {
     use CanBeFaked;
 
     public function __construct(
-        public readonly string $baseUri,
-        public readonly string $key,
-        public readonly int $timeout,
-        public readonly ?int $retryTimes = null,
-        public readonly ?int $retrySleep = null,
+        public string $baseUri,
+        public string $key,
+        public int $timeout,
+        public ?int $retryTimes = null,
+        public ?int $retrySleep = null,
     ) {
     }
 
