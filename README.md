@@ -251,6 +251,7 @@ sail artisan scribe:generate
 - [Queueable actions in Laravel](https://github.com/spatie/laravel-queueable-action)
 - [Laravel Model State](https://spatie.be/docs/laravel-model-states/v2/01-introduction) - Advanced state support for Laravel models
 - [PEST PHP](https://pestphp.com/) - An elegant PHP Testing Framework
+- [MoneyPHP](https://moneyphp.org/) - PHP implementation of Fowler's Money pattern.
 - [Scribe](https://scribe.knuckles.wtf/laravel/) - Generate API documentation for humans from your Laravel codebase.
 
 ### Authors

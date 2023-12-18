@@ -12,6 +12,18 @@ it('get quotes as collection', function () {
     expect($user->quotes)->toBeInstanceOf(Collection::class);
 });
 
+it('get gifts as collection', function () {
+    $user = new User();
+
+    expect($user->gifts)->toBeInstanceOf(Collection::class);
+});
+
+it('get sent gifts as collection', function () {
+    $user = new User();
+
+    expect($user->sentGifts)->toBeInstanceOf(Collection::class);
+});
+
 it('get pocket as single model', function () {
     $user = new User();
     $pocket = new Pocket();
