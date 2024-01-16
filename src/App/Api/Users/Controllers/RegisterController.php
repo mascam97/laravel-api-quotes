@@ -5,12 +5,14 @@ namespace App\Api\Users\Controllers;
 use App\Api\Users\Requests\UserRequest;
 use App\Api\Users\Resources\UserResource;
 use App\Controller;
+use Domain\Pockets\PocketAggregateRoot;
 use Domain\Users\Actions\SendWelcomeEmailAction;
 use Domain\Users\Enums\SexEnum;
 use Domain\Users\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -27,7 +29,9 @@ class RegisterController extends Controller
         $user->email_subscribed_at = now();
         $user->save();
 
-        // TODO: Create pocket when user is created
+        PocketAggregateRoot::retrieve(Str::orderedUuid())
+            ->createPocket($user, 'USD') // TODO: Define currency by user information
+            ->persist();
 
         Log::channel('daily')->info('New user was created.', ['email' => $user->email]);
 

@@ -1,5 +1,6 @@
 <?php
 
+use Domain\Pockets\Models\Pocket;
 use Domain\Users\Actions\SendWelcomeEmailAction;
 use Domain\Users\Enums\SexEnum;
 use Domain\Users\Models\User;
@@ -55,6 +56,11 @@ it('can register', function () {
         'locale' => 'en_US',
         'sex' => null,
         'birthday' => null,
+    ]);
+
+    $this->assertDatabaseHas(Pocket::class, [
+        'balance' => 0,
+        'currency' => 'USD',
     ]);
 });
 
@@ -113,10 +119,20 @@ test('sql queries optimization test', function () {
     postJson(route('api.register'), $this->requestData->create())->assertOk();
 
     expect(formatQueries(DB::getQueryLog()))
-        ->toHaveCount(2)
+        ->toHaveCount(10)
         ->sequence(
             fn ($query) => $query->toBe('select count(*) as aggregate from `users` where `email` = ?'),
             fn ($query) => $query->toBe('insert into `users` (`name`, `email`, `sex`, `birthday`, `password`, `locale`, `email_subscribed_at`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?)'),
+
+            // TODO: Many queries are executed by EventSourcing, look for a way to reduce them
+            fn ($query) => $query->toBe('select * from `snapshots` where `aggregate_uuid` = ? order by `id` desc limit 1'),
+            fn ($query) => $query->toBe('select * from `stored_events` where `aggregate_uuid` = ? order by `id` asc'),
+            fn ($query) => $query->toBe('select max(`aggregate_version`) as aggregate from `stored_events` where `aggregate_uuid` = ?'),
+            fn ($query) => $query->toBe('insert into `stored_events` (`event_properties`, `aggregate_uuid`, `aggregate_version`, `event_version`, `event_class`, `meta_data`, `created_at`) values (?, ?, ?, ?, ?, ?, ?)'),
+            fn ($query) => $query->toBe('update `stored_events` set `meta_data` = ? where `id` = ?'),
+            fn ($query) => $query->toBe('insert into `pockets` (`balance`, `currency`, `updated_at`, `created_at`) values (?, ?, ?, ?)'),
+            fn ($query) => $query->toBe('select * from `users` where `users`.`id` = ? and `users`.`deleted_at` is null limit 1'),
+            fn ($query) => $query->toBe('update `users` set `pocket_id` = ?, `users`.`updated_at` = ? where `id` = ?'),
         );
 
     DB::disableQueryLog();

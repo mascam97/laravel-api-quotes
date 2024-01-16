@@ -238,6 +238,7 @@ sail artisan scribe:generate
 - [Laravel Permission](https://spatie.be/docs/laravel-permission/v5/introduction) - Associate users with roles and permissions.
 - [Laravel Activitylog](https://spatie.be/docs/laravel-activitylog/v4/introduction) - Log the activities of your users.
 - [Laravel Excel](https://laravel-excel.com/) - Supercharged Excel exports and imports in Laravel.
+- [Laravel Event Sourcing](https://spatie.be/docs/laravel-event-sourcing/v7/introduction) - The easiest way to get started with event sourcing in Laravel.
 - [Laravel GraphQL](https://github.com/rebing/graphql-laravel) - Laravel wrapper for Facebook's GraphQL.
 - [Laravel Query Detector](https://beyondco.de/docs/laravel-query-detector/usage) - Laravel N+1 Query Detector.
 - [Laravel Passport](https://laravel.com/docs/10.x/passport) - Full OAuth2 server implementation.
@@ -268,6 +269,7 @@ This project is licensed under the [MIT License](https://choosealicense.com/lice
 
 ### References :books:
 
+- [EVENT SOURCING IN LARAVEL: Videos, ebook & code](https://event-sourcing-laravel.com/)
 - [20+ Laravel best practices, tips and tricks to use in 2023](https://benjamincrozat.com/laravel-best-practices)
 - [OWASP API Security Project](https://owasp.org/www-project-api-security/)
 - ["Cruddy by Design" - Adam Wathan - Laracon US 2017](https://www.youtube.com/watch?v=MF0jFKvS4SI)

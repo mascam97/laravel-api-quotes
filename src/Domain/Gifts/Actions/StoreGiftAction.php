@@ -5,9 +5,8 @@ namespace Domain\Gifts\Actions;
 use Domain\Gifts\Data\StoreGiftData;
 use Domain\Gifts\Models\Gift;
 use Domain\Pockets\Models\Pocket;
+use Domain\Pockets\PocketAggregateRoot;
 use Domain\Users\Models\User;
-use Money\Currency;
-use Money\Money;
 
 class StoreGiftAction
 {
@@ -26,12 +25,6 @@ class StoreGiftAction
             throw new \DomainException('User pocket currency does not match gift currency');
         }
 
-        $userMoney = new Money($userPocket->balance, new Currency($userPocket->currency)); /* @phpstan-ignore-line */
-        $giftMoney = new Money($data->amount, new Currency($data->currency)); /* @phpstan-ignore-line */
-
-        $userPocket->balance = (int) $userMoney->add($giftMoney)->getAmount();
-        $userPocket->update();
-
         $gift = new Gift();
         $gift->note = $data->note;
         $gift->amount = $data->amount;
@@ -39,6 +32,11 @@ class StoreGiftAction
         $gift->senderUser()->associate($senderUser);
         $gift->user()->associate($user);
         $gift->save();
+
+        // TODO: Move ids to uuid for Event Sourcing
+        PocketAggregateRoot::retrieve($userPocket->id) /* @phpstan-ignore-line */
+            ->addMoney($userPocket, $gift)
+            ->persist();
 
         return $gift;
     }

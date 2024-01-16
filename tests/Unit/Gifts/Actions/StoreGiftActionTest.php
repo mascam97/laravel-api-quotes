@@ -56,11 +56,19 @@ test('sql queries optimization test', function () {
     (new StoreGiftAction())->__invoke(data: $data, senderUser: $this->senderUser, user: $this->user);
 
     expect(formatQueries(DB::getQueryLog()))
-        ->toHaveCount(3)
+        ->toHaveCount(9)
         ->sequence(
             fn ($query) => $query->toBe('select `id`, `balance`, `currency` from `pockets` where `id` = ? and `pockets`.`deleted_at` is null limit 1'),
-            fn ($query) => $query->toBe('update `pockets` set `balance` = ?, `pockets`.`updated_at` = ? where `id` = ?'),
             fn ($query) => $query->toBe('insert into `gifts` (`note`, `amount`, `currency`, `sender_user_id`, `user_id`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?)'),
+
+            // TODO: Many queries are executed by EventSourcing, look for a way to reduce them
+            fn ($query) => $query->toBe('select * from `snapshots` where `aggregate_uuid` = ? order by `id` desc limit 1'),
+            fn ($query) => $query->toBe('select * from `stored_events` where `aggregate_uuid` = ? order by `id` asc'),
+            fn ($query) => $query->toBe('select max(`aggregate_version`) as aggregate from `stored_events` where `aggregate_uuid` = ?'),
+            fn ($query) => $query->toBe('insert into `stored_events` (`event_properties`, `aggregate_uuid`, `aggregate_version`, `event_version`, `event_class`, `meta_data`, `created_at`) values (?, ?, ?, ?, ?, ?, ?)'),
+            fn ($query) => $query->toBe('update `stored_events` set `meta_data` = ? where `id` = ?'),
+            fn ($query) => $query->toBe('select * from `pockets` where `pockets`.`id` = ? and `pockets`.`deleted_at` is null limit 1'),
+            fn ($query) => $query->toBe('update `pockets` set `balance` = ?, `pockets`.`updated_at` = ? where `id` = ?'),
         );
 
     DB::disableQueryLog();
