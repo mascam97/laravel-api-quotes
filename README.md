@@ -88,16 +88,16 @@ Then install the PHP dependencies:
 ```
  docker run --rm --interactive --tty \
  --volume $PWD:/app \
- composer install
+ composer install --ignore-platform-reqs
 ```
 
-Then create the next alias to run commands in the container with Laravel Sail.
+Then create the next alias to run commands in the container with Laravel Sail (for Linux)
 
 ```
 alias sail='bash vendor/bin/sail'
 ```
 
-Note: Setting this alias as permanent is recommended.  
+Note: Setting this alias as permanent is recommended.
 
 Create the images and run the services (laravel app, mysql, redis and mailhog):
 
@@ -146,7 +146,7 @@ sail composer phpstan
 
 ### Backend testing
 
-There are some unit testing in Models and Traits and some feature testings in controllers, all these tests guarantee functionalities like table relationship, validations, authentication, authorization, actions as create, read, update and delete, etc. 
+There are some unit testing in Models and Traits and some feature testings in controllers, all these tests guarantee functionalities like table relationship, validations, authentication, authorization, actions as create, read, update and delete, etc.
 
 ```
 sail artisan test
@@ -206,7 +206,7 @@ There are two task, one to refresh the database (monthly) and other to email use
 sail artisan schedule:run
 ```
 
-You could use `schedule:list` to look more information and its next schedule. 
+You could use `schedule:list` to look more information and its next schedule.
 
 ### Running Queues
 
