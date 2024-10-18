@@ -48,7 +48,7 @@ it('cannot rate with invalid max score', function () {
     $user = User::factory()->create();
 
     $user->rate($this->quote, 100);
-})->throws(\Domain\Rating\Exceptions\InvalidScoreException::class);
+})->throws(Domain\Rating\Exceptions\InvalidScoreException::class);
 
 it('cannot rate with invalid min score', function () {
     config()->set('rating.min', 1);
@@ -57,7 +57,7 @@ it('cannot rate with invalid min score', function () {
     $user = User::factory()->create();
 
     $user->rate($this->quote, 0);
-})->throws(\Domain\Rating\Exceptions\InvalidScoreException::class);
+})->throws(Domain\Rating\Exceptions\InvalidScoreException::class);
 
 it('can rate a model', function () {
     $this->user->rate($this->quote, 5);

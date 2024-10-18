@@ -45,7 +45,7 @@ class ModelRatedNotification extends Notification implements ShouldQueue
                 'quote' => $this->rateableName,
                 'score' => $this->score,
             ]))
-            ->action(trans('mail.link.website'), env('APP_URL', 'http://localhost'))
+            ->action(trans('mail.link.website'), (string) env('APP_URL', 'http://localhost'))
             ->action(
                 trans('mail.link.unsubscribe'),
                 URL::signedRoute('web.email-unsubscribe-users', ['user' => $this->qualifierId])

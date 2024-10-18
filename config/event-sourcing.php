@@ -22,7 +22,7 @@ return [
      * Projectors can be registered in this array or a service provider.
      */
     'projectors' => [
-        \Domain\Pockets\Projectors\PocketProjector::class,
+        Domain\Pockets\Projectors\PocketProjector::class,
         // App\Projectors\YourProjector::class
     ],
 

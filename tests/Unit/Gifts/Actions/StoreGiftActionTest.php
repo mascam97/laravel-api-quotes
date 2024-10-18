@@ -37,7 +37,7 @@ it('cannot create a gift with different currency', function () {
 
     try {
         (new StoreGiftAction())->__invoke(data: $data, senderUser: $this->senderUser, user: $this->user);
-    } catch (\DomainException $e) {
+    } catch (DomainException $e) {
         assertEquals('User pocket currency does not match gift currency', $e->getMessage());
     }
 

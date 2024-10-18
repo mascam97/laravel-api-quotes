@@ -11,7 +11,7 @@ return [
 
         // The controller/method to use in GraphQL request.
         // Also supported array syntax: `[\Rebing\GraphQL\GraphQLController::class, 'query']`
-        'controller' => \Rebing\GraphQL\GraphQLController::class.'@query',
+        'controller' => Rebing\GraphQL\GraphQLController::class.'@query',
 
         // Any middleware for the graphql route group
         // This middleware will apply to all schemas
@@ -101,7 +101,7 @@ return [
     //     'message' => '',
     //     'locations' => []
     // ]
-    'error_formatter' => [\Rebing\GraphQL\GraphQL::class, 'formatError'],
+    'error_formatter' => [Rebing\GraphQL\GraphQL::class, 'formatError'],
 
     /*
      * Custom Error Handling
@@ -110,7 +110,7 @@ return [
      *
      * The default handler will pass exceptions to laravel Error Handling mechanism
      */
-    'errors_handler' => [\Rebing\GraphQL\GraphQL::class, 'handleErrors'],
+    'errors_handler' => [Rebing\GraphQL\GraphQL::class, 'handleErrors'],
 
     /*
      * Options to limit the query complexity and depth. See the doc
@@ -127,13 +127,13 @@ return [
      * You can define your own pagination type.
      * Reference \Rebing\GraphQL\Support\PaginationType::class
      */
-    'pagination_type' => \Rebing\GraphQL\Support\PaginationType::class,
+    'pagination_type' => Rebing\GraphQL\Support\PaginationType::class,
 
     /*
      * You can define your own simple pagination type.
      * Reference \Rebing\GraphQL\Support\SimplePaginationType::class
      */
-    'simple_pagination_type' => \Rebing\GraphQL\Support\SimplePaginationType::class,
+    'simple_pagination_type' => Rebing\GraphQL\Support\SimplePaginationType::class,
 
     /*
      * Overrides the default field resolver
@@ -191,10 +191,10 @@ return [
      * Execution middlewares
      */
     'execution_middleware' => [
-        \Rebing\GraphQL\Support\ExecutionMiddleware\ValidateOperationParamsMiddleware::class,
+        Rebing\GraphQL\Support\ExecutionMiddleware\ValidateOperationParamsMiddleware::class,
         // AutomaticPersistedQueriesMiddleware listed even if APQ is disabled, see the docs for the `'apq'` configuration
-        \Rebing\GraphQL\Support\ExecutionMiddleware\AutomaticPersistedQueriesMiddleware::class,
-        \Rebing\GraphQL\Support\ExecutionMiddleware\AddAuthUserContextValueMiddleware::class,
+        Rebing\GraphQL\Support\ExecutionMiddleware\AutomaticPersistedQueriesMiddleware::class,
+        Rebing\GraphQL\Support\ExecutionMiddleware\AddAuthUserContextValueMiddleware::class,
         // \Rebing\GraphQL\Support\ExecutionMiddleware\UnusedVariablesMiddleware::class,
     ],
 ];

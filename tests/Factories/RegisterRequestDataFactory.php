@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 
 class RegisterRequestDataFactory
 {
-    use withFaker;
+    use WithFaker;
 
     protected string $name = 'user name';
 
