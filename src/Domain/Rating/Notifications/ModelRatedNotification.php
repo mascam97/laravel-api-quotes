@@ -24,9 +24,7 @@ class ModelRatedNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @return array
+     * @return array<string>
      */
     public function via(mixed $notifiable)
     {
@@ -54,7 +52,7 @@ class ModelRatedNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the array representation of the notification.
+     * @return array<string, mixed>
      */
     public function toArray(mixed $notifiable): array
     {

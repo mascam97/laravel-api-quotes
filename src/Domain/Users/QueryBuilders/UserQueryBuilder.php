@@ -6,6 +6,8 @@ use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
+ * @extends Builder<User>
+ *
  * @method User find($columns = ['*'])
  * @method User findOrFail($columns = ['*'])
  * @method select($columns = ['*'])
@@ -18,6 +20,9 @@ class UserQueryBuilder extends Builder
         return $this->where('id', $id);
     }
 
+    /**
+     * @param array<string> $emails
+     */
     public function whereEmailIn(array $emails): self
     {
         return $this->whereIn('email', $emails);

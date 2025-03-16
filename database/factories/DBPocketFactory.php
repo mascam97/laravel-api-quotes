@@ -5,6 +5,9 @@ namespace Database\Factories;
 use Domain\Pockets\Models\Pocket;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Pocket>
+ */
 class DBPocketFactory extends Factory
 {
     protected $model = Pocket::class;

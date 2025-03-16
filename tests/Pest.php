@@ -54,11 +54,16 @@ function giveRoleWithPermission(User $user, string $permissionName): void
     $user->assignRole($role);
 }
 
+/**
+ * @param array<string, string> $queries
+ * @return array<string, mixed>
+ */
 function formatQueries(array $queries): array
 {
     return str_replace('"', '`', collect($queries)->pluck('query')->toArray());
 }
 
+/** @return array<string, mixed> */
 function fixture(string $name): array
 {
     $file = file_get_contents(

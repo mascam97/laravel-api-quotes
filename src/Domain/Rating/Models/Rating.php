@@ -5,6 +5,7 @@ namespace Domain\Rating\Models;
 use Domain\Quotes\Models\Quote;
 use Domain\Rating\QueryBuilders\RatingQueryBuilder;
 use Domain\Users\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
@@ -34,11 +35,17 @@ class Rating extends Pivot
         return new RatingQueryBuilder($query);
     }
 
+    /**
+     * @return  MorphTo<Model, Rating>
+     */
     public function rateable(): MorphTo
     {
         return $this->morphTo();
     }
 
+    /**
+     * @return  MorphTo<Model, Rating>
+     */
     public function qualifier(): MorphTo
     {
         return $this->morphTo();

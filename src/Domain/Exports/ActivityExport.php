@@ -11,6 +11,7 @@ class ActivityExport implements FromCollection
 {
     use Exportable;
 
+    /** @var array<int,string> */
     private array $headers = [
         'id',
         'log_name',
@@ -23,12 +24,16 @@ class ActivityExport implements FromCollection
         'updated_at',
     ];
 
+    /** @return array<int,string> */
     public function headings(): array
     {
         return $this->headers;
     }
 
-    public function collection(): Collection|array|\Illuminate\Support\Collection
+    /**
+     * @return Collection<int, Activity>
+     */
+    public function collection()
     {
         // TODO: Validate performance when there are many data
         return Activity::query()->select($this->headers)->get();

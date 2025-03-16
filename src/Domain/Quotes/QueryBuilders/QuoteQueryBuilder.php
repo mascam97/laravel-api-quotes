@@ -7,6 +7,8 @@ use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
+ * @extends Builder<Quote>
+ *
  * @method select($columns = ['*'])
  * @method count()
  * @method Quote firstOrFail($columns = ['*'])

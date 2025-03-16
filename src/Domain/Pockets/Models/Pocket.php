@@ -40,11 +40,17 @@ class Pocket extends Model
         return new PocketQueryBuilder($query);
     }
 
+    /**
+     * @return Factory<Pocket>
+     */
     protected static function newFactory(): Factory
     {
-        return DBPocketFactory::new();
+        return DBPocketFactory::new();  /** @phpstan-return Factory<Pocket> */
     }
 
+    /**
+     * @return HasOne<User>
+     */
     public function user(): HasOne
     {
         return $this->hasOne(User::class);

@@ -2,6 +2,7 @@
 
 namespace Services\ExternalApi;
 
+use Domain\Quotes\Models\Quote;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
@@ -44,6 +45,7 @@ readonly class ExternalApiService
 
     /**
      * @throws ExternalApiException
+     * @return Collection<int, Quote>
      */
     public function getAllQuotes(): Collection
     {

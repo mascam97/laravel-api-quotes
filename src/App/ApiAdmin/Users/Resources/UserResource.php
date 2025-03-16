@@ -8,6 +8,7 @@ use App\ApiAdmin\Roles\Resources\RoleResource;
 use Domain\Users\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 /**
  * @mixin User;
@@ -18,6 +19,7 @@ class UserResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param  Request  $request
+     * @return array<string, Carbon|int|string>
      */
     public function toArray($request): array
     {

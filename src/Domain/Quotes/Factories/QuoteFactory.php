@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class QuoteFactory
 {
+    /** @var array<string, mixed> */
     private array $properties = [];
 
     private ?int $amount = null;
@@ -37,13 +38,17 @@ class QuoteFactory
         return $this;
     }
 
+    /**
+     * @param array<string, mixed> $extra
+     * @return Quote|Collection<int, Quote>
+     */
     public function create(array $extra = []): Quote|Collection
     {
         if (! $this->amount) {
             /** @var Quote $quote */
             $quote = Quote::factory()->create(array_merge($this->properties, $extra));
         } else {
-            /** @var Collection $quote */
+            /** @var Collection<int, Quote> $quote */
             $quote = Quote::factory($this->amount)->create(array_merge($this->properties, $extra));
         }
 

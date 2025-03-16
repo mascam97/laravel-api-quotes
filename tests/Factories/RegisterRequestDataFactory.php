@@ -52,6 +52,10 @@ class RegisterRequestDataFactory
         return $this;
     }
 
+    /**
+     * @param array<string, string> $extra
+     * @return array<string, string>
+     */
     public function create(array $extra = []): array
     {
         return $extra + [

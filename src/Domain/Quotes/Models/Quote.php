@@ -61,16 +61,20 @@ class Quote extends Model implements IsRated
         return $this->averageRating(User::class);
     }
 
+    /**
+     * @return BelongsTo<User, Quote>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
-     * Create a new factory instance for the model.
+     * @return Factory<Quote>
      */
     protected static function newFactory(): Factory
     {
+        /** @var Factory<Quote> */
         return DBQuoteFactory::new();
     }
 }

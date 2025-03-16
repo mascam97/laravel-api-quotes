@@ -13,6 +13,9 @@ class StoreQuoteData extends Data
     ) {
     }
 
+    /**
+     * @return array<string, string[]>
+     */
     public static function rules(): array
     {
         return [

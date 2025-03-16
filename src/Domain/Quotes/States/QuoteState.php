@@ -2,10 +2,14 @@
 
 namespace Domain\Quotes\States;
 
+use Domain\Quotes\Models\Quote;
 use Spatie\ModelStates\Exceptions\InvalidConfig;
 use Spatie\ModelStates\State;
 use Spatie\ModelStates\StateConfig;
 
+/**
+ * @extends State<Quote>
+ */
 abstract class QuoteState extends State
 {
     public static string $name;

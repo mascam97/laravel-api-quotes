@@ -21,6 +21,7 @@ class QuoteData extends Data
 
     /**
      * @throws ValidationException
+     * @param array<string, mixed> $json
      */
     public static function fromArray(array $json): self
     {

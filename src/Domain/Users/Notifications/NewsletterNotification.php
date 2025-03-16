@@ -14,6 +14,7 @@ class NewsletterNotification extends Notification
 
     /**
      * Get the notification's delivery channels.
+     * @return array<string>
      */
     public function via(User $notifiable): array
     {
@@ -38,6 +39,7 @@ class NewsletterNotification extends Notification
 
     /**
      * Get the array representation of the notification.
+     * @return array<string, mixed>
      */
     public function toArray(User $notifiable): array
     {

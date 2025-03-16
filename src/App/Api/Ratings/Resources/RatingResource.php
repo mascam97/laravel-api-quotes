@@ -17,6 +17,7 @@ class RatingResource extends JsonResource
      * Transform the resource into an array to show only itself.
      *
      * @param  Request  $request
+     * @return array<string, QuoteResource|UserResource|int|string>
      */
     public function toArray($request): array
     {

@@ -3,6 +3,7 @@
 namespace App\Api\Quotes\Resources;
 
 use Domain\Quotes\Models\Quote;
+use Domain\Quotes\States\QuoteState;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,6 +16,7 @@ class QuoteResource extends JsonResource
      * Transform the resource into an array to show only itself.
      *
      * @param  Request  $request
+     * @return array<string, QuoteState|float|int|string|null>
      */
     public function toArray($request): array
     {

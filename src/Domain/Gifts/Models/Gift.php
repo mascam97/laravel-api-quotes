@@ -37,21 +37,27 @@ class Gift extends Model
         return new QuoteQueryBuilder($query);
     }
 
+    /**
+     * @return BelongsTo<User, Gift>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return BelongsTo<User, Gift>
+     */
     public function senderUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'sender_user_id');
     }
 
     /**
-     * Create a new factory instance for the model.
+     * @return Factory<Gift>
      */
     protected static function newFactory(): Factory
     {
-        return DBGiftFactory::new();
+        return DBGiftFactory::new(); /** @phpstan-return Factory<Gift> */
     }
 }

@@ -61,6 +61,7 @@ strtolower((string) $root->email),
 
     // You can also resolve a field by declaring a method in the class
     // with the following format resolve[FIELD_NAME]Field()
+    /** @param array<string,string> $args */
     protected function resolveEmailField(User $root, array $args): string
     {
         return strtolower($root->email);

@@ -7,6 +7,8 @@ use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
+ * @extends Builder<Gift>
+ *
  * @method select($columns = ['*'])
  * @method count()
  * @method Gift firstOrFail($columns = ['*'])

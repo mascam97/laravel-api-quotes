@@ -5,6 +5,7 @@ namespace App\Api\Pockets\Resources;
 use Domain\Pockets\Models\Pocket;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 /**
  * @mixin Pocket;
@@ -15,6 +16,7 @@ class PocketResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param  Request  $request
+     * @return array<string, Carbon|int|string>
      */
     public function toArray($request): array
     {

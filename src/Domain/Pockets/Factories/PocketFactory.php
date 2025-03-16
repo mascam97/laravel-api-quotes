@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class PocketFactory
 {
+    /** @var array<string, mixed> */
     private array $properties = [];
 
     private ?int $balance = null;
@@ -18,13 +19,17 @@ class PocketFactory
         return $this;
     }
 
+    /**
+     * @param array<string, mixed> $extra
+     * @return Pocket|Collection<int, Pocket>
+     */
     public function create(array $extra = []): Pocket|Collection
     {
         if (! $this->balance) {
             /** @var Pocket $pocket */
             $pocket = Pocket::factory()->create(array_merge($this->properties, $extra));
         } else {
-            /** @var Collection $pocket */
+            /** @var Collection<int, Pocket> $pocket */
             $pocket = Pocket::factory($this->balance)->create(array_merge($this->properties, $extra));
         }
 

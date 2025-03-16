@@ -40,6 +40,8 @@ class ModelRated
 
     /**
      * Get the channels the event should broadcast on.
+     *
+     * @return array<int, Channel>|Channel
      */
     public function broadcastOn(): Channel|array
     {

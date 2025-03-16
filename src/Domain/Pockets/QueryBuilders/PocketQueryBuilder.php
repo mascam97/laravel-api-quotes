@@ -8,6 +8,8 @@ use Domain\Users\QueryBuilders\UserQueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
+ * @extends Builder<Pocket>
+ *
  * @method select($columns = ['*'])
  * @method count()
  * @method Pocket firstOrFail($columns = ['*'])

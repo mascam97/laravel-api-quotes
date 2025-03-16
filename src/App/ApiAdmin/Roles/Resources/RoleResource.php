@@ -4,6 +4,7 @@ namespace App\ApiAdmin\Roles\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 use Spatie\Permission\Models\Role;
 
 /**
@@ -15,6 +16,7 @@ class RoleResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param  Request  $request
+     * @return array<string, Carbon|int|string>
      */
     public function toArray($request): array
     {

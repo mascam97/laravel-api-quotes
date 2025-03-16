@@ -16,6 +16,7 @@ class ActivityResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param  Request  $request
+     * @return array<string, UserResource|int|string|null>
      */
     public function toArray($request): array
     {

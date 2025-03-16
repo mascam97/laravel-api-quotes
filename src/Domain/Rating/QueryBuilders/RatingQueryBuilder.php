@@ -2,10 +2,13 @@
 
 namespace Domain\Rating\QueryBuilders;
 
+use Domain\Rating\Models\Rating;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * @extends Builder<Rating>
+ *
  * @method select($columns = ['*'])
  */
 class RatingQueryBuilder extends Builder

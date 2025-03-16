@@ -16,13 +16,17 @@ class UserFactory
         return $this;
     }
 
+    /**
+     * @param array<string, mixed> $extra
+     * @return User|Collection<int, User>
+     */
     public function create(array $extra = []): User|Collection
     {
         if (! $this->amount) {
             /** @var User $user */
             $user = User::factory()->create($extra);
         } else {
-            /** @var Collection $user */
+            /** @var Collection<int, User> $user */
             $user = User::factory($this->amount)->create($extra);
         }
 

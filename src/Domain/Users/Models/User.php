@@ -82,31 +82,43 @@ class User extends Authenticatable implements Rates, MustVerifyEmail
         return new UserQueryBuilder($query);
     }
 
+    /**
+     * @return HasMany<Quote>
+     */
     public function quotes(): HasMany
     {
         return $this->hasMany(Quote::class);
     }
 
+    /**
+     * @return BelongsTo<Pocket, User>
+     */
     public function pocket(): BelongsTo
     {
         return $this->belongsTo(Pocket::class);
     }
 
+    /**
+     * @return HasMany<Gift>
+     */
     public function gifts(): HasMany
     {
         return $this->hasMany(Gift::class);
     }
 
+    /**
+     * @return HasMany<Gift>
+     */
     public function sentGifts(): HasMany
     {
         return $this->hasMany(Gift::class, 'sender_user_id');
     }
 
     /**
-     * Create a new factory instance for the model.
+     * @return Factory<User>
      */
     protected static function newFactory(): Factory
     {
-        return DBUserFactory::new();
+        return DBUserFactory::new();  /** @phpstan-return Factory<User> */
     }
 }

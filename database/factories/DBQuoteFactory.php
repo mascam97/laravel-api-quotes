@@ -5,6 +5,9 @@ namespace Database\Factories;
 use Domain\Quotes\Models\Quote;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Quote>
+ */
 class DBQuoteFactory extends Factory
 {
     /**

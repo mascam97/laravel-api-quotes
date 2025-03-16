@@ -47,7 +47,7 @@ class SendNewsletterCommand extends Command
 
             $builder->chunkById(10, function ($users) {
                 foreach ($users as $user) {
-                    $user->notify(new NewsletterNotification()); /* @phpstan-ignore-line */
+                    $user->notify(new NewsletterNotification());
                     $this->output->progressAdvance();
                 }
             });
