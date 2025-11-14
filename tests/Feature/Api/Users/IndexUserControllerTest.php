@@ -60,7 +60,7 @@ it('can include quotes', function () {
     ]);
 
     /** @var User $quote */
-    $quote = (new QuoteFactory)->withUser($newUser)->create();
+    $quote = (new QuoteFactory)->withUser($newUser)->create(); /* @phpstan-ignore-line */
 
     $responseDataTwo = getJson(route('api.users.index', [
         'filter[name]' => 'User with quote',

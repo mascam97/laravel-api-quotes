@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
 
 /**
- * @mixin Pocket;
+ * @mixin Pocket
  */
 class PocketResource extends JsonResource
 {

@@ -11,7 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
 
 /**
- * @mixin User;
+ * @mixin User
  */
 class UserResource extends JsonResource
 {
@@ -19,7 +19,7 @@ class UserResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param  Request  $request
-     * @return array<string, Carbon|int|string>
+     * @return array<string, mixed>
      */
     public function toArray($request): array
     {

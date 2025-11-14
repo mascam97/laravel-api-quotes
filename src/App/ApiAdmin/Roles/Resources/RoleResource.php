@@ -8,7 +8,7 @@ use Illuminate\Support\Carbon;
 use Spatie\Permission\Models\Role;
 
 /**
- * @mixin Role;
+ * @mixin Role
  */
 class RoleResource extends JsonResource
 {
@@ -16,7 +16,7 @@ class RoleResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param  Request  $request
-     * @return array<string, Carbon|int|string>
+     * @return array<string, mixed>
      */
     public function toArray($request): array
     {

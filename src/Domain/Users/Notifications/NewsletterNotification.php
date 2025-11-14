@@ -33,7 +33,7 @@ class NewsletterNotification extends Notification
                 'user_count' => User::query()->count(),
                 'quote_count' => Quote::query()->count(),
             ]))
-            ->action(trans('mail.link.website'), (string) env('APP_URL', 'http://localhost'))
+            ->action(trans('mail.link.website'), (string) config('app.url'))
             ->line(trans('mail.gratitude'));
     }
 

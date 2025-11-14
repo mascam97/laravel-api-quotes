@@ -10,6 +10,8 @@ parameters:
     level: 8
 
     ignoreErrors:
-        - '#Undefined variable: \$this#'
+        - '#Trait Tests\\CreatesApplication is used zero times and is not analysed.*#'
         - '#Call to an undefined method Pest\\Expectation|Pest\\Support\\.*#'
         - '#Access to an undefined property Pest\\Expectation<mixed>::\$id.*#'
+        - '#Access to an undefined property PHPUnit\\Framework\\TestCase::*#'
+        - '#Call to an undefined method PHPUnit\\Framework\\TestCase::*#'

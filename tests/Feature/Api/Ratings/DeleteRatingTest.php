@@ -13,7 +13,7 @@ beforeEach(function () {
 
     $this->rating = new Rating();
     $this->rating->qualifier()->associate($this->user);
-    $this->rating->rateable()->associate($this->quote);
+    $this->rating->rateable()->associate($this->quote); /* @phpstan-ignore-line */
     $this->rating->score = 5;
     $this->rating->save();
 

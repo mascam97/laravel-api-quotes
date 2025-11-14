@@ -3,16 +3,14 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
-use RectorLaravel\Set\LaravelSetList;
-use Rector\Set\ValueObject\LevelSetList;
+use Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictConstructorRector;
 use Rector\Set\ValueObject\SetList;
 
-return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->paths([__DIR__ . '/src', __DIR__ . '/tests']);
-    $rectorConfig->sets([
-        SetList::CODE_QUALITY,
-        SetList::DEAD_CODE,
-        LevelSetList::UP_TO_PHP_82,
-        LaravelSetList::LARAVEL_100
-    ]);
-};
+return RectorConfig::configure()
+    ->withRules([
+        TypedPropertyFromStrictConstructorRector::class
+    ])->withPaths([__DIR__ . '/src', __DIR__ . '/tests'])
+    ->withPreparedSets(
+        deadCode: true,
+        codeQuality: true
+    )->withSets([SetList::PHP_82]);

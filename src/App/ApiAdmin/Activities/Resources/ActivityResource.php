@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Spatie\Activitylog\Models\Activity;
 
 /**
- * @mixin Activity;
+ * @mixin Activity
  */
 class ActivityResource extends JsonResource
 {

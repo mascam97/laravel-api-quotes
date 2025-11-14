@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
 
 /**
- * @mixin User;
+ * @mixin User
  */
 class ProfileResource extends JsonResource
 {

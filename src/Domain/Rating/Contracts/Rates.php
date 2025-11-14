@@ -7,9 +7,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 interface Rates
 {
-    /**
-     * @return MorphToMany<Model>
-     */
     public function ratings(): MorphToMany;
 
 //    TODO: This does not work

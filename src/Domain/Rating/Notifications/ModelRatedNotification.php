@@ -38,12 +38,12 @@ class ModelRatedNotification extends Notification implements ShouldQueue
     {
         return (new MailMessage())
             ->greeting(trans('mail.greeting.quote_rated'))
-            ->line(trans('mail.notification.quote_rated', [/* @phpstan-ignore-line */
+            ->line(trans('mail.notification.quote_rated', [
                 'qualifier' => $this->qualifierName,
                 'quote' => $this->rateableName,
                 'score' => $this->score,
             ]))
-            ->action(trans('mail.link.website'), (string) env('APP_URL', 'http://localhost'))
+            ->action(trans('mail.link.website'), (string) config('app.url'))
             ->action(
                 trans('mail.link.unsubscribe'),
                 URL::signedRoute('web.email-unsubscribe-users', ['user' => $this->qualifierId])
