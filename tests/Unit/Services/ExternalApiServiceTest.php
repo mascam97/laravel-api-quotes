@@ -65,7 +65,7 @@ it('cannot get quote without the service up', function () {
 
 it('can get a quote', function () {
     ExternalApiService::fake([
-        'https://example.com/quotes/1' => Http::response(
+        'https://example.com/quotes/1' => fn () => Http::response(
             body:   fixture('ExternalApi/Quote'),
         ),
     ]);
@@ -80,7 +80,7 @@ it('can get a quote', function () {
 
 it('can get quotes', function () {
     ExternalApiService::fake([
-        'https://example.com/quotes' => Http::response(
+        'https://example.com/quotes' => fn () => Http::response(
             body:   fixture('ExternalApi/Quotes'),
         ),
     ]);

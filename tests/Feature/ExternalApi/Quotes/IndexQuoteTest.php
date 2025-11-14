@@ -12,7 +12,7 @@ beforeEach(function () {
 });
 
 it('can index', function () {
-    ExternalApiService::fake(['https://example.com/quotes' => Http::response(fixture('ExternalApi/Quotes'))]);
+    ExternalApiService::fake(['https://example.com/quotes' => fn () => Http::response(fixture('ExternalApi/Quotes'))]);
 
     getJson(route('external-api.quotes.index'))
         ->assertOk()

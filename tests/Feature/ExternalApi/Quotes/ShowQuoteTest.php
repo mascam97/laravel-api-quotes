@@ -12,7 +12,7 @@ beforeEach(function () {
 });
 
 it('can show a quote', function () {
-    ExternalApiService::fake(['https://example.com/quotes/10' => Http::response(fixture('ExternalApi/Quote'))]);
+    ExternalApiService::fake(['https://example.com/quotes/10' => fn () => Http::response(fixture('ExternalApi/Quote'))]);
 
     getJson(route('external-api.quotes.show', ['quote' => 10]))
         ->assertOk()

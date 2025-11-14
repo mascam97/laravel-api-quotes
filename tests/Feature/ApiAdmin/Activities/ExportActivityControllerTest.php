@@ -24,7 +24,7 @@ it('downloads an export', function () {
         ->assertSuccessful();
 
     Excel::assertDownloaded('activities.xlsx', function (ActivityExport $export) {
-        expect($export->collection()->pluck('description')) /* @phpstan-ignore-line */
+        expect($export->collection()->pluck('description'))
             ->toHaveCount(3)
             ->sequence(
                 fn ($dataDescription) => $dataDescription->toBe('test log'),

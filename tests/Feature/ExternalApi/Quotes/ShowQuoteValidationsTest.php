@@ -17,7 +17,7 @@ it('validates id field', function () {
     $data = fixture('ExternalApi/Quote');
     $data['data']['id'] = null;
 
-    ExternalApiService::fake(['https://example.com/quotes/10' => Http::response($data)]);
+    ExternalApiService::fake(['https://example.com/quotes/10' => fn () => Http::response($data)]);
 
     getJson(route('external-api.quotes.show', ['quote' => 10]))->assertServerError();
 });
