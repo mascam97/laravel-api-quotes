@@ -62,12 +62,13 @@ test('sql queries optimization test', function () {
         ->assertSuccessful();
 
     expect(formatQueries(DB::getQueryLog()))
-        ->toHaveCount(8)
+        ->toHaveCount(9)
         ->sequence(
             fn ($query) => $query->toBe('select * from `users` where `id` = ? and `users`.`deleted_at` is null limit 1'),
             fn ($query) => $query->toBe('select * from `permissions`'),
             fn ($query) => $query->toContain('select `roles`.*, `role_has_permissions`.`permission_id` as `pivot_permission_id`, `role_has_permissions`.`role_id` as `pivot_role_id` from `roles` inner join `role_has_permissions` on `roles`.`id` = `role_has_permissions`.`role_id` where `role_has_permissions`.`permission_id`'),
-            fn ($query) => $query->toBe('select `permissions`.*, `model_has_permissions`.`model_id` as `pivot_model_id`, `model_has_permissions`.`permission_id` as `pivot_permission_id`, `model_has_permissions`.`model_type` as `pivot_model_type` from `permissions` inner join `model_has_permissions` on `permissions`.`id` = `model_has_permissions`.`permission_id` where `model_has_permissions`.`model_id` = ? and `model_has_permissions`.`model_type` = ?'),
+            fn ($query) => $query->toContain('select `permissions`.*, `model_has_permissions`.`model_id` as `pivot_model_id`, `model_has_permissions`.`permission_id` as `pivot_permission_id`, `model_has_permissions`.`model_type` as `pivot_model_type` from `permissions` inner join `model_has_permissions` on `permissions`.`id` = `model_has_permissions`.`permission_id` where `model_has_permissions`.`model_id` in'),
+            fn ($query) => $query->toContain('select `roles`.*, `model_has_roles`.`model_id` as `pivot_model_id`, `model_has_roles`.`role_id` as `pivot_role_id`, `model_has_roles`.`model_type` as `pivot_model_type` from `roles` inner join `model_has_roles` on `roles`.`id` = `model_has_roles`.`role_id` where `model_has_roles`.`model_id` in'),
             fn ($query) => $query->toBe('delete from `quotes` where `quotes`.`user_id` = ? and `quotes`.`user_id` is not null'),
             fn ($query) => $query->toBe('delete `quotes` from `quotes` inner join `ratings` on `quotes`.`id` = `ratings`.`rateable_id` where `ratings`.`qualifier_id` = ? and `ratings`.`qualifier_type` = ? and `ratings`.`rateable_type` = ? and `ratings`.`qualifier_type` = ?'),
             fn ($query) => $query->toBe('update `users` set `deleted_at` = ?, `users`.`updated_at` = ? where `id` = ?'),

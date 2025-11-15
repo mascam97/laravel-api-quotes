@@ -8,7 +8,6 @@ use App\ApiAdmin\Roles\Resources\RoleResource;
 use Domain\Users\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Carbon;
 
 /**
  * @mixin User
@@ -28,9 +27,15 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'permissions' => PermissionResource::collection($this->whenLoaded('permissions')),
-            'permissions_count' => $this->when($this->permissions_count !== null, $this->permissions_count),
+            'permissions_count' => $this->when(
+                property_exists($this, 'permissions_count'),
+                fn () => $this->permissions_count
+            ),
             'roles' => RoleResource::collection($this->whenLoaded('roles')),
-            'roles_count' => $this->when($this->roles_count !== null, $this->roles_count),
+            'roles_count' => $this->when(
+                property_exists($this, 'roles_count'),
+                fn () => $this->roles_count
+            ),
             'pocket' => new PocketResource($this->whenLoaded('pocket')),
             'deleted_at' => (string) $this->deleted_at,
             'created_at' => (string) $this->created_at,

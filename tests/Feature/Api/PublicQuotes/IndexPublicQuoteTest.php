@@ -125,6 +125,7 @@ it('can filter by user id', function () {
 
 it('can include user', function () {
     getJson(route('api.public.quotes.index', ['include' => 'user']))
+        ->assertOk()
         ->assertJson(function (AssertableJson $json) {
             $json->has('data', 5)
                 ->has('data.0', function (AssertableJson $data) {
