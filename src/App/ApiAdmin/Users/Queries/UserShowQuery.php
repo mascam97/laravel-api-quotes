@@ -10,13 +10,14 @@ class UserShowQuery extends QueryBuilder
 {
     public function __construct(Request $request)
     {
-        $query = User::query()
+        $query = User::withTrashed()
             ->select([
                 'id',
                 'name',
                 'email',
                 'created_at',
                 'updated_at',
+                'deleted_at',
             ]);
 
         parent::__construct($query, $request);

@@ -28,16 +28,19 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'permissions' => PermissionResource::collection($this->whenLoaded('permissions')),
             'permissions_count' => $this->when(
-                property_exists($this, 'permissions_count'),
-                fn () => $this->permissions_count
+                array_key_exists('permissions_count', $this->getAttributes()),
+                fn () => $this->getAttribute('permissions_count')
             ),
             'roles' => RoleResource::collection($this->whenLoaded('roles')),
             'roles_count' => $this->when(
-                property_exists($this, 'roles_count'),
-                fn () => $this->roles_count
+                array_key_exists('roles_count', $this->getAttributes()),
+                fn () => $this->getAttribute('roles_count')
             ),
             'pocket' => new PocketResource($this->whenLoaded('pocket')),
-            'deleted_at' => (string) $this->deleted_at,
+            'deleted_at' => $this->when(
+                array_key_exists('deleted_at', $this->getAttributes()),
+                fn () => $this->getAttribute('deleted_at')
+            ),
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
         ];

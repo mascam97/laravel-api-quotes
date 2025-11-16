@@ -4,6 +4,7 @@ namespace App\Api\Users\Queries;
 
 use Domain\Users\Models\User;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedInclude;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class UserShowQuery extends QueryBuilder
@@ -20,6 +21,10 @@ class UserShowQuery extends QueryBuilder
 
         parent::__construct($query, $request);
 
-        $this->allowedIncludes('quotes');
+        $this->allowedIncludes([
+            'quotes',
+            AllowedInclude::count('quotesCount'),
+            AllowedInclude::exists('quotesExists'),
+        ]);
     }
 }

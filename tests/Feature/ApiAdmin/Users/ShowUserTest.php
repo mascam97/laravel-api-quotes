@@ -17,7 +17,11 @@ beforeEach(function () {
 });
 
 it('can show', function () {
-    getJson(route('admin.users.show', ['user' => $this->user->id]))
+    /** @var User $user */
+    $user = (new UserFactory)->create();
+    $user->delete();
+
+    getJson(route('admin.users.show', ['user' => $user->id]))
         ->assertOk()
         ->assertJson(function (AssertableJson $json) {
             $json->has('data', fn ($json) => $json

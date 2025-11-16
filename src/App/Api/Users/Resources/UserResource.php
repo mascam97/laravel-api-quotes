@@ -27,8 +27,8 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'quotes' => QuoteResource::collection($this->whenLoaded('quotes')),
             'quotesCount' => $this->when(
-                property_exists($this, 'quotes_count'),
-                fn () => $this->quotes_count
+                array_key_exists('quotes_count', $this->getAttributes()),
+                fn () => $this->getAttribute('quotes_count')
             ),
             'created_at' => (string) $this->created_at,
         ];
