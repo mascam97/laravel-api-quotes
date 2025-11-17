@@ -14,7 +14,7 @@ it('validates id field', function () {
     // $this->expectException(ExternalApiException::class);
     // $this->expectExceptionMessage('External API validation failed');
 
-    $data = fixture('ExternalApi/Quote');
+    $data = jsonFixture('ExternalApi/Quote');
     $data['data']['id'] = null;
 
     ExternalApiService::fake(['https://example.com/quotes/10' => fn () => Http::response($data)]);

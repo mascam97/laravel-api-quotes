@@ -64,20 +64,13 @@ function formatQueries(array $queries): array
 }
 
 /** @return array<string, mixed> */
-function fixture(string $name): array
+function jsonFixture(string $name): array
 {
-    $file = file_get_contents(
-        filename: base_path("tests/Fixtures/$name.json"),
-    );
+    $file = file_get_contents(filename: fixture("$name.json"));
 
     if (! $file) {
-        throw new InvalidArgumentException(
-            message: "Cannot find fixture: [$name] at tests/Fixtures/$name.json",
-        );
+        throw new InvalidArgumentException(message: "Cannot find fixture: [$name] at tests/Fixtures/$name.json");
     }
 
-    return json_decode(
-        json: $file,
-        associative: true,
-    );
+    return json_decode(json: $file, associative: true);
 }

@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
+use Rector\Set\ValueObject\LevelSetList;
 use Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictConstructorRector;
-use Rector\Set\ValueObject\SetList;
 
 return RectorConfig::configure()
     ->withRules([
@@ -13,4 +13,4 @@ return RectorConfig::configure()
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true
-    )->withSets([SetList::PHP_82]);
+    )->withSets([LevelSetList::UP_TO_PHP_84]);

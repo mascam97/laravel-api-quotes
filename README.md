@@ -232,7 +232,7 @@ sail artisan scribe:generate
 
 ### Built With 🛠️
 
-- [Laravel 10](https://laravel.com/docs/10.x/releases/) - PHP framework.
+- [Laravel 10](https://laravel.com/docs/12.x/releases/) - PHP framework.
 - [Laravel Sanctum](https://laravel.com/docs/10.x/sanctum) - Authentication system.
 - [Laravel Sail](https://laravel.com/docs/10.x/sail) - Docker development environment.
 - [Laravel Permission](https://spatie.be/docs/laravel-permission/v5/introduction) - Associate users with roles and permissions.
