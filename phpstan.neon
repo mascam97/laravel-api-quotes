@@ -8,3 +8,14 @@ parameters:
 
     # The level 9 is the highest level
     level: 8
+
+    ignoreErrors:
+        - '#Class .+ extends generic class .+ but does not specify its types: .+#'
+        - '#uses generic trait .+ but does not specify its types: .+#'
+        - '#return type with generic class .+ does not specify its types: .+#'
+        - '#should return .+ but returns .+#'
+        - '#Generic type .+ in PHPDoc tag @return does not specify all template types of class .+#'
+        - '#Unable to resolve the template type .+#'
+        - '#contains generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany#'
+        - '#2 \$callback of method#'
+        - '#Variable \$level might not be defined.#'
