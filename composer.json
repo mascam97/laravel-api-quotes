@@ -98,6 +98,8 @@
     "scripts": {
         "test": "@php artisan test",
         "quality": "php artisan test && php vendor/bin/phpstan analyse --no-progress && php vendor/bin/phpstan analyse -c phpstan.tests.neon --no-progress",
+        "style:check": "php vendor/bin/php-cs-fixer fix --dry-run --diff",
+        "rector:check": "php vendor/bin/rector process src --dry-run",
         "security:audit": "composer audit --no-interaction",
         "php-cs-fixer": "vendor/bin/php-cs-fixer fix",
         "post-autoload-dump": [

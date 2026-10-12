@@ -9,6 +9,7 @@ use Domain\Pockets\PocketAggregateRoot;
 use Domain\Users\Actions\SendWelcomeEmailAction;
 use Domain\Users\Enums\SexEnum;
 use Domain\Users\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -28,6 +29,8 @@ class RegisterController extends Controller
         $user->locale = app()->getLocale();
         $user->email_subscribed_at = now();
         $user->save();
+
+        event(new Registered($user));
 
         PocketAggregateRoot::retrieve(Str::orderedUuid())
             ->createPocket($user, 'USD') // TODO: Define currency by user information

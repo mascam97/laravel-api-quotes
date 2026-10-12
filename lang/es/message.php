@@ -5,6 +5,10 @@ return [
     'updated' => 'La :attribute fue actualizado satisfactoriamente',
     'deleted' => 'La :attribute fue eliminado satisfactoriamente',
     'success' => 'La action fue ejecutada satisfactoriamente',
+    'password_updated' => 'La contraseña fue actualizada satisfactoriamente',
+    'email_verified' => 'Tu correo electrónico fue verificado satisfactoriamente',
+    'email_already_verified' => 'Tu correo electrónico ya está verificado',
+    'email_verification_sent' => 'El enlace de verificación fue enviado a tu correo electrónico',
 
     'rating' => [
         'rated' => 'La :attribute :id fue calificada con :score satisfactoriamente',

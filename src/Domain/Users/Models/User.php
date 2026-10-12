@@ -58,6 +58,7 @@ class User extends Authenticatable implements Rates, MustVerifyEmail
         'email',
         'password',
         'sex',
+        'birthday',
     ];
 
     protected $hidden = [
@@ -71,6 +72,7 @@ class User extends Authenticatable implements Rates, MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'email_subscribed_at' => 'datetime',
+        'birthday' => 'date:Y-m-d',
         'sex' => SexEnum::class,
         'quotes_count' => 'int',
         'roles_count' => 'int',

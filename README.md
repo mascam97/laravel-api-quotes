@@ -47,7 +47,7 @@ This Laravel 12 REST/GraphQL API demonstrates OAuth2 authentication, authorizati
 - Upgraded to **PHP 8.1** and **Laravel 9**
 - Refactoring all the code (setUps implementation in test, use of Actions, DTOs, type hinting, etc.)
 - Implemented a **QueryBuilder library** and improve the **API logic** (delete unnecessary API versioning)
-- Implemented **Sonar Cloud to reduce Technical Debt** (duplications, smells code, etc.)
+- Implemented automated quality checks with PHPStan, PHP CS Fixer, Rector and PHP Insights.
 - Implemented some **recommendations to build large-than-average web applications**
 - Reached the 8 level in PHPStan
 - **Redefined business logic in ratings for a better scalability**

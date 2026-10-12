@@ -62,6 +62,25 @@ class PassportClientsSeeder extends Seeder
                 'created_at' => '2023-05-28 14:16:23',
                 'updated_at' => '2023-05-28 14:16:23',
             ],
+            [
+                'id' => '994a9507-396f-44c6-a66e-5a8fe42a5bec',
+                'user_id' => null,
+                'name' => 'personal-access',
+                'secret' => 'personal-access-secret',
+                'provider' => 'users',
+                'redirect' => 'http://localhost',
+                'personal_access_client' => 1,
+                'password_client' => 0,
+                'revoked' => 0,
+                'created_at' => '2023-05-28 14:17:23',
+                'updated_at' => '2023-05-28 14:17:23',
+            ],
+        ]);
+
+        DB::table('oauth_personal_access_clients')->insert([
+            'client_id' => '994a9507-396f-44c6-a66e-5a8fe42a5bec',
+            'created_at' => '2023-05-28 14:17:23',
+            'updated_at' => '2023-05-28 14:17:23',
         ]);
     }
 }

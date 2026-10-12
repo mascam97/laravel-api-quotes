@@ -43,3 +43,9 @@ jobs:
 
       - name: Audit dependencies
         run: composer security:audit
+
+      - name: Check code style
+        run: composer style:check
+
+      - name: Check automated refactoring
+        run: composer rector:check
