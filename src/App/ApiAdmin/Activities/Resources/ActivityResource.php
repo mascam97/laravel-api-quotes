@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\ApiAdmin\Activities\Resources;
 
 use App\ApiAdmin\Users\Resources\UserResource;

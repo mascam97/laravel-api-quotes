@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\ApiAnalytics\Quotes;
 
 use Domain\Quotes\Models\Quote;

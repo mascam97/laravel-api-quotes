@@ -26,13 +26,9 @@ class PocketFactory
     public function create(array $extra = []): Pocket|Collection
     {
         if (! $this->balance) {
-            /** @var Pocket $pocket */
-            $pocket = Pocket::factory()->create(array_merge($this->properties, $extra));
-        } else {
-            /** @var Collection<int, Pocket> $pocket */
-            $pocket = Pocket::factory($this->balance)->create(array_merge($this->properties, $extra));
+            return Pocket::factory()->create(array_merge($this->properties, $extra));
         }
 
-        return $pocket;
+        return Pocket::factory($this->balance)->create(array_merge($this->properties, $extra));
     }
 }

@@ -45,13 +45,9 @@ class QuoteFactory
     public function create(array $extra = []): Quote|Collection
     {
         if (! $this->amount) {
-            /** @var Quote $quote */
-            $quote = Quote::factory()->create(array_merge($this->properties, $extra));
-        } else {
-            /** @var Collection<int, Quote> $quote */
-            $quote = Quote::factory($this->amount)->create(array_merge($this->properties, $extra));
+            return Quote::factory()->create(array_merge($this->properties, $extra));
         }
 
-        return $quote;
+        return Quote::factory($this->amount)->create(array_merge($this->properties, $extra));
     }
 }

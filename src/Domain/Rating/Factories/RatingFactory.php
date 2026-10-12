@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Domain\Rating\Factories;
 
 use Domain\Quotes\Models\Quote;

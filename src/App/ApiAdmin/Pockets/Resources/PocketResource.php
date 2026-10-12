@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\ApiAdmin\Pockets\Resources;
 
 use Domain\Pockets\Models\Pocket;

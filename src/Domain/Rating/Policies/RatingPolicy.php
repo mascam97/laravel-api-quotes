@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Domain\Rating\Policies;
 
 use Domain\Rating\Models\Rating;

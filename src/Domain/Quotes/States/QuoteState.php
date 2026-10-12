@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Domain\Quotes\States;
 
 use Domain\Quotes\Models\Quote;

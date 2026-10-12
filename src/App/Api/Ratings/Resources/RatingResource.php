@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Api\Ratings\Resources;
 
 use App\Api\Quotes\Resources\QuoteResource;

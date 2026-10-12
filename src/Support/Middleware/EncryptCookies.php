@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Support\Middleware;
 
 use Illuminate\Cookie\Middleware\EncryptCookies as Middleware;

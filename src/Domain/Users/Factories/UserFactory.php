@@ -23,13 +23,9 @@ class UserFactory
     public function create(array $extra = []): User|Collection
     {
         if (! $this->amount) {
-            /** @var User $user */
-            $user = User::factory()->create($extra);
-        } else {
-            /** @var Collection<int, User> $user */
-            $user = User::factory($this->amount)->create($extra);
+            return User::factory()->create($extra);
         }
 
-        return $user;
+        return User::factory($this->amount)->create($extra);
     }
 }
