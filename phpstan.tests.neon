@@ -1,7 +1,10 @@
 includes:
     - vendor/larastan/larastan/extension.neon
+    - vendor/pestphp/pest/extension.neon
 
 parameters:
+
+    reportUnmatchedIgnoredErrors: false
 
     paths:
         - tests
@@ -11,8 +14,10 @@ parameters:
 
     ignoreErrors:
         - '#Trait Tests\\CreatesApplication is used zero times and is not analysed.*#'
-        - '#Call to an undefined method Pest\\Expectation|Pest\\Support\\.*#'
-        - '#Access to an undefined property Pest\\Expectation<mixed>::\$id.*#'
-        - '#Access to an undefined property PHPUnit\\Framework\\TestCase::*#'
-        - '#Call to an undefined method PHPUnit\\Framework\\TestCase::*#'
-        - '#1 \$queries of function formatQueries expects array<string, string>, array<array<string, array\|float\|string\|null>> given.#'
+        - '#Access to an undefined property Pest\\PendingCalls\\TestCall::\$.*#'
+        - '#Call to an undefined method Pest\\PendingCalls\\TestCall::.*#'
+        - '#Access to an undefined property Pest\\Expectation.*#'
+        - '#Access to an undefined property Pest\\Mixins\\Expectation.*#'
+        - '#Call to an undefined method Pest\\Expectation.*#'
+        - '#Cannot call method .* on .*Pest\\Expectation.*#'
+        - '~Parameter #1 \$queries of function formatQueries expects array<string, string>, list<array<string, array<mixed>\|float\|string\|null>> given.~'

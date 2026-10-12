@@ -21,7 +21,7 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "guzzlehttp/guzzle": "^7.5",
         "laravel-lang/lang": "~8.0",
         "laravel/framework": "^12.0",
@@ -96,6 +96,9 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "scripts": {
+        "test": "@php artisan test",
+        "quality": "php artisan test && php vendor/bin/phpstan analyse --no-progress && php vendor/bin/phpstan analyse -c phpstan.tests.neon --no-progress",
+        "security:audit": "composer audit --no-interaction",
         "php-cs-fixer": "vendor/bin/php-cs-fixer fix",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

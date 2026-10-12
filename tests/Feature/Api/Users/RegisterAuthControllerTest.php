@@ -70,10 +70,10 @@ it('can register with optional fields', function () {
     )->assertOk()
         ->assertSee('The user was created successfully');
 
-    $this->assertDatabaseHas(User::class, [
-        'sex' => 'FEMININE',
-        'birthday' => '2000-01-01',
-    ]);
+    expect(User::query()
+        ->where('sex', 'FEMININE')
+        ->whereDate('birthday', '2000-01-01')
+        ->exists())->toBeTrue();
 });
 
 it('can register in spanish locale', function () {

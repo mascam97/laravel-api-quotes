@@ -6,6 +6,7 @@ use Domain\Rating\Models\Rating;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
+/** @extends QueryBuilder<Rating> */
 class RatingIndexQuery extends QueryBuilder
 {
     public function __construct(Request $request)

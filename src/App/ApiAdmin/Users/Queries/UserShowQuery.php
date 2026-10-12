@@ -6,6 +6,7 @@ use Domain\Users\Models\User;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
+/** @extends QueryBuilder<User> */
 class UserShowQuery extends QueryBuilder
 {
     public function __construct(Request $request)

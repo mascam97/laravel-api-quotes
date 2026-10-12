@@ -3,6 +3,7 @@
 /public/storage
 /public/docs
 /storage/*.key
+/graphify-out
 /vendor
 /.idea
 .env

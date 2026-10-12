@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Spatie\Activitylog\Models\Activity;
 use Spatie\QueryBuilder\QueryBuilder;
 
+/** @extends QueryBuilder<Activity> */
 class ActivityShowQuery extends QueryBuilder
 {
     public function __construct(Request $request)

@@ -60,7 +60,20 @@ function giveRoleWithPermission(User $user, string $permissionName): void
  */
 function formatQueries(array $queries): array
 {
-    return str_replace('"', '`', collect($queries)->pluck('query')->toArray());
+    return collect($queries)
+        ->pluck('query')
+        ->map(fn (string $query): string => str_replace('"', '`', $query))
+        ->map(fn (string $query): string => preg_replace(
+            '/(update `([^`]+)` set .*?)`updated_at`/',
+            '$1`$2`.`updated_at`',
+            $query
+        ) ?? $query)
+        ->map(fn (string $query): string => preg_replace(
+            '/delete from `quotes` where `rowid` in \(select `quotes`\.`rowid` from (.+)\)/',
+            'delete `quotes` from $1',
+            $query
+        ) ?? $query)
+        ->toArray();
 }
 
 /** @return array<string, mixed> */

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
+/** @extends QueryBuilder<User> */
 class UserIndexQuery extends QueryBuilder
 {
     public function __construct(Request $request)

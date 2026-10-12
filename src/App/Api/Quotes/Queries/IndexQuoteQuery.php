@@ -7,6 +7,7 @@ use Domain\Users\Models\User;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
+/** @extends QueryBuilder<Quote> */
 class IndexQuoteQuery extends QueryBuilder
 {
     public function __construct(Request $request)
